@@ -9,12 +9,19 @@ function initPage () {
 
     const task1 = taskFactory("Walk Frankie", Date.now());
 
-    console.log(format(task1.getDateAdded(), "E, MMMM do"));
+    // console.log(task1.getDueDate());
+    // task1.setDueDate(Date.now());
+    // console.log(format(task1.getDueDate(), "E, MMMM do"));
+    // task1.setDueDate(false);
+    // console.log(task1.getDueDate());
+    
+    // console.log(task1.isCompleted());
+    // task1.setCompletedAs(true);
+    // console.log(task1.isCompleted());
+
     // console.log(task1.getName());
     // task1.setName("Feed Frankie");
     // console.log(task1.getName());
-
-
 
 }
 
