@@ -20,13 +20,33 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _mod
 
 /***/ }),
 
+/***/ "./src/modules/folder.js":
+/*!*******************************!*\
+  !*** ./src/modules/folder.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst folderFactory = function (_name, _dateAdded) {\n    let _tasks = [];\n\n    const getName = function () {\n        return _name;\n    }\n    const setName = function (name) {\n        _name = name;\n    }\n    const getDateAdded = function () {\n        return _dateAdded;\n    }\n    const getTasks = function () {\n        return _tasks;\n    }\n\n    return {\n        getName,\n        setName,\n        getDateAdded,\n        getTasks\n    };\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (folderFactory);\n\n//# sourceURL=webpack://to-do-list/./src/modules/folder.js?");
+
+/***/ }),
+
 /***/ "./src/modules/init-page.js":
 /*!**********************************!*\
   !*** ./src/modules/init-page.js ***!
   \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _task_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./task.js */ \"./src/modules/task.js\");\n\n\n\n\nfunction initPage () {\n    const element = document.createElement(\"div\");\n    element.textContent = \"Hello world!\";\n    document.body.appendChild(element);\n\n    const task1 = (0,_task_js__WEBPACK_IMPORTED_MODULE_0__.default)(\"Walk Frankie\", Date.now());\n\n    // console.log(task1.getDueDate());\n    // task1.setDueDate(Date.now());\n    // console.log(format(task1.getDueDate(), \"E, MMMM do\"));\n    // task1.setDueDate(false);\n    // console.log(task1.getDueDate());\n    \n    // console.log(task1.isCompleted());\n    // task1.setCompletedAs(true);\n    // console.log(task1.isCompleted());\n\n    // console.log(task1.getName());\n    // task1.setName(\"Feed Frankie\");\n    // console.log(task1.getName());\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (initPage);\n\n//# sourceURL=webpack://to-do-list/./src/modules/init-page.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _task_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./task.js */ \"./src/modules/task.js\");\n/* harmony import */ var _folder_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./folder.js */ \"./src/modules/folder.js\");\n/* harmony import */ var _list_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./list.js */ \"./src/modules/list.js\");\n\n\n\n\n\n\nfunction initPage () {\n    const element = document.createElement(\"div\");\n    element.textContent = \"Hello world!\";\n    document.body.appendChild(element);\n\n    const task = (0,_task_js__WEBPACK_IMPORTED_MODULE_0__.default)(\"Walk Frankie\", Date.now());\n    const folder = (0,_folder_js__WEBPACK_IMPORTED_MODULE_1__.default)(\"Main List\", Date.now());\n    const list = (0,_list_js__WEBPACK_IMPORTED_MODULE_2__.default)();\n\n    // folder.getTasks().push(task);\n    // console.log(folder.getTasks().map( (element) => {\n    //     return element.getName();\n    // }));\n\n    // list.getFolders().push(folder);\n    // console.log(list.getFolders().map( (element) => {\n    //     return element.getName();\n    // }));\n\n\n    // console.log(task.getDueDate());\n    // task.setDueDate(Date.now());\n    // console.log(format(task.getDueDate(), \"E, MMMM do\"));\n    // task.setDueDate(false);\n    // console.log(task.getDueDate());\n    \n    // console.log(task.isCompleted());\n    // task.setCompletedAs(true);\n    // console.log(task.isCompleted());\n\n    // console.log(task.getName());\n    // task.setName(\"Feed Frankie\");\n    // console.log(task.getName());\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (initPage);\n\n//# sourceURL=webpack://to-do-list/./src/modules/init-page.js?");
+
+/***/ }),
+
+/***/ "./src/modules/list.js":
+/*!*****************************!*\
+  !*** ./src/modules/list.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\nconst listFactory = function () {\n    let _folders = [];\n\n    const getFolders = function () {\n        return _folders;\n    }\n    const deleteFolder = function () {\n        return;\n    }\n\n    return {\n        getFolders,\n        deleteFolder\n    };\n};\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (listFactory);\n\n//# sourceURL=webpack://to-do-list/./src/modules/list.js?");
 
 /***/ }),
 
