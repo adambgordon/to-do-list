@@ -13,12 +13,20 @@ const folderFactory = function (_name, _dateAdded) {
     const getTasks = function () {
         return _tasks;
     }
+    const deleteTask = function () {
+        return;
+    }
+    const sortStarredFirst = function () {
+        return;
+    }
 
     return {
         getName,
         setName,
         getDateAdded,
-        getTasks
+        getTasks,
+        deleteTask,
+        sortStarredFirst,
     };
 };
 
