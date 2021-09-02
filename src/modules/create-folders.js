@@ -35,6 +35,7 @@ function buildFolders(list) {
     list.addFolder(all);
     list.addFolder(starred);
     updateFolders(list);
+    document.querySelector(".active-folder").classList.remove("active-folder");
     document.getElementById(now).classList.add("active-folder");
 }
 
@@ -45,25 +46,35 @@ function updateFolders (list) {
     }
     list.getFolders().forEach( (element) => {
         const folder = document.createElement("div");
-        createFolderListener(folder,list);
-        const name = document.createElement("div");
-
         folder.classList.add("folder");
         folder.id = element.getDateAdded();
-        name.textContent = element.getName();
 
-        folder.appendChild(name);
-
+        folder.appendChild(createName(list, element.getName()));
         if (element.getName() !== "All Tasks" && element.getName() !== "Starred") {
-            const trash = createTrashButton(list);
-            folder.appendChild(trash);
+            folder.appendChild(createTrashButton(list));
         }
         folders.appendChild(folder);
     });
+    folders.lastChild.classList.add("active-folder");
+    updateTasks(list);
+}
+
+function createName (list, nameText) {
+    const name = document.createElement("div");
+    name.classList.add("name");
+    name.textContent = nameText;
+    name.onclick = function (event) {
+        if (this.parentElement.classList.contains(".active-folder")) return;
+        document.querySelector(".active-folder").classList.remove("active-folder");
+        this.parentElement.classList.add("active-folder");
+        updateTasks(list);
+    }
+    return name;
 }
 
 function createTrashButton (list) {
     const trash = document.createElement("div");
+    trash.classList.add("trash");
     trash.textContent = "x";
     trash.onclick = function (event) {
         list.deleteFolder(trash.parentElement.id);
@@ -72,14 +83,3 @@ function createTrashButton (list) {
     return trash;
 }
 
-function createFolderListener (folder,list) {
-    folder.onclick = function (event) {
-        if (this.classList.contains(".active-folder")) {
-            return;
-        } else {
-            document.querySelector(".active-folder").classList.remove("active-folder");
-            this.classList.add("active-folder");
-            updateTasks(list);
-        }
-    }
-}

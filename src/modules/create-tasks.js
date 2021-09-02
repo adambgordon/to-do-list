@@ -20,6 +20,7 @@ function createTaskInput (list) {
         if (event.key === "Enter") {
             const folderID = document.querySelector(".active-folder").id;
             const task = taskFactory(input.value,Date.now(),folderID);
+            task.setNotes(document.querySelector(".active-folder").firstChild.textContent);
             input.value = "";
             list.addTask(task);
             updateTasks(list);
@@ -37,23 +38,32 @@ function updateTasks (list) {
     const folderID = (activeFolder.firstChild.textContent === "All Tasks") ? null : activeFolder.id;
     list.getTasks(folderID).forEach( (element) => {
         const task = document.createElement("div");
-        const name = document.createElement("div");
-
-        tasks.classList.add("task");
+        task.classList.add("task");
         task.id = element.getDateAdded();
-        name.textContent = element.getName();
 
-        task.appendChild(name);
-
-        const trash = createTrashButton(list);
-        task.appendChild(trash);
+        task.appendChild(createName(list, element.getName()));
+        task.appendChild(createTrashButton(list));
         tasks.appendChild(task);
     });
+}
+
+function createName (list, nameText) {
+    const name = document.createElement("div");
+    name.classList.add("name");
+    name.textContent = nameText;
+    name.onclick = function (event) {
+        if (this.parentElement.classList.contains(".active-task")) return;
+        document.querySelector(".active-task").classList.remove("active-task");
+        this.parentElement.classList.add("active-task");
+        // display editing features
+    }
+    return name;
 }
 
 function createTrashButton (list) {
     const trash = document.createElement("div");
     trash.textContent = "x";
+    trash.classList.add("trash");
     trash.onclick = function (event) {
         list.deleteTask(trash.parentElement.id);
         updateTasks(list);

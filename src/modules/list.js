@@ -9,6 +9,9 @@ const listFactory = function () {
         _folders.push(folder);
     }
     const deleteFolder = function (dateAddedString) {
+        _tasks = _tasks.filter ( (task) => {
+            return task.getFolderID() !== dateAddedString;
+        });
         for (let i = 0; i < _folders.length; i++) {
             if (_folders[i].getDateAdded().toString() === dateAddedString) {
                 const deleted = _folders.splice(i,1);
@@ -26,8 +29,6 @@ const listFactory = function () {
             return _tasks
         } else {
             return _tasks.filter ( (task) => {
-                console.log(task.getFolderID());
-                console.log(folderID);
                 return task.getFolderID() === folderID;
             })
         }
@@ -45,7 +46,7 @@ const listFactory = function () {
     }
     const printTasks = function () {
         console.log(_tasks.map( (element) => {
-            return element.getName();
+            return [element.getName(),element.getNotes()]; // temporary for debugging
         }));
     }
     const sortStarredFirst = function () {
