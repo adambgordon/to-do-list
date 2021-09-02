@@ -8,7 +8,14 @@ const listFactory = function () {
         _folders.push(folder);
     }
 
-    const deleteFolder = function () {
+    const deleteFolder = function (dateAddedString) {
+        for (let i = 0; i < _folders.length; i++) {
+            if (_folders[i].getDateAdded().toString() === dateAddedString) {
+                const deleted = _folders.splice(i,1);
+                console.log(deleted);
+                break;
+            }
+        }
         return;
     }
 
