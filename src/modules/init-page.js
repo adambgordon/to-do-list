@@ -1,13 +1,7 @@
 import format from "date-fns/format";
-import taskFactory from "./task.js";
-import createFolders from "./create-folders.js";
-
-function initPage () {
-    const content = createContent();
-    const folderSection = createFolders();
-    content.appendChild(folderSection);
-    document.body.appendChild(content);
-}
+import listFactory from "./list.js";
+import {createFolders, buildFolders} from "./create-folders.js";
+import createTasks from "./create-tasks.js";
 
 export default initPage;
 
@@ -16,6 +10,20 @@ function createContent () {
     content.id = "content";
     return content;
 }
+function initPage () {
+    const content = createContent();
+    const list = listFactory();
+    const folderSection = createFolders(list);
+    const taskSection = createTasks(list);
+
+    content.appendChild(folderSection);
+    content.appendChild(taskSection);
+    document.body.appendChild(content);
+    
+    buildFolders(list);
+}
+
+
 
 
 

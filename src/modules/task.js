@@ -1,9 +1,10 @@
 const taskFactory = function (_name, _dateAdded) {
 
+    let _folderID = "";
     let _completed = false;
     let _starred = false;
     let _dueDate = false;
-    let _notes = ""
+    let _notes = "";
 
     const getName = function () {
         return _name;
@@ -13,6 +14,12 @@ const taskFactory = function (_name, _dateAdded) {
     }
     const getDateAdded = function () {
         return _dateAdded;
+    }
+    const getFolderID = function () {
+        return _folderID;
+    }
+    const setFolderID = function (id) {
+        _folderID = id;
     }
     const isCompleted = function () {
         return _completed;
@@ -43,6 +50,8 @@ const taskFactory = function (_name, _dateAdded) {
         getName,
         setName,
         getDateAdded,
+        getFolderID,
+        setFolderID,
         isCompleted,
         setCompletedAs,
         isStarred,

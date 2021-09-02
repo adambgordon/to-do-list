@@ -1,16 +1,9 @@
-import listFactory from "./list.js";
 import folderFactory from "./folder.js";
 
-export default createFolders;
+export {createFolders, buildFolders};
 
-
-function createList () {
-    return listFactory();
-}
-function createFolders () {
-    const list = createList();
+function createFolders (list) {
     const folderInput = createFolderInput(list);
-    
     const folderWrapper = document.createElement("div");
     folderWrapper.id = "folder-wrapper";
     const folders = document.createElement("div");
@@ -19,7 +12,6 @@ function createFolders () {
     folderWrapper.appendChild(folderInput);
     return folderWrapper;
 }
-
 
 function createFolderInput (list) {
     const input = document.createElement("input");
@@ -36,6 +28,17 @@ function createFolderInput (list) {
     return input;
 }
 
+function buildFolders(list) {
+    const now = Date.now();
+    const all = folderFactory("All Tasks",now);
+    const starred = folderFactory("Starred",now+1);
+    list.addFolder(all);
+    list.addFolder(starred);
+    list.printFolders();
+    updateFolders(list);
+    document.getElementById(now).classList.add("active");
+}
+
 function updateFolders (list) {
     const folders = document.querySelector("#folders");
     while (folders.firstChild) {
@@ -44,24 +47,27 @@ function updateFolders (list) {
     list.getFolders().forEach( (element) => {
         const folder = document.createElement("div");
         const name = document.createElement("div");
-        const close = createCloseButton(list);
 
         folder.classList.add("folder");
         folder.id = element.getDateAdded();
         name.textContent = element.getName();
 
         folder.appendChild(name);
-        folder.appendChild(close);
+
+        if (element.getName() !== "All Tasks" && element.getName() !== "Starred") {
+            const trash = createTrashButton(list);
+            folder.appendChild(trash);
+        }
         folders.appendChild(folder);
     });
 }
 
-function createCloseButton (list) {
-    const close = document.createElement("div");
-    close.textContent = "x";
-    close.onclick = function (event) {
-        list.deleteFolder(close.parentElement.id);
+function createTrashButton (list) {
+    const trash = document.createElement("div");
+    trash.textContent = "x";
+    trash.onclick = function (event) {
+        list.deleteFolder(trash.parentElement.id);
         updateFolders(list);
     }
-    return close;
+    return trash;
 }
