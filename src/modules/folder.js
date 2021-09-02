@@ -1,5 +1,4 @@
 const folderFactory = function (_name, _dateAdded) {
-
     const getName = function () {
         return _name;
     }

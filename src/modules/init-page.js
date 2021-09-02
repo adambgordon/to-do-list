@@ -19,8 +19,9 @@ function initPage () {
     content.appendChild(folderSection);
     content.appendChild(taskSection);
     document.body.appendChild(content);
-    
+
     buildFolders(list);
+
 }
 
 

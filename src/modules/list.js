@@ -15,19 +15,30 @@ const listFactory = function () {
                 break;
             }
         }
-        return;
     }
     const printFolders = function () {
         console.log(_folders.map( (element) => {
             return element.getName();
         }));
     }
-
     const getTasks = function () {
         return _tasks;
     }
-    const deleteTask = function () {
-        return;
+    const addTask = function (task) {
+        _tasks.push(task);
+    }
+    const deleteTask = function (dateAddedString) {
+        for (let i = 0; i < _tasks.length; i++) {
+            if (_tasks[i].getDateAdded().toString() === dateAddedString) {
+                const deleted = _tasks.splice(i,1);
+                break;
+            }
+        }
+    }
+    const printTasks = function () {
+        console.log(_tasks.map( (element) => {
+            return element.getName();
+        }));
     }
     const sortStarredFirst = function () {
         return;
@@ -38,7 +49,9 @@ const listFactory = function () {
         deleteFolder,
         printFolders,
         getTasks,
+        addTask,
         deleteTask,
+        printTasks,
         sortStarredFirst
     };
 };
