@@ -1,7 +1,7 @@
 import format from "date-fns/format";
 import listFactory from "./list.js";
 import {createFolders, buildFolders} from "./create-folders.js";
-import createTasks from "./create-tasks.js";
+import {createTasks} from "./create-tasks.js";
 
 export default initPage;
 

@@ -1,4 +1,5 @@
 import folderFactory from "./folder.js";
+import {updateTasks} from "./create-tasks.js";
 
 export {createFolders, buildFolders};
 
@@ -21,7 +22,6 @@ function createFolderInput (list) {
             const folder = folderFactory(input.value,Date.now());
             input.value = "";
             list.addFolder(folder);
-            list.printFolders();
             updateFolders(list);
         }
     }
@@ -34,9 +34,8 @@ function buildFolders(list) {
     const starred = folderFactory("Starred",now+1);
     list.addFolder(all);
     list.addFolder(starred);
-    list.printFolders();
     updateFolders(list);
-    document.getElementById(now).classList.add("active");
+    document.getElementById(now).classList.add("active-folder");
 }
 
 function updateFolders (list) {
@@ -46,6 +45,7 @@ function updateFolders (list) {
     }
     list.getFolders().forEach( (element) => {
         const folder = document.createElement("div");
+        createFolderListener(folder,list);
         const name = document.createElement("div");
 
         folder.classList.add("folder");
@@ -70,4 +70,16 @@ function createTrashButton (list) {
         updateFolders(list);
     }
     return trash;
+}
+
+function createFolderListener (folder,list) {
+    folder.onclick = function (event) {
+        if (this.classList.contains(".active-folder")) {
+            return;
+        } else {
+            document.querySelector(".active-folder").classList.remove("active-folder");
+            this.classList.add("active-folder");
+            updateTasks(list);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 import taskFactory from "./task.js";
 
-export default createTasks;
+export {createTasks, updateTasks};
 
 function createTasks (list) {
     const taskInput = createTaskInput(list);
@@ -18,10 +18,10 @@ function createTaskInput (list) {
     input.type = "text";
     input.onkeydown = function (event) {
         if (event.key === "Enter") {
-            const task = taskFactory(input.value,Date.now());
+            const folderID = document.querySelector(".active-folder").id;
+            const task = taskFactory(input.value,Date.now(),folderID);
             input.value = "";
             list.addTask(task);
-            list.printTasks();
             updateTasks(list);
         }
     }
@@ -33,7 +33,9 @@ function updateTasks (list) {
     while (tasks.firstChild) {
         tasks.removeChild(tasks.firstChild);
     }
-    list.getTasks().forEach( (element) => {
+    const activeFolder = document.querySelector(".active-folder");
+    const folderID = (activeFolder.firstChild.textContent === "All Tasks") ? null : activeFolder.id;
+    list.getTasks(folderID).forEach( (element) => {
         const task = document.createElement("div");
         const name = document.createElement("div");
 

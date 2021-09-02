@@ -21,8 +21,16 @@ const listFactory = function () {
             return element.getName();
         }));
     }
-    const getTasks = function () {
-        return _tasks;
+    const getTasks = function (folderID) {
+        if (!folderID) {
+            return _tasks
+        } else {
+            return _tasks.filter ( (task) => {
+                console.log(task.getFolderID());
+                console.log(folderID);
+                return task.getFolderID() === folderID;
+            })
+        }
     }
     const addTask = function (task) {
         _tasks.push(task);

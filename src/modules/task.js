@@ -47,7 +47,6 @@ const taskFactory = function (_name, _dateAdded, _folderID) {
         setName,
         getDateAdded,
         getFolderID,
-        setFolderID,
         isCompleted,
         setCompletedAs,
         isStarred,
