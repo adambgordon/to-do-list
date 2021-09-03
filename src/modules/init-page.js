@@ -21,7 +21,11 @@ function initPage () {
     document.body.appendChild(content);
 
     buildFolders(list);
-
+    // window.addEventListener("click", function (event) {
+    //     console.log(event.target);
+    //     console.log(this);
+    //     console.log(this.parentElement);
+    // })
 }
 
 

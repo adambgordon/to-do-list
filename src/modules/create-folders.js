@@ -75,11 +75,14 @@ function createName (list, nameText) {
 function createTrashButton (list) {
     const trash = document.createElement("div");
     trash.classList.add("trash");
-    trash.textContent = "x";
-    trash.onclick = function (event) {
+    trash.addEventListener("click", function (event) {
         list.deleteFolder(trash.parentElement.id);
         updateFolders(list);
-    }
+    });
+    const icon = document.createElement("i");
+    icon.classList.add("far");
+    icon.classList.add("fa-trash-alt");
+    trash.appendChild(icon);
     return trash;
 }
 

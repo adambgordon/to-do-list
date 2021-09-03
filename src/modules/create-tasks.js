@@ -1,5 +1,8 @@
 import taskFactory from "./task.js";
 
+import '@fortawesome/fontawesome-free/js/all';
+
+
 export {createTasks, updateTasks};
 
 function createTasks (list) {
@@ -62,11 +65,14 @@ function createName (list, nameText) {
 
 function createTrashButton (list) {
     const trash = document.createElement("div");
-    trash.textContent = "x";
     trash.classList.add("trash");
-    trash.onclick = function (event) {
+    trash.addEventListener("click", function (event) {
         list.deleteTask(trash.parentElement.id);
         updateTasks(list);
-    }
+    });
+    const icon = document.createElement("i");
+    icon.classList.add("far");
+    icon.classList.add("fa-trash-alt");
+    trash.appendChild(icon);
     return trash;
 }
