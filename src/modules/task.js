@@ -41,6 +41,17 @@ const taskFactory = function (_name, _dateAdded, _folderID) {
     const setNotes = function (notes) {
         _notes = notes;
     }
+    const print = function () {
+        console.log([
+            ["_name", _name],
+            ["_dateAdded", _dateAdded],
+            ["_folderID", _folderID],
+            ["_completed", _completed],
+            ["_starred", _starred],
+            ["_dueDate", _dueDate],
+            ["_notes", _notes]
+        ]);
+    }
 
     return {
         getName,
@@ -55,6 +66,7 @@ const taskFactory = function (_name, _dateAdded, _folderID) {
         setDueDate,
         getNotes,
         setNotes,
+        print
     };
 };
 

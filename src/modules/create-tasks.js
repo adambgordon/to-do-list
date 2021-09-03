@@ -22,7 +22,8 @@ function createTaskInput (list) {
         if (event.key === "Enter") {
             const folderID = document.querySelector(".active-folder").id;
             const task = taskFactory(input.value,Date.now(),folderID);
-            task.setNotes(document.querySelector(".active-folder").firstChild.textContent);
+            if (list.getFolder(folderID).getName() === "Starred") task.setStarredAs(true);
+            // task.setNotes(document.querySelector(".active-folder").firstChild.textContent);
             input.value = "";
             list.addTask(task);
             updateTasks(list);
@@ -36,9 +37,12 @@ function updateTasks (list) {
     while (tasks.firstChild) {
         tasks.removeChild(tasks.firstChild);
     }
-    const activeFolder = document.querySelector(".active-folder");
-    const folderID = (activeFolder.firstChild.textContent === "All Tasks") ? null : activeFolder.id;
-    list.getTasks(folderID).forEach( (element) => {
+    const activeFolderID = document.querySelector(".active-folder").id;
+    const folderParameter = list.getFolder(activeFolderID).getName() === "All Tasks" ? "All Tasks"
+        : list.getFolder(activeFolderID).getName() === "Starred" ? "Starred"
+        : activeFolderID;
+
+    list.getTasks(folderParameter).forEach( (element) => {
         const task = document.createElement("div");
         task.classList.add("task");
         task.id = element.getDateAdded();
@@ -70,9 +74,8 @@ function createStarButton (list,isStarred) {
     const star = document.createElement("div");
     star.classList.add("star");
     star.addEventListener("click", function (event) {
-        const task = list.getTask(star.parentElement.id);
-        task.setStarredAs( task.isStarred() ? false : true );
-        star.firstChild.setAttribute("data-prefix", task.isStarred ? "far" : "fas");
+        list.toggleTaskStar(list.getTask(star.parentElement.id));
+        star.firstChild.setAttribute("data-prefix", star.firstChild.getAttribute("data-prefix") ? "far" : "fas");
         updateTasks(list);
     });
     const icon = document.createElement("i");

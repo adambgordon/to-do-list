@@ -2,6 +2,13 @@ const listFactory = function () {
     let _folders = [];
     let _tasks = [];
 
+    const getFolder = function (folderDateAdded) {
+        for (let i = 0; i < _folders.length; i++) {
+            if (_folders[i].getDateAdded().toString() === folderDateAdded) {
+                return _folders[i];
+            }
+        }
+    }
     const getFolders = function () {
         return _folders;
     }
@@ -31,29 +38,34 @@ const listFactory = function () {
             }
         }
     }
-    const getTasks = function (folderID) {
-        if (!folderID) {
-            return _tasks
-        } else {
-            return _tasks.filter ( (task) => {
-                return task.getFolderID() === folderID;
-            })
-        }
+    const getTasks = function (folderParameter) {
+        return _tasks.filter ( (task) => {
+            if (folderParameter === "All Tasks") {
+                return true;
+            } else if (folderParameter === "Starred") {
+                return task.isStarred();
+            } else {
+                return task.getFolderID() === folderParameter;
+            }
+        });
     }
     const addTask = function (task) {
-        _tasks.push(task);
+        _tasks.unshift(task);
     }
     const deleteTask = function (dateAddedString) {
         for (let i = 0; i < _tasks.length; i++) {
-            if (_tasks[i].getDateAdded().toString() === dateAddedString) {
-                const deleted = _tasks.splice(i,1);
-                break;
-            }
+            if (_tasks[i].getDateAdded().toString() === dateAddedString) return _tasks.splice(i,1)[0];
+        }
+    }
+    const toggleTaskStar = function (task) {
+        task.setStarredAs( task.isStarred() ? false : true );
+        if (task.isStarred()) {
+            _tasks.unshift(deleteTask(task.getDateAdded().toString()));
         }
     }
     const printTasks = function () {
         console.log(_tasks.map( (element) => {
-            return [element.getName(),element.getNotes()]; // temporary for debugging
+            return element.getName();
         }));
     }
     const sortStarredFirst = function () {
@@ -61,6 +73,7 @@ const listFactory = function () {
     }
     return {
         addFolder,
+        getFolder,
         getFolders,
         deleteFolder,
         printFolders,
@@ -68,6 +81,7 @@ const listFactory = function () {
         getTasks,
         addTask,
         deleteTask,
+        toggleTaskStar,
         printTasks,
         sortStarredFirst
     };
