@@ -1,61 +1,60 @@
+const list = require("./list.js");
 import taskFactory from "./task.js";
-
+import {newDiv, newIcon} from "./helper-functions.js"
 import '@fortawesome/fontawesome-free/js/all';
+
 
 export {createTasks, updateTasks};
 
-function createTasks (list) {
-    const taskInput = createTaskInput(list);
-    const taskWrapper = document.createElement("div");
-    taskWrapper.id = "task-wrapper";
-    const tasks = document.createElement("div");
-    tasks.id = "tasks";
+function createTasks () {
+    const taskInput = createInput();
+    const taskWrapper = newDiv("id","task-wrapper");
+    const tasks = newDiv("id","tasks");
     taskWrapper.appendChild(taskInput);
     taskWrapper.appendChild(tasks);
     return taskWrapper;
 }
 
-function createTaskInput (list) {
-    const inputWrapper = document.createElement("div");
-    inputWrapper.classList.add("input-wrapper");
+function createInput () {
     const input = document.createElement("input");
     input.type = "text";
-    input.onkeydown = function (event) {
+    input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
-            const folderID = document.querySelector(".active-folder").id;
-            const task = taskFactory(input.value, Date.now().toString(), folderID);
-            if (list.getFolder(folderID).getName() === "Starred") task.setStarredAs(true);
+            console.log(this);
+            const folder = list.getFolder(document.querySelector(".active-folder").id);
+            const task = taskFactory(
+                input.value,
+                Date.now().toString(),
+                folder.getName() === "Starred" ? parseInt(folder.getID())-1 : folder.getID());
+            if (folder.getName() === "Starred") task.setStarredAs(true);
             input.value = "";
             list.addTask(task);
-            updateTasks(list);
+            updateTasks();
         }
-    }
+    });
+    const inputWrapper = newDiv("class","input-wrapper");
     inputWrapper.appendChild(input);
     return inputWrapper;
 }
 
-function updateTasks (list) {
+function updateTasks () {
     const tasks = document.querySelector("#tasks");
     while (tasks.firstChild) {
         tasks.removeChild(tasks.firstChild);
     }
     list.getTasks(list.getFolder(document.querySelector(".active-folder").id)).forEach( (element) => {
-        const task = document.createElement("div");
+        const task = newDiv("id",element.getID());
         task.classList.add("task");
-        task.id = element.getID();
-
-        task.appendChild(createName(list, element.getName()));
-        task.appendChild(createStarButton(list,element.isStarred()));
-        task.appendChild(createTrashButton(list));
+        task.appendChild(createName(element.getName()));
+        task.appendChild(createStarButton(element.isStarred()));
         tasks.appendChild(task);
     });
 }
 
-function createName (list, nameText) {
-    const name = document.createElement("div");
-    name.classList.add("name");
+function createName (nameText) {
+    const name = newDiv("class","name");
     name.textContent = nameText;
-    name.onclick = function (event) {
+    name.addEventListener("click", function (event) {
         if (this.parentElement.classList.contains(".active-task")) return;
         const currentActive = document.querySelector(".active-task");
         if (currentActive) {
@@ -63,35 +62,22 @@ function createName (list, nameText) {
         }
         this.parentElement.classList.add("active-task");
         // display editing features
-    }
+    });
     return name;
 }
 
-function createStarButton (list,isStarred) {
-    const star = document.createElement("div");
-    star.classList.add("star");
+function createStarButton (isStarred) {
+    const star = newDiv("class","star");
+    const fontAwesomeString =  ("fa-star").concat(" ",isStarred ? "fas" : "far");
+    star.appendChild(newIcon(fontAwesomeString));
     star.addEventListener("click", function (event) {
-        list.toggleTaskStar(list.getTask(star.parentElement.id));
-        star.firstChild.setAttribute("data-prefix", star.firstChild.getAttribute("data-prefix") ? "far" : "fas");
-        updateTasks(list);
+        toggleStar(star);
+        updateTasks();
     });
-    const icon = document.createElement("i");
-    icon.classList.add( (isStarred? "fas" : "far" ) );
-    icon.classList.add("fa-star");
-    star.appendChild(icon);
     return star;
 }
 
-function createTrashButton (list) {
-    const trash = document.createElement("div");
-    trash.classList.add("trash");
-    trash.addEventListener("click", function (event) {
-        list.deleteTask(list.getTask(trash.parentElement.id));
-        updateTasks(list);
-    });
-    const icon = document.createElement("i");
-    icon.classList.add("fas");
-    icon.classList.add("fa-trash-alt");
-    trash.appendChild(icon);
-    return trash;
+function toggleStar(star) {
+    list.toggleTaskStar(list.getTask(star.parentElement.id));
+    star.firstChild.setAttribute("data-prefix", star.firstChild.getAttribute("data-prefix") ? "far" : "fas");
 }

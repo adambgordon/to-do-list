@@ -1,4 +1,4 @@
-const listFactory = function () {
+const list = function () {
     let _folders = [];
     let _tasks = [];
 
@@ -63,6 +63,6 @@ const listFactory = function () {
         printTasks,
         sortStarredFirst
     };
-};
+}();
 
-export default listFactory;
+module.exports = list;

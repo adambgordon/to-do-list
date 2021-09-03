@@ -1,56 +1,23 @@
+const list = require("./list.js");
 import format from "date-fns/format";
-import listFactory from "./list.js";
 import {createFolders, buildFolders} from "./create-folders.js";
 import {createTasks} from "./create-tasks.js";
+import {newDiv} from "./helper-functions.js";
 
 export default initPage;
 
-function createContent () {
-    const content = document.createElement("div");
-    content.id = "content";
-    return content;
-}
 function initPage () {
-    const content = createContent();
-    const list = listFactory();
-    const folderSection = createFolders(list);
-    const taskSection = createTasks(list);
+    const content = newDiv("id","content");
+    const folderSection = createFolders();
+    const taskSection = createTasks();
 
     content.appendChild(folderSection);
     content.appendChild(taskSection);
     document.body.appendChild(content);
 
     buildFolders(list);
-    // window.addEventListener("click", function (event) {
-    //     console.log(event.target);
-    //     console.log(this);
-    //     console.log(this.parentElement);
-    // })
 }
 
-
-
-
-
- // const task = taskFactory("Walk Frankie", Date.now());
-    // const folder = folderFactory("Main List", Date.now());
-    // const list = listFactory();
-
-    // folder.getTasks().push(task);
-    // console.log(folder.getTasks().map( (element) => {
-    //     return element.getName();
-    // }));
-
-    // console.log(task.getDueDate());
-    // task.setDueDate(Date.now());
-    // console.log(format(task.getDueDate(), "E, MMMM do"));
-    // task.setDueDate(false);
-    // console.log(task.getDueDate());
-    
-    // console.log(task.isCompleted());
-    // task.setCompletedAs(true);
-    // console.log(task.isCompleted());
-
-    // console.log(task.getName());
-    // task.setName("Feed Frankie");
-    // console.log(task.getName());
+// task.setDueDate(Date.now());
+// console.log(format(task.getDueDate(), "E, MMMM do"));
+// task.setDueDate(false);
