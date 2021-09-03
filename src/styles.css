@@ -3,24 +3,19 @@
 body {
     font-family: 'Roboto';
 }
-
 .active-folder {
     font-weight: bold;
 }
-
 #content {
     display: flex;
     justify-content: center;
 }
-
 #folder-wrapper, #task-wrapper {
     margin: 2rem;
 }
-
 input:focus {
     outline: none;
 }
-
 .folder, .task, input {
     border: 1px solid lightgrey;
     border-radius: 9px;
@@ -32,20 +27,22 @@ input:focus {
     width: 12rem;
     font-size: 0.8rem;
 }
-
 .folder:hover, .task:hover {
     cursor: default;
 }
-
-.trash {
+.star, .trash {
     margin: 0 6px 0 auto;
     /* border:1px solid red; */
 }
-
-.trash:hover {
-    cursor:pointer;
+.trash:hover, .star:hover {
+    cursor: pointer;
 }
-
+.trash {
+    display: none;
+}
+.folder:hover > .trash{
+    display: block;
+}
 .fa-trash-alt {
     /* border: 1px solid blue; */
 }

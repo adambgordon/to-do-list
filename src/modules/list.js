@@ -24,6 +24,13 @@ const listFactory = function () {
             return element.getName();
         }));
     }
+    const getTask = function (taskDateAdded) {
+        for (let i = 0; i < _tasks.length; i++) {
+            if (_tasks[i].getDateAdded().toString() === taskDateAdded) {
+                return _tasks[i];
+            }
+        }
+    }
     const getTasks = function (folderID) {
         if (!folderID) {
             return _tasks
@@ -57,6 +64,7 @@ const listFactory = function () {
         getFolders,
         deleteFolder,
         printFolders,
+        getTask,
         getTasks,
         addTask,
         deleteTask,

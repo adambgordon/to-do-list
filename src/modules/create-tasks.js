@@ -2,7 +2,6 @@ import taskFactory from "./task.js";
 
 import '@fortawesome/fontawesome-free/js/all';
 
-
 export {createTasks, updateTasks};
 
 function createTasks (list) {
@@ -45,6 +44,7 @@ function updateTasks (list) {
         task.id = element.getDateAdded();
 
         task.appendChild(createName(list, element.getName()));
+        task.appendChild(createStarButton(list,element.isStarred()));
         task.appendChild(createTrashButton(list));
         tasks.appendChild(task);
     });
@@ -56,11 +56,30 @@ function createName (list, nameText) {
     name.textContent = nameText;
     name.onclick = function (event) {
         if (this.parentElement.classList.contains(".active-task")) return;
-        document.querySelector(".active-task").classList.remove("active-task");
+        const currentActive = document.querySelector(".active-task");
+        if (currentActive) {
+            currentActive.classList.remove("active-task");
+        }
         this.parentElement.classList.add("active-task");
         // display editing features
     }
     return name;
+}
+
+function createStarButton (list,isStarred) {
+    const star = document.createElement("div");
+    star.classList.add("star");
+    star.addEventListener("click", function (event) {
+        const task = list.getTask(star.parentElement.id);
+        task.setStarredAs( task.isStarred() ? false : true );
+        star.firstChild.setAttribute("data-prefix", task.isStarred ? "far" : "fas");
+        updateTasks(list);
+    });
+    const icon = document.createElement("i");
+    icon.classList.add( (isStarred? "fas" : "far" ) );
+    icon.classList.add("fa-star");
+    star.appendChild(icon);
+    return star;
 }
 
 function createTrashButton (list) {
@@ -71,7 +90,7 @@ function createTrashButton (list) {
         updateTasks(list);
     });
     const icon = document.createElement("i");
-    icon.classList.add("far");
+    icon.classList.add("fas");
     icon.classList.add("fa-trash-alt");
     trash.appendChild(icon);
     return trash;
