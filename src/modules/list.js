@@ -2,71 +2,49 @@ const listFactory = function () {
     let _folders = [];
     let _tasks = [];
 
-    const getFolder = function (folderDateAdded) {
+    const getFolder = function (ID) {
         for (let i = 0; i < _folders.length; i++) {
-            if (_folders[i].getDateAdded().toString() === folderDateAdded) {
-                return _folders[i];
-            }
+            if (_folders[i].getID() === ID) return _folders[i];
         }
     }
-    const getFolders = function () {
-        return _folders;
-    }
-    const addFolder = function (folder) {
-        _folders.push(folder);
-    }
-    const deleteFolder = function (dateAddedString) {
-        _tasks = _tasks.filter ( (task) => {
-            return task.getFolderID() !== dateAddedString;
-        });
+    const getFolders = function () { return _folders; }
+
+    const addFolder = function (folder) { _folders.push(folder); }
+    
+    const deleteFolder = function (folder) {
+        _tasks = _tasks.filter ( (task) => { return task.getHomeFolderID() !== folder.getID(); });
         for (let i = 0; i < _folders.length; i++) {
-            if (_folders[i].getDateAdded().toString() === dateAddedString) {
-                const deleted = _folders.splice(i,1);
-                break;
-            }
+            if (_folders[i] === folder) { return _folders.splice(i,1)[0]; }
         }
     }
     const printFolders = function () {
-        console.log(_folders.map( (element) => {
-            return element.getName();
-        }));
+        console.log(_folders.map( (folder) => { return folder.getName(); }));
     }
-    const getTask = function (taskDateAdded) {
+    const getTask = function (ID) {
         for (let i = 0; i < _tasks.length; i++) {
-            if (_tasks[i].getDateAdded().toString() === taskDateAdded) {
-                return _tasks[i];
-            }
+            if (_tasks[i].getID() === ID) return _tasks[i];
         }
     }
-    const getTasks = function (folderParameter) {
+    const getTasks = function (folder) {
         return _tasks.filter ( (task) => {
-            if (folderParameter === "All Tasks") {
-                return true;
-            } else if (folderParameter === "Starred") {
-                return task.isStarred();
-            } else {
-                return task.getFolderID() === folderParameter;
-            }
+            return folder.getName() === "All Tasks" ? true
+                : folder.getName() === "Starred" ? task.isStarred()
+                : task.getHomeFolderID() === folder.getID();
         });
     }
-    const addTask = function (task) {
-        _tasks.unshift(task);
-    }
-    const deleteTask = function (dateAddedString) {
+    const addTask = function (task) { _tasks.unshift(task); }
+    
+    const deleteTask = function (task) {
         for (let i = 0; i < _tasks.length; i++) {
-            if (_tasks[i].getDateAdded().toString() === dateAddedString) return _tasks.splice(i,1)[0];
+            if (_tasks[i] === task) return _tasks.splice(i,1)[0];
         }
     }
     const toggleTaskStar = function (task) {
         task.setStarredAs( task.isStarred() ? false : true );
-        if (task.isStarred()) {
-            _tasks.unshift(deleteTask(task.getDateAdded().toString()));
-        }
+        if (task.isStarred()) _tasks.unshift(deleteTask(task));
     }
     const printTasks = function () {
-        console.log(_tasks.map( (element) => {
-            return element.getName();
-        }));
+        console.log(_tasks.map( (element) => { return element.getName(); }));
     }
     const sortStarredFirst = function () {
         return;

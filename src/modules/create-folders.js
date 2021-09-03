@@ -15,23 +15,26 @@ function createFolders (list) {
 }
 
 function createFolderInput (list) {
+    const inputWrapper = document.createElement("div");
+    inputWrapper.classList.add("input-wrapper");
     const input = document.createElement("input");
     input.type = "text";
     input.onkeydown = function (event) {
         if (event.key === "Enter") {
-            const folder = folderFactory(input.value,Date.now());
+            const folder = folderFactory(input.value,Date.now().toString());
             input.value = "";
             list.addFolder(folder);
             updateFolders(list);
         }
     }
-    return input;
+    inputWrapper.appendChild(input);
+    return inputWrapper;
 }
 
 function buildFolders(list) {
     const now = Date.now();
-    const all = folderFactory("All Tasks",now);
-    const starred = folderFactory("Starred",now+1);
+    const all = folderFactory("All Tasks",now.toString());
+    const starred = folderFactory("Starred",(now+1).toString());
     list.addFolder(all);
     list.addFolder(starred);
     updateFolders(list);
@@ -47,7 +50,7 @@ function updateFolders (list) {
     list.getFolders().forEach( (element) => {
         const folder = document.createElement("div");
         folder.classList.add("folder");
-        folder.id = element.getDateAdded();
+        folder.id = element.getID();
 
         folder.appendChild(createName(list, element.getName()));
         if (element.getName() !== "All Tasks" && element.getName() !== "Starred") {
@@ -76,7 +79,7 @@ function createTrashButton (list) {
     const trash = document.createElement("div");
     trash.classList.add("trash");
     trash.addEventListener("click", function (event) {
-        list.deleteFolder(trash.parentElement.id);
+        list.deleteFolder(list.getFolder(trash.parentElement.id));
         updateFolders(list);
     });
     const icon = document.createElement("i");

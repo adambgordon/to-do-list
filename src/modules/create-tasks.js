@@ -16,20 +16,22 @@ function createTasks (list) {
 }
 
 function createTaskInput (list) {
+    const inputWrapper = document.createElement("div");
+    inputWrapper.classList.add("input-wrapper");
     const input = document.createElement("input");
     input.type = "text";
     input.onkeydown = function (event) {
         if (event.key === "Enter") {
             const folderID = document.querySelector(".active-folder").id;
-            const task = taskFactory(input.value,Date.now(),folderID);
+            const task = taskFactory(input.value, Date.now().toString(), folderID);
             if (list.getFolder(folderID).getName() === "Starred") task.setStarredAs(true);
-            // task.setNotes(document.querySelector(".active-folder").firstChild.textContent);
             input.value = "";
             list.addTask(task);
             updateTasks(list);
         }
     }
-    return input;
+    inputWrapper.appendChild(input);
+    return inputWrapper;
 }
 
 function updateTasks (list) {
@@ -37,15 +39,10 @@ function updateTasks (list) {
     while (tasks.firstChild) {
         tasks.removeChild(tasks.firstChild);
     }
-    const activeFolderID = document.querySelector(".active-folder").id;
-    const folderParameter = list.getFolder(activeFolderID).getName() === "All Tasks" ? "All Tasks"
-        : list.getFolder(activeFolderID).getName() === "Starred" ? "Starred"
-        : activeFolderID;
-
-    list.getTasks(folderParameter).forEach( (element) => {
+    list.getTasks(list.getFolder(document.querySelector(".active-folder").id)).forEach( (element) => {
         const task = document.createElement("div");
         task.classList.add("task");
-        task.id = element.getDateAdded();
+        task.id = element.getID();
 
         task.appendChild(createName(list, element.getName()));
         task.appendChild(createStarButton(list,element.isStarred()));
@@ -89,7 +86,7 @@ function createTrashButton (list) {
     const trash = document.createElement("div");
     trash.classList.add("trash");
     trash.addEventListener("click", function (event) {
-        list.deleteTask(trash.parentElement.id);
+        list.deleteTask(list.getTask(trash.parentElement.id));
         updateTasks(list);
     });
     const icon = document.createElement("i");

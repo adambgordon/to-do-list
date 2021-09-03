@@ -16,15 +16,17 @@ body {
 input:focus {
     outline: none;
 }
-.folder, .task, input {
+/* input {
+    height: 2rem;
+    padding: 0;
+} */
+.folder, .task, .input-wrapper {
     border: 1px solid lightgrey;
     border-radius: 9px;
     margin: 0.5rem 0;
-    padding: 0.5rem;
     display: flex;
     align-items: center;
-    height: 1.25rem;
-    width: 12rem;
+    width: 14rem;
     font-size: 0.8rem;
 }
 .folder:hover, .task:hover {
@@ -32,7 +34,7 @@ input:focus {
 }
 .star, .trash {
     margin: 0 6px 0 auto;
-    /* border:1px solid red; */
+    color: grey;
 }
 .trash:hover, .star:hover {
     cursor: pointer;
@@ -42,12 +44,17 @@ input:focus {
 }
 .folder:hover > .trash{
     display: block;
+
 }
-.fa-trash-alt {
-    /* border: 1px solid blue; */
-}
-.name {
+.name, input {
+    height: 2rem;
     width: 100%;
-    /* border: 1px solid black; */
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+}
+input {
+    border: none;
+    background: none;
 }
 
