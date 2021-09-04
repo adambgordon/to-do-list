@@ -2,24 +2,23 @@
 
 body {
     font-family: 'Roboto';
+    font-size: 0.8rem;
 }
-.active-folder {
+.active-folder, .active-task {
     font-weight: bold;
 }
 #content {
     display: flex;
     justify-content: center;
 }
-#folder-wrapper, #task-wrapper {
+#folder-wrapper, #task-wrapper, #task-dialog {
     margin: 2rem;
+    /* border: 1px solid black; */
+    width: 16rem;
 }
 input:focus {
     outline: none;
 }
-/* input {
-    height: 2rem;
-    padding: 0;
-} */
 .folder, .task, .input-wrapper {
     border: 1px solid lightgrey;
     border-radius: 9px;
@@ -27,7 +26,6 @@ input:focus {
     display: flex;
     align-items: center;
     width: 14rem;
-    font-size: 0.8rem;
 }
 .folder:hover, .task:hover {
     cursor: default;

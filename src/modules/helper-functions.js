@@ -5,11 +5,9 @@ import taskFactory from "./task.js";
 function newDiv (type, value) {
     const div = document.createElement("div");
     if (type && value) {
-        if (type === "id") {
-            div.id = value;
-        } else if (type === "class") {
-            div.classList.add(value);
-        }
+        type === "id" ? div.id = value
+            : type === "class" ? div.classList.add(value)
+            : null;
     }
     return div;
 }
@@ -55,6 +53,22 @@ function updateTasks () {
         task.appendChild(createStarButton(element.isStarred()));
         tasks.appendChild(task);
     });
+    const active = document.querySelector(".active-task");
+    if (active) active.classList.remove("active-task");
+    updateTaskDialog();
+}
+
+function updateTaskDialog () {
+    const taskDialog = document.querySelector("#task-dialog");
+    while (taskDialog.firstChild) {
+        taskDialog.removeChild(taskDialog.firstChild);
+    }
+    const active = document.querySelector(".active-task");
+    if (!active) return;
+    const task = list.getTask(active.id);
+    const tempData = newDiv();
+    tempData.textContent = task.getName();
+    taskDialog.appendChild(tempData);
 }
 
 function createName (type,nameText) {
@@ -67,7 +81,9 @@ function createName (type,nameText) {
             currentActive.classList.remove("active-"+type);
         }
         this.parentElement.classList.add("active-"+type);
-        if (type === "folder") updateTasks();
+        type === "folder" ? updateTasks()
+            : type === "task" ? updateTaskDialog()
+            : null;
     });
     return name;
 }
@@ -102,6 +118,7 @@ function createInput (type) {
     input.type = "text";
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
+            if (!input.value) return;
             if (type === "folder") {
                 const folder = folderFactory(input.value, Date.now().toString());
                 input.value = "";
@@ -129,5 +146,6 @@ export {
     newDiv,
     updateFolders,
     updateTasks,
+    updateTaskDialog,
     createInput
 };

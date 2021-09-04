@@ -1,3 +1,8 @@
+const list = require("./list.js");
+import *  as helper from "./helper-functions.js";
+
+export {createTaskDialog};
+
 /* 
 _name
 _dateAdded
@@ -9,11 +14,6 @@ _notes = "";
  */
 
 function createTaskDialog (list) {
-    const taskDialog = document.createElement("div");
-    taskDialog.id = "task-dialog";
-
-    // append name input
-
-
+    const taskDialog = helper.newDiv("id","task-dialog");
     return taskDialog;
 }

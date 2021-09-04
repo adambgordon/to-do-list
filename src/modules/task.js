@@ -66,7 +66,7 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
         setDueDate,
         getNotes,
         setNotes,
-        print
+        print,
     };
 };
 
