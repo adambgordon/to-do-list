@@ -5,7 +5,7 @@ import * as helper from "./helper-functions.js"
 export {createFolders, buildFolders};
 
 function createFolders () {
-    const folderInput = helper.createInput("folder");
+    const folderInput = helper.createInput("text");
     const folderWrapper = helper.newDiv("id","folder-wrapper");
     const folders = helper.newDiv("id","folders");
     folderWrapper.appendChild(folders);

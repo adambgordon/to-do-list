@@ -54,19 +54,21 @@ function updateTasks (activeID) {
 }
 
 function addTasksFromList() {
-    list.getTasks(list.getFolder(document.querySelector(".active.folder").id)).forEach( (element) => {
-        const task = newDiv("id",element.getID());
-        task.classList.add("task");
-        task.appendChild(createName("task",element.getName()));
-        task.appendChild(createStarButton(element.getID()));
-        tasks.appendChild(task);
+    list.getTasks(list.getFolder(document.querySelector(".active.folder").id)).forEach( (task) => {
+        const taskElement = newDiv("id",task.getID());
+        taskElement.classList.add("task");
+        taskElement.appendChild(createName("task",task.getName()));
+        console.log(task.getDueDate());
+        taskElement.appendChild(createDueDate(task.getDueDate()));
+        taskElement.appendChild(createStarButton(task.getID()));
+        tasks.appendChild(taskElement);
     });
 }
 
 function updateTaskDialog () {
     const taskDialog = document.querySelector("#task-dialog");
     removeAllChildren(taskDialog);
-    addDialogFromTask();   
+    addDialogFromTask();
 }
 
 function addDialogFromTask () {
@@ -75,25 +77,30 @@ function addDialogFromTask () {
     const taskDialog = document.querySelector("#task-dialog");
     const task = list.getTask(active.id);
 
-    const name = createInput();
+    const name = createInput("text");
     initDialogName(name.firstChild);
     name.firstChild.value = task.getName();
 
     const star = createStarButton(active.id);
 
-    const notes = createInput();
+    const dueDate = createInput("date");
+    initDialogDueDate(dueDate.firstChild);
+    dueDate.firstChild.value = task.getDueDate();
+
+
+    const notes = createInput("text");
     initDialogNotes(notes.firstChild);
     notes.firstChild.value = task.getNotes();
 
     const dateAdded = newDiv("class","date-added");
     dateAdded.textContent = "Created " + format(parseInt(task.getID()), "E, MMM do");
 
-
     const notesSpacer = newDiv();
     notesSpacer.textContent = "Notes";
     
     taskDialog.appendChild(name);
     taskDialog.appendChild(star);
+    taskDialog.appendChild(dueDate);
     taskDialog.appendChild(notesSpacer);
     taskDialog.appendChild(notes);
     taskDialog.appendChild(dateAdded);
@@ -108,6 +115,13 @@ function initDialogName (input) {
             input.value = "";
             updateTasks(task.getID());
         }
+    });
+}
+function initDialogDueDate (input) {
+    input.addEventListener("change", function (event) {
+        const task = list.getTask(document.querySelector(".active.task").id);
+        task.setDueDate(input.value);
+        updateTasks(task.getID());
     });
 }
 function initDialogNotes (input) {
@@ -145,6 +159,17 @@ function createName (type,nameText) {
     return name;
 }
 
+function createDueDate (date) {
+    const dueDate = newDiv("class","due-date");
+    if (!date) {
+        dueDate.textContent = "";
+    } else {
+        date = date.split("-");
+        dueDate.textContent = "Due " + format(new Date (date[0],date[1]-1,date[2]), "E, MMM do");
+    }
+    return dueDate;
+}
+
 function createStarButton (taskID) {
     const star = newDiv("class","star");
     const fontAwesomeString =  ("fa-star").concat(" ",list.getTask(taskID).isStarred() ? "fas" : "far");
@@ -171,9 +196,9 @@ function trashTheFolder() {
     updateFolders();
 }
 
-function createInput () {
+function createInput (type) {
     const input = document.createElement("input");
-    input.type = "text";
+    input.type = type;
     const inputWrapper = newDiv("class","input-wrapper");
     inputWrapper.appendChild(input);
     return inputWrapper;

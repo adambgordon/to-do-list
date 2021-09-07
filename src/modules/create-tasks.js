@@ -6,7 +6,7 @@ import '@fortawesome/fontawesome-free/js/all';
 export {createTasks};
 
 function createTasks () {
-    const taskInput = helper.createInput("task");
+    const taskInput = helper.createInput("text");
     const taskWrapper = helper.newDiv("id","task-wrapper");
     const tasks = helper.newDiv("id","tasks");
     taskWrapper.appendChild(taskInput);
