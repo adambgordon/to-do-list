@@ -1,6 +1,5 @@
 const list = require("./list.js");
-import folderFactory from "./folder.js";
-import taskFactory from "./task.js";
+import { add } from "date-fns";
 
 function newDiv (type, value) {
     const div = document.createElement("div");
@@ -19,13 +18,15 @@ function newIcon (fontAwesomeString) {
     return icon;
 }
 
-// const updateTaskDialog
-
 function updateFolders (newFolder) {
     const folders = document.querySelector("#folders");
-    while (folders.firstChild) {
-        folders.removeChild(folders.firstChild);
-    }
+    removeAllChildren(folders);
+    addFoldersFromList();
+    (newFolder ? folders.lastChild : folders.firstChild).classList.add("active-folder");
+    updateTasks();
+}
+
+function addFoldersFromList () {
     list.getFolders().forEach( (element) => {
         const folder = newDiv("class","folder");
         folder.id = element.getID();
@@ -37,15 +38,20 @@ function updateFolders (newFolder) {
         }
         folders.appendChild(folder);
     });
-    (newFolder ? folders.lastChild : folders.firstChild).classList.add("active-folder");
-    updateTasks();
 }
 
-function updateTasks () {
+function updateTasks (activeID) {
     const tasks = document.querySelector("#tasks");
-    while (tasks.firstChild) {
-        tasks.removeChild(tasks.firstChild);
+    removeAllChildren(tasks);
+    addTasksFromList();
+    if (activeID) {
+        const task = document.querySelector(`[id="${activeID}"`);
+        task.classList.add("active-task");
     }
+    updateTaskDialog();
+}
+
+function addTasksFromList() {
     list.getTasks(list.getFolder(document.querySelector(".active-folder").id)).forEach( (element) => {
         const task = newDiv("id",element.getID());
         task.classList.add("task");
@@ -53,22 +59,41 @@ function updateTasks () {
         task.appendChild(createStarButton(element.isStarred()));
         tasks.appendChild(task);
     });
-    const active = document.querySelector(".active-task");
-    if (active) active.classList.remove("active-task");
-    updateTaskDialog();
 }
 
 function updateTaskDialog () {
     const taskDialog = document.querySelector("#task-dialog");
-    while (taskDialog.firstChild) {
-        taskDialog.removeChild(taskDialog.firstChild);
-    }
+    removeAllChildren(taskDialog);
+    addDialogFromTask();   
+}
+
+function addDialogFromTask () {
     const active = document.querySelector(".active-task");
     if (!active) return;
+    const taskDialog = document.querySelector("#task-dialog");
     const task = list.getTask(active.id);
-    const tempData = newDiv();
-    tempData.textContent = task.getName();
-    taskDialog.appendChild(tempData);
+    const input = createInput();
+    initDialogNameInput(input.firstChild);
+    input.firstChild.value = task.getName();
+    taskDialog.appendChild(input);
+}
+
+function initDialogNameInput (input) {
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            if (!input.value || input.value.trim() === "") return;
+            const task = list.getTask(document.querySelector(".active-task").id);
+            task.setName(input.value.trim());
+            input.value = "";
+            updateTasks(task.getID());
+        }
+    });
+}
+
+function removeAllChildren (element) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
 }
 
 function createName (type,nameText) {
@@ -113,30 +138,9 @@ function trashTheFolder() {
     updateFolders();
 }
 
-function createInput (type) {
+function createInput () {
     const input = document.createElement("input");
     input.type = "text";
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            if (!input.value) return;
-            if (type === "folder") {
-                const folder = folderFactory(input.value, Date.now().toString());
-                input.value = "";
-                list.addFolder(folder);
-                updateFolders("new");
-            } else if (type === "task") {
-                const folder = list.getFolder(document.querySelector(".active-folder").id);
-                const task = taskFactory(
-                    input.value,
-                    Date.now().toString(),
-                    folder.getName() === "Starred" ? parseInt(folder.getID())-1 : folder.getID());
-                if (folder.getName() === "Starred") task.setStarredAs(true);
-                input.value = "";
-                list.addTask(task);
-                updateTasks();
-            }
-        }
-    });
     const inputWrapper = newDiv("class","input-wrapper");
     inputWrapper.appendChild(input);
     return inputWrapper;

@@ -10,6 +10,7 @@ function createFolders () {
     const folders = helper.newDiv("id","folders");
     folderWrapper.appendChild(folders);
     folderWrapper.appendChild(folderInput);
+    initInput(folderInput.firstChild);
     return folderWrapper;
 }
 
@@ -20,4 +21,16 @@ function buildFolders() {
     list.addFolder(all);
     list.addFolder(starred);
     helper.updateFolders();
+}
+
+function initInput (input) {
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            if (!input.value || input.value.trim() === "") return;
+            const folder = folderFactory(input.value.trim(), Date.now().toString());
+            input.value = "";
+            list.addFolder(folder);
+            helper.updateFolders("new folder");
+        }
+    });
 }
