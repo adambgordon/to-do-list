@@ -47,7 +47,7 @@ function updateTasks (activeID) {
     removeAllChildren(tasks);
     addTasksFromList();
     if (activeID) {
-        const task = document.querySelector(`[id="${activeID}"`);
+        const task = document.querySelector(`[id="${activeID}"]`);
         task.classList.add("active");
     }
     updateTaskDialog();
@@ -58,7 +58,7 @@ function addTasksFromList() {
         const task = newDiv("id",element.getID());
         task.classList.add("task");
         task.appendChild(createName("task",element.getName()));
-        task.appendChild(createStarButton(element.isStarred()));
+        task.appendChild(createStarButton(element.getID()));
         tasks.appendChild(task);
     });
 }
@@ -75,23 +75,47 @@ function addDialogFromTask () {
     const taskDialog = document.querySelector("#task-dialog");
     const task = list.getTask(active.id);
 
-    const input = createInput();
-    initDialogNameInput(input.firstChild);
-    input.firstChild.value = task.getName();
+    const name = createInput();
+    initDialogName(name.firstChild);
+    name.firstChild.value = task.getName();
+
+    const star = createStarButton(active.id);
+
+    const notes = createInput();
+    initDialogNotes(notes.firstChild);
+    notes.firstChild.value = task.getNotes();
 
     const dateAdded = newDiv("class","date-added");
     dateAdded.textContent = "Created " + format(parseInt(task.getID()), "E, MMM do");
 
-    taskDialog.appendChild(input);
+
+    const notesSpacer = newDiv();
+    notesSpacer.textContent = "Notes";
+    
+    taskDialog.appendChild(name);
+    taskDialog.appendChild(star);
+    taskDialog.appendChild(notesSpacer);
+    taskDialog.appendChild(notes);
     taskDialog.appendChild(dateAdded);
 }
 
-function initDialogNameInput (input) {
+function initDialogName (input) {
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
             const task = list.getTask(document.querySelector(".active.task").id);
             task.setName(input.value.trim());
+            input.value = "";
+            updateTasks(task.getID());
+        }
+    });
+}
+function initDialogNotes (input) {
+    input.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            if (!input.value || input.value.trim() === "") return;
+            const task = list.getTask(document.querySelector(".active.task").id);
+            task.setNotes(input.value.trim());
             input.value = "";
             updateTasks(task.getID());
         }
@@ -121,18 +145,19 @@ function createName (type,nameText) {
     return name;
 }
 
-function createStarButton (isStarred) {
+function createStarButton (taskID) {
     const star = newDiv("class","star");
-    const fontAwesomeString =  ("fa-star").concat(" ",isStarred ? "fas" : "far");
+    const fontAwesomeString =  ("fa-star").concat(" ",list.getTask(taskID).isStarred() ? "fas" : "far");
     star.appendChild(newIcon(fontAwesomeString));
-    star.onclick = () => { toggleStar(star); }
+    star.onclick = () => { toggleStar(star,taskID); }
     return star;
 }
 
-function toggleStar (star) {
-    list.toggleTaskStar(list.getTask(star.parentElement.id));
+function toggleStar (star, taskID) {
+    list.toggleTaskStar(list.getTask(taskID));
     star.firstChild.setAttribute("data-prefix", star.firstChild.getAttribute("data-prefix") ? "far" : "fas");
-    updateTasks();
+    const activeID = document.querySelector(`[id="${taskID}"]`).classList.contains("active") ? taskID : null;
+    updateTasks(activeID);
 }
 
 function createTrashButton () {
