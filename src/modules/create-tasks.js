@@ -20,7 +20,7 @@ function initInput (input) {
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
-            const folder = list.getFolder(document.querySelector(".active-folder").id);
+            const folder = list.getFolder(document.querySelector(".active.folder").id);
             const task = taskFactory(
                 input.value,
                 Date.now().toString(),

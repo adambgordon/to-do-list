@@ -1,5 +1,7 @@
 const list = require("./list.js");
-import { add } from "date-fns";
+// import { add } from "date-fns";
+import format from "date-fns/format";
+
 
 function newDiv (type, value) {
     const div = document.createElement("div");
@@ -22,7 +24,7 @@ function updateFolders (newFolder) {
     const folders = document.querySelector("#folders");
     removeAllChildren(folders);
     addFoldersFromList();
-    (newFolder ? folders.lastChild : folders.firstChild).classList.add("active-folder");
+    (newFolder ? folders.lastChild : folders.firstChild).classList.add("active");
     updateTasks();
 }
 
@@ -46,13 +48,13 @@ function updateTasks (activeID) {
     addTasksFromList();
     if (activeID) {
         const task = document.querySelector(`[id="${activeID}"`);
-        task.classList.add("active-task");
+        task.classList.add("active");
     }
     updateTaskDialog();
 }
 
 function addTasksFromList() {
-    list.getTasks(list.getFolder(document.querySelector(".active-folder").id)).forEach( (element) => {
+    list.getTasks(list.getFolder(document.querySelector(".active.folder").id)).forEach( (element) => {
         const task = newDiv("id",element.getID());
         task.classList.add("task");
         task.appendChild(createName("task",element.getName()));
@@ -68,21 +70,27 @@ function updateTaskDialog () {
 }
 
 function addDialogFromTask () {
-    const active = document.querySelector(".active-task");
+    const active = document.querySelector(".active.task");
     if (!active) return;
     const taskDialog = document.querySelector("#task-dialog");
     const task = list.getTask(active.id);
+
     const input = createInput();
     initDialogNameInput(input.firstChild);
     input.firstChild.value = task.getName();
+
+    const dateAdded = newDiv("class","date-added");
+    dateAdded.textContent = "Created " + format(parseInt(task.getID()), "E, MMM do");
+
     taskDialog.appendChild(input);
+    taskDialog.appendChild(dateAdded);
 }
 
 function initDialogNameInput (input) {
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
-            const task = list.getTask(document.querySelector(".active-task").id);
+            const task = list.getTask(document.querySelector(".active.task").id);
             task.setName(input.value.trim());
             input.value = "";
             updateTasks(task.getID());
@@ -100,12 +108,12 @@ function createName (type,nameText) {
     const name = newDiv("class","name");
     name.textContent = nameText;
     name.addEventListener("click", function (event) {
-        if (this.parentElement.classList.contains(".active-"+type)) return;
-        const currentActive = document.querySelector(".active-"+type);
+        if (this.parentElement.classList.contains("active")) return;
+        const currentActive = document.querySelector(".active."+type);
         if (currentActive) {
-            currentActive.classList.remove("active-"+type);
+            currentActive.classList.remove("active");
         }
-        this.parentElement.classList.add("active-"+type);
+        this.parentElement.classList.add("active");
         type === "folder" ? updateTasks()
             : type === "task" ? updateTaskDialog()
             : null;

@@ -4,7 +4,7 @@ body {
     font-family: 'Roboto';
     font-size: 0.8rem;
 }
-.active-folder, .active-task {
+.active {
     font-weight: bold;
 }
 #content {
