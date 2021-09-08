@@ -2,9 +2,9 @@ const list = function () {
     let _folders = [];
     let _tasks = [];
 
-    const getFolder = function (ID) {
+    const getFolder = function (folderID) {
         for (let i = 0; i < _folders.length; i++) {
-            if (_folders[i].getID() === ID) return _folders[i];
+            if (_folders[i].getID() === folderID) return _folders[i];
         }
     }
     const getFolders = function () { return _folders; }
@@ -20,12 +20,12 @@ const list = function () {
     const printFolders = function () {
         console.log(_folders.map( (folder) => { return folder.getName(); }));
     }
-    const getTask = function (ID) {
+    const getTask = function (taskID) {
         for (let i = 0; i < _tasks.length; i++) {
-            if (_tasks[i].getID() === ID) return _tasks[i];
+            if (_tasks[i].getID() === taskID) return _tasks[i];
         }
     }
-    const getTasks = function (folder) {
+    const getTasksByFolder = function (folder) {
         return _tasks.filter ( (task) => {
             return folder.getName() === "All Tasks" ? true
                 : folder.getName() === "Starred" ? task.isStarred()
@@ -55,7 +55,7 @@ const list = function () {
         deleteFolder,
         printFolders,
         getTask,
-        getTasks,
+        getTasksByFolder,
         addTask,
         deleteTask,
         bumpTaskToTop,

@@ -37,12 +37,12 @@ function initInput (input) {
 function updateFolders (newFolder) {
     const folders = document.querySelector("#folders");
     helper.removeAllChildren(folders);
-    addFoldersFromList();
+    addFoldersFromList(folders);
     (newFolder ? folders.lastChild : folders.firstChild).classList.add("active");
     helper.updateTasks();
 }
 
-function addFoldersFromList () {
+function addFoldersFromList (folders) {
     list.getFolders().forEach( (folder) => {
         const folderElement = helper.newDiv("class","folder");
         folderElement.id = folder.getID();

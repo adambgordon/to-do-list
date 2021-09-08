@@ -37,6 +37,7 @@ export function newIcon (fontAwesomeString) {
 }
 
 export function removeAllChildren (element) {
+    if (!element) return;
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
@@ -69,16 +70,13 @@ export function createStarButton (task) {
 
 function addStarListener (star, task) {
     star.onclick = () => {
-
         task.toggleStar();
         if(task.isStarred()) list.bumpTaskToTop(task);
 
         let activeID = null;
-        const activeTask = document.querySelector(".task.active");
-        const activeFolder = document.querySelector(".folder.active");
-        if (activeTask && activeTask.id === task.getID()) {
-            activeID = activeTask.id;
-            if (!task.isStarred() && list.getFolder(activeFolder.id).getName() === "Starred") {
+        if (getActiveTaskID() === task.getID()) {
+            activeID = getActiveTaskID();
+            if (!task.isStarred() && list.getFolder(document.querySelector(".folder.active").id).getName() === "Starred") {
                 activeID = null;
             }
         }
@@ -100,4 +98,9 @@ export function createInput (type) {
     const inputWrapper = newDiv("class","input-wrapper");
     inputWrapper.appendChild(input);
     return inputWrapper;
+}
+
+export function getActiveTaskID() {
+    const activeTask = document.querySelector(".active.task");
+    return  activeTask ? activeTask.id : null;
 }
