@@ -7,52 +7,60 @@ body {
     background-size: cover;
     height: 100%;
     overflow: hidden;
-}
-.active.folder, .active.task {
-    background-color: rgba(255,255,255,50%);
+    color: rgb(80,80,80);
 }
 #content {
     display: flex;
     justify-content: center;
 }
 #folder-wrapper, #task-wrapper, #task-dialog {
-    margin: 2rem;
-    /* border: 1px solid black; */
-    /* width: 16rem; */
+    margin: 1rem;
 }
 input:focus {
     outline: none;
 }
 #folder-wrapper {
-    width: 10rem;
+    width: 12rem;
 }
 #task-wrapper {
-    width: 16rem;
-}
-#task-dialog {
-    width: 16rem;
+    width: 25rem;
 }
 .folder, .task, .input-wrapper {
-    border-radius: 9px;
-    margin: 4px 0;
+    border-radius: 5px;
+    margin: 2px 0;
     display: flex;
     align-items: center;
+}
+.folder, .input-wrapper {
+    background-color: rgba(255,255,255,50%);
+}
+.folder {
+    font-weight: 500;
+}
+.task {
     background-color: white;
 }
 .folder:hover, .task:hover {
     cursor: default;
 }
 .check-box, .star, .trash {
-    color: grey;
+    color: rgb(180,180,180);
 }
 .check-box {
-    margin: 0 auto 0 6px;
+    margin: 0 auto 0 12px;
 }
 .star, .trash {
     margin: 0 6px 0 auto;
 }
+.due-date {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    width: fit-content;
+    margin: 0 1rem;
+}
 .check-box:hover, .trash:hover, .star:hover {
     cursor: pointer;
+    color: rgb(80,80,80);
 }
 .folder > .trash {
     display: none;
@@ -63,16 +71,51 @@ input:focus {
 .name, input {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 0.8rem;
-    height: 2rem;
+    height: 2.5rem;
     width: 100%;
     display: flex;
     align-items: center;
-    padding-left: 0.5rem;
+    padding: 0 0.5rem;
 }
 input {
     border: none;
     background: none;
 }
-.due-date {
-    font-size: 0.6rem;
+.fa-star[data-prefix="fas"] {
+    color: rgb(80,80,80);
+}
+
+#task-dialog {
+    border-radius: 5px;
+    background-color: rgba(255,255,255,50%);
+    padding: 0.5rem;
+    width: 12rem;
+}
+.task .name {
+    white-space: nowrap;
+    overflow: hidden;
+}
+#task-dialog > .input-wrapper > input {
+    
+}
+.folder.active {
+    background-color: white;
+}
+.task.active {
+    color: black;
+    font-weight: 700;
+}
+#show-completed {
+    color: white;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background-color: rgba(0,0,0,30%);
+    border-radius: 5px;
+    width: fit-content;
+}
+#show-completed:hover {
+    cursor: pointer;
+}
+.task, .name, .due-date, .check-box, .star {
+    /* border: 1px solid black; */
 }

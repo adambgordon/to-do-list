@@ -1,6 +1,8 @@
 const list = require("./list.js");
 import "@fortawesome/fontawesome-free/js/all";
 import format from "date-fns/format";
+import compareAsc from "date-fns/compareAsc";
+import startOfToday from "date-fns/startOfToday";
 import taskFactory from "./task.js";
 import folderFactory from "./folder.js";
 import {createTasks, updateTasks} from "./create-tasks.js";
@@ -9,6 +11,8 @@ import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
 export {
     format,
+    compareAsc,
+    startOfToday,
     taskFactory,
     folderFactory,
     createTasks,

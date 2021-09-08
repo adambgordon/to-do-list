@@ -1,4 +1,7 @@
 const list = require("./list.js");
+import compareAsc from "date-fns/compareAsc";
+import endOfToday from "date-fns/endOfToday";
+import startOfTomorrow from "date-fns/startOfTomorrow";
 import * as helper from "./helper-functions.js";
 
 export {createTasks, updateTasks};
@@ -86,8 +89,10 @@ function createDueDate (task) {
     if (!task.getDueDate()) {
         dueDate.textContent = "";
     } else {
-        const date = task.getDueDate().split("-");
-        dueDate.textContent = helper.format(new Date (date[0],date[1]-1,date[2]), "E, MMM do");
+        let date = task.getDueDate().split("-");
+        date = new Date (date[0],date[1]-1,date[2]);
+        dueDate.textContent = helper.format(date, "E, MMM do");
+        if (helper.compareAsc(date,helper.startOfToday()) === -1) dueDate.style.color = "red";
     }
     return dueDate;
 }
