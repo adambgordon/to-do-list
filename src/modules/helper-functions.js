@@ -47,7 +47,11 @@ export function createName (item) {
     const name = newDiv("class","name");
     name.textContent = item.getName();
     name.addEventListener("click", function (event) {
-        if (this.parentElement.classList.contains("active")) return;
+        if (this.parentElement.classList.contains("active")) {
+            if (item.getItemType() === "folder") return;
+            this.parentElement.classList.remove("active");
+            updateTasks();
+        }
         const currentActive = document.querySelector(".active."+item.getItemType());
         if (currentActive) {
             currentActive.classList.remove("active");
