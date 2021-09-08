@@ -39,9 +39,8 @@ const list = function () {
             if (_tasks[i] === task) return _tasks.splice(i,1)[0];
         }
     }
-    const toggleTaskStar = function (task) {
-        task.setStarredAs( task.isStarred() ? false : true );
-        if (task.isStarred()) _tasks.unshift(deleteTask(task));
+    const bumpTaskToTop = function (task) {
+        _tasks.unshift(deleteTask(task));
     }
     const printTasks = function () {
         console.log(_tasks.map( (element) => { return element.getName(); }));
@@ -59,7 +58,7 @@ const list = function () {
         getTasks,
         addTask,
         deleteTask,
-        toggleTaskStar,
+        bumpTaskToTop,
         printTasks,
         sortStarredFirst
     };

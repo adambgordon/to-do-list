@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 body {
-    font-family: 'Roboto';
+    font-family: 'Roboto', Arial, sans-serif;
     font-size: 0.8rem;
 }
 .active {
@@ -22,7 +22,7 @@ input:focus {
 .folder, .task, .input-wrapper {
     border: 1px solid lightgrey;
     border-radius: 9px;
-    margin: 0.5rem 0;
+    margin: 4px 0;
     display: flex;
     align-items: center;
     width: 14rem;
@@ -30,21 +30,27 @@ input:focus {
 .folder:hover, .task:hover {
     cursor: default;
 }
-.star, .trash {
-    margin: 0 6px 0 auto;
+.check-box, .star, .trash {
     color: grey;
 }
-.trash:hover, .star:hover {
+.check-box {
+    margin: 0 auto 0 6px;
+}
+.star, .trash {
+    margin: 0 6px 0 auto;
+}
+.check-box:hover, .trash:hover, .star:hover {
     cursor: pointer;
 }
-.trash {
+.folder > .trash {
     display: none;
 }
 .folder:hover > .trash{
     display: block;
-
 }
 .name, input {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 0.8rem;
     height: 2rem;
     width: 100%;
     display: flex;
@@ -55,4 +61,6 @@ input {
     border: none;
     background: none;
 }
-
+.due-date {
+    font-size: 0.6rem;
+}

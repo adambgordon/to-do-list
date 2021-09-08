@@ -25,7 +25,7 @@ function initInput (input) {
                 input.value,
                 Date.now().toString(),
                 folder.getName() === "Starred" ? parseInt(folder.getID())-1 : folder.getID());
-            if (folder.getName() === "Starred") task.setStarredAs(true);
+            if (folder.getName() === "Starred") task.toggleStar();
             input.value = "";
             list.addTask(task);
             helper.updateTasks();

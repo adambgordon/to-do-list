@@ -1,5 +1,5 @@
 const taskFactory = function (_name, _ID, _homeFolderID) {
-
+    const _itemType = "task";
     let _completed = false;
     let _starred = false;
     let _dueDate = false;
@@ -14,20 +14,23 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
     const getID = function () {
         return _ID;
     }
+    const getItemType = function () {
+        return _itemType;
+    }
     const getHomeFolderID = function () {
         return _homeFolderID;
     }
     const isCompleted = function () {
         return _completed;
     }
-    const setCompletedAs = function (completed) {
-        _completed = completed;
+    const toggleCompleted = function () {
+        _completed = _completed === false ? true : false;
     }
     const isStarred = function () {
         return _starred;
     }
-    const setStarredAs = function (starred) {
-        _starred = starred;
+    const toggleStar = function () {
+        _starred = _starred === false ? true : false;
     }
     const getDueDate = function () {
         return _dueDate;
@@ -57,11 +60,12 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
         getName,
         setName,
         getID,
+        getItemType,
         getHomeFolderID,
         isCompleted,
-        setCompletedAs,
+        toggleCompleted,
         isStarred,
-        setStarredAs,
+        toggleStar,
         getDueDate,
         setDueDate,
         getNotes,

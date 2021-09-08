@@ -1,4 +1,5 @@
 const folderFactory = function (_name, _ID) {
+    const _itemType = "folder";
     const getName = function () {
         return _name;
     }
@@ -8,11 +9,15 @@ const folderFactory = function (_name, _ID) {
     const getID = function () {
         return _ID;
     }
+    const getItemType = function () {
+        return _itemType;
+    }
 
     return {
         getName,
         setName,
-        getID
+        getID,
+        getItemType
     };
 };
 
