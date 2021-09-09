@@ -31,11 +31,12 @@ input:focus {
     display: flex;
     align-items: center;
 }
-.folder, .input-wrapper {
-    background-color: rgba(255,255,255,50%);
-}
 .folder {
+    background-color: rgba(255,255,255,50%);
     font-weight: 500;
+}
+.input-wrapper {
+    background-color: rgba(0,0,0,30%);
 }
 .task {
     background-color: white;
@@ -46,7 +47,7 @@ input:focus {
 .check-box, .star, .trash {
     color: rgb(180,180,180);
 }
-.check-box {
+.folder-icon, .check-box {
     margin: 0 auto 0 12px;
 }
 .star, .trash {
@@ -80,16 +81,31 @@ input:focus {
 input {
     border: none;
     background: none;
+    color: white;
+}
+input::placeholder {
+    color: rgba(255,255,255,75%);
+}
+#task-dialog .input-wrapper {
+    background-color: white;
+}
+#task-dialog input {
+    color: rgb(80,80,80);
 }
 .fa-star[data-prefix="fas"] {
     color: rgb(80,80,80);
 }
-
+#task-dialog:empty {
+    width: 12rem;
+    height: 0;
+    padding: 0;
+}
 #task-dialog {
     border-radius: 5px;
     background-color: rgba(255,255,255,50%);
     padding: 0.5rem;
-    width: 12rem;
+    width: 11rem;
+    height: fit-content;
 }
 .task .name {
     white-space: nowrap;

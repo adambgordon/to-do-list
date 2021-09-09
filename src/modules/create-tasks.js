@@ -22,6 +22,7 @@ function createTasks () {
 }
 
 function initInput (input) {
+    input.placeholder = "Add Task";
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;

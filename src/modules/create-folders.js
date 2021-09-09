@@ -23,6 +23,7 @@ function buildFolders() {
 }
 
 function initInput (input) {
+    input.placeholder = "Add Folder";
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
@@ -46,6 +47,12 @@ function addFoldersFromList (folders) {
     list.getFolders().forEach( (folder) => {
         const folderElement = helper.newDiv("class","folder");
         folderElement.id = folder.getID();
+        
+        const fontAwesomeString = folder.getName() === "All Tasks" ? "fas fa-check-double"
+            : folder.getName() === "Starred" ? "fas fa-star"
+            : "far fa-folder";
+        folderElement.appendChild(createFolderIcon(fontAwesomeString));
+
         folderElement.appendChild(helper.createName(folder));
         if (folder.getName() !== "All Tasks" && folder.getName() !== "Starred") {
             const trash = helper.createTrashButton();
@@ -59,4 +66,10 @@ function addFoldersFromList (folders) {
 function trashFolder() {
     list.deleteFolder(list.getFolder(this.parentElement.id));
     updateFolders();
+}
+
+function createFolderIcon (fontAwesomeString) {
+    const folderIcon = helper.newDiv("class","folder-icon");
+    folderIcon.appendChild(helper.newIcon(fontAwesomeString));
+    return folderIcon;
 }
