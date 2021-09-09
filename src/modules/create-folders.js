@@ -7,9 +7,11 @@ function createFolders () {
     const folderInput = helper.createInput("text");
     const folderWrapper = helper.newDiv("id","folder-wrapper");
     const folders = helper.newDiv("id","folders");
+
+    initInput(folderInput.childNodes[1]);
+
     folderWrapper.appendChild(folders);
     folderWrapper.appendChild(folderInput);
-    initInput(folderInput.firstChild);
     return folderWrapper;
 }
 
@@ -50,7 +52,7 @@ function addFoldersFromList (folders) {
         
         const fontAwesomeString = folder.getName() === "All Tasks" ? "fas fa-check-double"
             : folder.getName() === "Starred" ? "fas fa-star"
-            : "far fa-folder";
+            : "fas fa-folder";
         folderElement.appendChild(createFolderIcon(fontAwesomeString));
 
         folderElement.appendChild(helper.createName(folder));

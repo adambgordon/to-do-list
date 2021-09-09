@@ -101,9 +101,11 @@ export function createTrashButton () {
 }
 
 export function createInput (type) {
+    const plus = newIcon("fas fa-plus");
     const input = document.createElement("input");
     input.type = type;
     const inputWrapper = newDiv("class","input-wrapper");
+    inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
     return inputWrapper;
 }

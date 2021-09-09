@@ -7,6 +7,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
         title: 'To Do List',
+        favicon: './src/assets/favicon.png',
         }),
     ],
     output: {

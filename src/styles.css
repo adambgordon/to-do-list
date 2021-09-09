@@ -3,7 +3,7 @@
 body {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 0.8rem;
-    background: url('./background.jpeg') no-repeat center center fixed;
+    background: url('./assets/background.jpeg') no-repeat center center fixed;
     background-size: cover;
     height: 100%;
     overflow: hidden;
@@ -11,19 +11,31 @@ body {
 }
 #content {
     display: flex;
-    justify-content: center;
 }
-#folder-wrapper, #task-wrapper, #task-dialog {
+.content-box {
+    flex: 1;
     margin: 1rem;
 }
-input:focus {
-    outline: none;
-}
 #folder-wrapper {
+    margin-left: auto;
     width: 12rem;
 }
 #task-wrapper {
     width: 25rem;
+}
+#task-dialog:empty {
+    /* width: 16rem; */
+    width: 0;
+    height: 0;
+    padding: 0;
+}
+#task-dialog {
+    margin-right: auto;
+    border-radius: 5px;
+    background-color: rgba(255,255,255,50%);
+    padding: 0.5rem;
+    width: 15rem;
+    height: fit-content;
 }
 .folder, .task, .input-wrapper {
     border-radius: 5px;
@@ -32,12 +44,10 @@ input:focus {
     align-items: center;
 }
 .folder {
-    background-color: rgba(255,255,255,50%);
+    background-color: rgba(255,255,255,65%);
     font-weight: 500;
 }
-.input-wrapper {
-    background-color: rgba(0,0,0,30%);
-}
+
 .task {
     background-color: white;
 }
@@ -45,9 +55,9 @@ input:focus {
     cursor: default;
 }
 .check-box, .star, .trash {
-    color: rgb(180,180,180);
+    color: rgb(160,160,160);
 }
-.folder-icon, .check-box {
+.folder-icon, .check-box, .fa-plus {
     margin: 0 auto 0 12px;
 }
 .star, .trash {
@@ -68,6 +78,17 @@ input:focus {
 }
 .folder:hover > .trash{
     display: block;
+    color: rgb(120,120,120);
+}
+
+.folder:hover > .trash:hover {
+    color: rgb(80,80,80);
+}
+.input-wrapper {
+    background-color: rgba(0,0,0,20%);
+}
+input:focus {
+    outline: none;
 }
 .name, input {
     font-family: 'Roboto', Arial, sans-serif;
@@ -83,8 +104,8 @@ input {
     background: none;
     color: white;
 }
-input::placeholder {
-    color: rgba(255,255,255,75%);
+input::placeholder, .fa-plus {
+    color: rgba(255,255,255,60%);
 }
 #task-dialog .input-wrapper {
     background-color: white;
@@ -95,18 +116,7 @@ input::placeholder {
 .fa-star[data-prefix="fas"] {
     color: rgb(80,80,80);
 }
-#task-dialog:empty {
-    width: 12rem;
-    height: 0;
-    padding: 0;
-}
-#task-dialog {
-    border-radius: 5px;
-    background-color: rgba(255,255,255,50%);
-    padding: 0.5rem;
-    width: 11rem;
-    height: fit-content;
-}
+
 .task .name {
     white-space: nowrap;
     overflow: hidden;
@@ -128,6 +138,7 @@ input::placeholder {
     background-color: rgba(0,0,0,30%);
     border-radius: 5px;
     width: fit-content;
+    user-select: none;
 }
 #show-completed:hover {
     cursor: pointer;

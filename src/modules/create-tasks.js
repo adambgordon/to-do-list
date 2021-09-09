@@ -12,13 +12,21 @@ function createTasks () {
     const tasks = helper.newDiv("id","tasks");
     const showCompleted = helper.newDiv("id","show-completed");
 
-    initInput(taskInput.firstChild);
+    initInput(taskInput.childNodes[1]);
     initCompleted(showCompleted);
+    initWindowListener();
 
     taskWrapper.appendChild(taskInput);
     taskWrapper.appendChild(tasks);
     taskWrapper.appendChild(showCompleted);
+
     return taskWrapper;
+}
+
+function initWindowListener () {
+    window.onclick = function (event) {
+        if (event.target.tagName === "HTML" && helper.getActiveTaskID() !== null) updateTasks();
+    }
 }
 
 function initInput (input) {
