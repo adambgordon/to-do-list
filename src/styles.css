@@ -38,7 +38,7 @@ body {
 }
 .folder, .task, .input-wrapper {
     border-radius: 5px;
-    margin: 2px 0;
+    margin: 3px 0;
     display: flex;
     align-items: center;
 }
@@ -46,7 +46,6 @@ body {
     background-color: rgba(255,255,255,65%);
     font-weight: 500;
 }
-
 .task {
     background-color: white;
 }
@@ -129,8 +128,8 @@ input::placeholder, .fa-plus {
 .folder.active {
     background-color: white;
 }
-.task.active {
-    color: black;
+.task.active, .task.active > div > svg {
+    color: black !important;
     font-weight: 700;
 }
 #show-completed {
@@ -149,9 +148,7 @@ input::placeholder, .fa-plus {
     user-select: none;
 }
 #folder-edit-field {
-    font-weight: 900;
-    color: inherit;
-    font-style: italic;
+    color: rgba(80,80,80,50%);
 }
 .task, .name, .due-date, .check-box, .star {
     /* border: 1px solid black; */
