@@ -16,9 +16,10 @@ function updateTaskDialog () {
 
 function addDialogFromTask () {
     const active = document.querySelector(".active.task");
-    if (!active) return;
+    const activeID = helper.getActiveTaskID();
+    if (!activeID) return;
     const taskDialog = document.querySelector("#task-dialog");
-    const task = list.getTask(active.id);
+    const task = list.getTask(activeID);
 
     const notesSpacer = helper.newDiv();
     notesSpacer.textContent = "Notes";
@@ -41,7 +42,7 @@ function addDialogFromTask () {
 
 function initName (task) {
     const name = helper.createInput("text");
-    const input = name.firstChild;
+    const input = name.getElementsByTagName("input")[0];
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;

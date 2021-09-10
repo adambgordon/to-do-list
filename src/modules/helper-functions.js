@@ -6,7 +6,7 @@ import startOfToday from "date-fns/startOfToday";
 import taskFactory from "./task.js";
 import folderFactory from "./folder.js";
 import {createTasks, updateTasks} from "./create-tasks.js";
-import {createFolders, buildFolders} from "./create-folders.js"
+import {createFolders, buildFolders, updateFolders} from "./create-folders.js"
 import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
 export {
@@ -100,12 +100,14 @@ export function createTrashButton () {
     return trash;
 }
 
-export function createInput (type) {
-    const plus = newIcon("fas fa-plus");
+export function createInput (type,fontAwesomeString) {
     const input = document.createElement("input");
     input.type = type;
     const inputWrapper = newDiv("class","input-wrapper");
-    inputWrapper.appendChild(plus);
+    if (fontAwesomeString) {
+        const icon = newIcon(fontAwesomeString);
+        inputWrapper.appendChild(icon);
+    }
     inputWrapper.appendChild(input);
     return inputWrapper;
 }
@@ -113,4 +115,20 @@ export function createInput (type) {
 export function getActiveTaskID() {
     const activeTask = document.querySelector(".active.task");
     return  activeTask ? activeTask.id : null;
+}
+
+export function initWindowListener () {
+    window.onclick = function (event) {
+        const activeTaskID = getActiveTaskID();
+        if (event.target.tagName === "HTML" && activeTaskID !== null) {
+            updateTasks(document.querySelector("#folder-edit-field") ? activeTaskID : null);
+        }
+
+        const folderEditField = document.querySelector("#folder-edit-field");
+        if (folderEditField && event.target !== folderEditField) {
+            const activeFolderID = folderEditField.parentElement.id;
+            folderEditField.remove();
+            updateFolders(activeFolderID,activeTaskID);
+        }  
+    }
 }

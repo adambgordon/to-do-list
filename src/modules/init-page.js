@@ -25,4 +25,5 @@ function initPage () {
     document.body.appendChild(content);
 
     helper.buildFolders(list);
+    helper.initWindowListener();
 }

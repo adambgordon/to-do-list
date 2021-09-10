@@ -8,13 +8,12 @@ export {createTasks, updateTasks};
 
 function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
-    const taskInput = helper.createInput("text");
+    const taskInput = helper.createInput("text","fas fa-plus");
     const tasks = helper.newDiv("id","tasks");
     const showCompleted = helper.newDiv("id","show-completed");
 
-    initInput(taskInput.childNodes[1]);
+    initInput(taskInput);
     initCompleted(showCompleted);
-    initWindowListener();
 
     taskWrapper.appendChild(taskInput);
     taskWrapper.appendChild(tasks);
@@ -23,13 +22,9 @@ function createTasks () {
     return taskWrapper;
 }
 
-function initWindowListener () {
-    window.onclick = function (event) {
-        if (event.target.tagName === "HTML" && helper.getActiveTaskID() !== null) updateTasks();
-    }
-}
 
-function initInput (input) {
+function initInput (inputContainer) {
+    const input = inputContainer.getElementsByTagName("input")[0];
     input.placeholder = "Add Task";
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
@@ -82,7 +77,7 @@ function addTasksFromList() {
         const taskElement = helper.newDiv("id",task.getID());
         taskElement.classList.add("task");
         taskElement.appendChild(createCheckBox(task));
-        taskElement.appendChild(helper.createName(task));
+        taskElement.appendChild(createName(task));
         taskElement.appendChild(createDueDate(task));
         taskElement.appendChild(helper.createStarButton(task));
         if (!task.isCompleted()) {
@@ -91,6 +86,27 @@ function addTasksFromList() {
             completedTasks.appendChild(taskElement);
         }}
     });
+}
+
+function createName (task) {
+    const name = helper.newDiv("class","name");
+    name.textContent = task.getName();
+    name.addEventListener("click", function (event) {
+        let activeID = null;
+        if (this.parentElement.classList.contains("active")) {
+            this.parentElement.classList.remove("active");
+        } else {
+            const currentActive = document.querySelector(".active.task");
+            if (currentActive) {
+                currentActive.classList.remove("active");
+            }
+            this.parentElement.classList.add("active");
+            activeID = task.getID();
+        }
+        updateTasks(activeID);
+        helper.updateTaskDialog();
+    });
+    return name;
 }
 
 function createDueDate (task) {

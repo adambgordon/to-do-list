@@ -24,7 +24,6 @@ body {
     width: 25rem;
 }
 #task-dialog:empty {
-    /* width: 16rem; */
     width: 0;
     height: 0;
     padding: 0;
@@ -109,6 +108,9 @@ input::placeholder, .fa-plus {
 }
 #task-dialog .input-wrapper {
     background-color: white;
+    color: rgb(80,80,80);
+
+
 }
 #task-dialog input {
     color: rgb(80,80,80);
@@ -142,6 +144,14 @@ input::placeholder, .fa-plus {
 }
 #show-completed:hover {
     cursor: pointer;
+}
+.name {
+    user-select: none;
+}
+#folder-edit-field {
+    font-weight: 900;
+    color: inherit;
+    font-style: italic;
 }
 .task, .name, .due-date, .check-box, .star {
     /* border: 1px solid black; */
