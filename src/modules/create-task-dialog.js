@@ -70,36 +70,57 @@ function initNotes (task) {
     const notesWrapper = helper.newDiv("class","input-wrapper");
     notesWrapper.id = "notes-wrapper";
 
-    const notes = helper.newDiv("id","notes-field");
-    notesWrapper.appendChild(notes);
-    notes.textContent = task.getNotes();
+    const notesEditField = document.createElement("textarea");
+    notesEditField.id = "notes-edit-field";
+    notesWrapper.appendChild(notesEditField);
+    notesEditField.value = task.getNotes();
 
-    notes.addEventListener("click", function (event) {
-        const text = notes.textContent;
-        notes.remove();
-        const notesEditField = document.createElement("textarea");
-        notesEditField.id = "notes-edit-field";
-        notesWrapper.appendChild(notesEditField);
-        notesEditField.focus();
-        notesEditField.value = text;
+    setTimeout(function() {
         notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
-        notesEditField.addEventListener("input", function (event) {
-            notesEditField.style.height = "auto";
-            notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
-        });
+    },0);
+
+    notesEditField.addEventListener("input", function (event) {
+        notesEditField.style.height = "auto";
+        notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
     });
-    window.addEventListener("click", function (event) {
-        const notesEditField = document.querySelector("#notes-edit-field");
-        if (notesEditField && event.target !== notesEditField && event.target.id !== "notes-field") {
-            console.log(event.target);
-            const activeID = helper.getActiveTaskID();
-            list.getTask(activeID).setNotes(notesEditField.value);
-            notesEditField.remove()
-            helper.updateTasks(activeID);
-        }
-    });  
+
+    
     return notesWrapper;
 }
+// function initNotes (task) {
+//     const notesWrapper = helper.newDiv("class","input-wrapper");
+//     notesWrapper.id = "notes-wrapper";
+
+//     const notes = helper.newDiv("id","notes-field");
+//     notesWrapper.appendChild(notes);
+//     notes.textContent = task.getNotes();
+
+//     notes.addEventListener("click", function (event) {
+//         const text = notes.textContent;
+//         notes.remove();
+//         const notesEditField = document.createElement("textarea");
+//         notesEditField.id = "notes-edit-field";
+//         notesWrapper.appendChild(notesEditField);
+//         notesEditField.focus();
+//         notesEditField.value = text;
+//         notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
+//         notesEditField.addEventListener("input", function (event) {
+//             notesEditField.style.height = "auto";
+//             notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
+//         });
+//     });
+//     window.addEventListener("click", function (event) {
+//         const notesEditField = document.querySelector("#notes-edit-field");
+//         if (notesEditField && event.target !== notesEditField && event.target.id !== "notes-field") {
+//             console.log(event.target);
+//             const activeID = helper.getActiveTaskID();
+//             list.getTask(activeID).setNotes(notesEditField.value);
+//             notesEditField.remove()
+//             helper.updateTasks(activeID);
+//         }
+//     });  
+//     return notesWrapper;
+// }
 function initDateAdded (task) {
     const dateAdded = helper.newDiv("class","date-added");
     dateAdded.textContent = "Created " + helper.format(parseInt(task.getID()), "E, MMM do");

@@ -91,21 +91,20 @@ function addTasksFromList() {
 function createName (task) {
     const name = helper.newDiv("class","name");
     name.textContent = task.getName();
-    name.addEventListener("click", function (event) {
-        let activeID = null;
-        if (this.parentElement.classList.contains("active")) {
-            this.parentElement.classList.remove("active");
-        } else {
-            const currentActive = document.querySelector(".active.task");
-            if (currentActive) {
-                currentActive.classList.remove("active");
-            }
-            this.parentElement.classList.add("active");
-            activeID = task.getID();
-        }
-        updateTasks(activeID);
-        helper.updateTaskDialog();
-    });
+    // name.addEventListener("click", function (event) {
+    //     let activeID = null;
+    //     if (this.parentElement.classList.contains("active")) {
+    //         this.parentElement.classList.remove("active");
+    //     } else {
+    //         const currentActive = document.querySelector(".active.task");
+    //         if (currentActive) {
+    //             currentActive.classList.remove("active");
+    //         }
+    //         this.parentElement.classList.add("active");
+    //         activeID = task.getID();
+    //     }
+    //     updateTasks(activeID);
+    // });
     return name;
 }
 

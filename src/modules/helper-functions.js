@@ -119,16 +119,56 @@ export function getActiveTaskID() {
 
 export function initWindowListener () {
     window.onclick = function (event) {
-        const activeTaskID = getActiveTaskID();
-        if (event.target.tagName === "HTML" && activeTaskID !== null) {
-            updateTasks(document.querySelector("#folder-edit-field") ? activeTaskID : null);
-        }
+        console.log(event.target);
 
+        const activeTask = getActiveTaskElement();
+
+        const notesEditField = document.querySelector("#notes-edit-field");
+        if (notesEditField && event.target !== notesEditField) {
+            list.getTask(activeTask.id).setNotes(notesEditField.value);
+            updateTasks(activeTask.id);
+        }
+        
         const folderEditField = document.querySelector("#folder-edit-field");
         if (folderEditField && event.target !== folderEditField) {
             const activeFolderID = folderEditField.parentElement.id;
             folderEditField.remove();
-            updateFolders(activeFolderID,activeTaskID);
-        }  
+            updateFolders(activeFolderID,activeTask.id);
+        }
+
+        if (activeTask
+            && (event.target.tagName === "HTML"
+            || event.target.id === "content"
+            || event.target.classList.contains("content-box")
+            || event.target.id === "task-wrapper")) {
+            deactivateTaskElement();
+            updateTaskDialog();
+        }
+
+        if (event.target.classList.contains("name")) {
+            if (event.target.parentElement.classList.contains("task")) {
+                deactivateTaskElement();
+                if (activeTask !== event.target.parentElement) {
+                    activateTaskElement(document.getElementById(event.target.parentElement.id));
+                }
+                updateTaskDialog();
+            }
+        }
+        
     }
+}
+
+export function getActiveTaskElement () {
+    const activeTask = document.querySelector(".active.task");
+    return  activeTask ? activeTask : null;
+}
+
+export function deactivateTaskElement () {
+    const activeTask = getActiveTaskElement();
+    if (activeTask) activeTask.classList.remove("active");
+}
+
+export function activateTaskElement (element) {
+    // document.querySelector(`[id="${id}"]`).classList.add("active");
+    element.classList.add("active");
 }
