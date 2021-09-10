@@ -47,27 +47,6 @@ export function removeAllChildren (element) {
     }
 }
 
-export function createName (item) {
-    const name = newDiv("class","name");
-    name.textContent = item.getName();
-    name.addEventListener("click", function (event) {
-        if (this.parentElement.classList.contains("active")) {
-            if (item.getItemType() === "folder") return;
-            this.parentElement.classList.remove("active");
-            updateTasks();
-        }
-        const currentActive = document.querySelector(".active."+item.getItemType());
-        if (currentActive) {
-            currentActive.classList.remove("active");
-        }
-        this.parentElement.classList.add("active");
-        item.getItemType() === "folder" ? updateTasks()
-            : item.getItemType() === "task" ? updateTaskDialog()
-            : null;
-    });
-    return name;
-}
-
 export function createStarButton (task) {
     const star = newDiv("class","star");
     const fontAwesomeString =  ("fa-star").concat(" ",task.isStarred() ? "fas" : "far");
@@ -81,14 +60,12 @@ function addStarListener (star, task) {
         task.toggleStar();
         if(task.isStarred()) list.bumpTaskToTop(task);
 
-        let activeID = null;
-        if (getActiveTaskID() === task.getID()) {
-            activeID = getActiveTaskID();
-            if (!task.isStarred() && list.getFolder(document.querySelector(".folder.active").id).getName() === "Starred") {
-                activeID = null;
-            }
+        if (getActiveTaskElement() === document.getElementById(task.getID())
+        && !task.isStarred()
+        && list.getFolder(document.querySelector(".folder.active").id).getName() === "Starred") {
+            deactivateActiveTaskElement();
         }
-        updateTasks(activeID);
+        updateTasks();
     }
 }
 // if current task is active task > pass thru active id
@@ -112,50 +89,73 @@ export function createInput (type,fontAwesomeString) {
     return inputWrapper;
 }
 
-export function getActiveTaskID() {
-    const activeTask = document.querySelector(".active.task");
-    return  activeTask ? activeTask.id : null;
-}
-
 export function initWindowListener () {
     window.onclick = function (event) {
-        console.log(event.target);
-
         const activeTask = getActiveTaskElement();
-
+        const activeFolder = getActiveFolderElement();
         const notesEditField = document.querySelector("#notes-edit-field");
         if (notesEditField && event.target !== notesEditField) {
             list.getTask(activeTask.id).setNotes(notesEditField.value);
-            updateTasks(activeTask.id);
         }
-        
         const folderEditField = document.querySelector("#folder-edit-field");
         if (folderEditField && event.target !== folderEditField) {
-            const activeFolderID = folderEditField.parentElement.id;
-            folderEditField.remove();
-            updateFolders(activeFolderID,activeTask.id);
+            updateFolders();
         }
-
         if (activeTask
             && (event.target.tagName === "HTML"
             || event.target.id === "content"
             || event.target.classList.contains("content-box")
             || event.target.id === "task-wrapper")) {
-            deactivateTaskElement();
+            deactivateActiveTaskElement();
             updateTaskDialog();
         }
-
         if (event.target.classList.contains("name")) {
             if (event.target.parentElement.classList.contains("task")) {
-                deactivateTaskElement();
+                deactivateActiveTaskElement();
                 if (activeTask !== event.target.parentElement) {
-                    activateTaskElement(document.getElementById(event.target.parentElement.id));
+                    activateElementByID(event.target.parentElement.id);
                 }
                 updateTaskDialog();
+            } else if (event.target.parentElement.classList.contains("folder")) {
+                if (activeFolder !== event.target.parentElement) {
+                    deactivateActiveTaskElement();
+                    deactivateActiveFolderElement();
+                    activateElementByID(event.target.parentElement.id)
+                    updateTasks();
+                }
             }
         }
-        
     }
+    window.addEventListener("dblclick", function (event) {
+        const activeFolder = getActiveFolderElement();
+        if (event.target.classList.contains("name")
+            && event.target.parentElement === activeFolder
+            && activeFolder.textContent !== "All Tasks"
+            && activeFolder.textContent !== "Starred") {
+                
+            const folder = list.getFolder(activeFolder.id);
+            while (!activeFolder.lastChild.classList.contains("folder-icon")) {
+                activeFolder.lastChild.remove()
+            }
+            const input = document.createElement("input");
+            activeFolder.appendChild(input);
+            input.id = "folder-edit-field"
+            input.type = "text";
+            input.value = folder.getName();
+            input.addEventListener("keydown", function (event2) {
+                if (event2.key === "Enter") {
+                    if (!input.value || input.value.trim() === "") return;
+                    folder.setName(input.value.trim());
+                    input.remove();
+                    updateFolders();
+                } else if (event2.key === "Escape") {
+                    input.remove();
+                    updateFolders();
+                }
+            });
+            input.focus();
+        }
+    });
 }
 
 export function getActiveTaskElement () {
@@ -163,12 +163,21 @@ export function getActiveTaskElement () {
     return  activeTask ? activeTask : null;
 }
 
-export function deactivateTaskElement () {
+export function deactivateActiveTaskElement () {
     const activeTask = getActiveTaskElement();
     if (activeTask) activeTask.classList.remove("active");
 }
 
-export function activateTaskElement (element) {
-    // document.querySelector(`[id="${id}"]`).classList.add("active");
-    element.classList.add("active");
+export function activateElementByID (id) {
+    document.getElementById(id).classList.add("active");
+}
+
+export function getActiveFolderElement () {
+    const activeFolder = document.querySelector(".active.folder");
+    return activeFolder ? activeFolder : null;
+}
+
+export function deactivateActiveFolderElement () {
+    const activeFolder = getActiveFolderElement();
+    if (activeFolder) activeFolder.classList.remove("active");
 }

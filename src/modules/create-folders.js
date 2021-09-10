@@ -35,17 +35,20 @@ function initInput (inputContainer) {
             const folder = helper.folderFactory(input.value.trim(), Date.now().toString());
             input.value = "";
             list.addFolder(folder);
-            updateFolders(folder.getID());
+            updateFolders();
+            helper.deactivateActiveFolderElement();
+            helper.activateElementByID(folder.getID());
         }
     });
 }
 
-function updateFolders (activeFolderID,activeTaskID) {
+function updateFolders () {
+    const activeFolderID = helper.getActiveFolderElement() ? helper.getActiveFolderElement().id : null;
     const folders = document.querySelector("#folders");
     helper.removeAllChildren(folders);
     addFoldersFromList(folders);
-    (activeFolderID ? document.querySelector(`[id="${activeFolderID}"]`) : folders.firstChild).classList.add("active");
-    helper.updateTasks(activeTaskID);
+    activeFolderID ? helper.activateElementByID(activeFolderID) : folders.firstChild.classList.add("active");
+    helper.updateTasks();
 }
 
 function addFoldersFromList (folders) {
@@ -71,51 +74,12 @@ function addFoldersFromList (folders) {
 function createName (folder) {
     const name = helper.newDiv("class","name");
     name.textContent = folder.getName();
-    name.addEventListener("click", function (event) {
-        const parent = this.parentElement;
-        if (parent.classList.contains("active")) {
-            return;
-        }
-        const currentActive = document.querySelector(".active.folder");
-        if (currentActive) {
-            currentActive.classList.remove("active");
-        }
-        parent.classList.add("active");
-        helper.updateTasks();
-    });
-    name.addEventListener("dblclick", function (event) {
-        const parent = this.parentElement;
-        if (parent.classList.contains("active")) {
-            if (folder.getName() === "All Tasks" || folder.getName() === "Starred") return;
-            // add listeners for esc and click anywhere
-            this.remove();
-            parent.lastChild.remove();
-            const input = document.createElement("input");
-            parent.appendChild(input);
-            input.id = "folder-edit-field"
-            input.type = "text";
-            input.value = folder.getName();
-            input.addEventListener("keydown", function (event) {
-                if (event.key === "Enter") {
-                    if (!input.value || input.value.trim() === "") return;
-                    list.getFolder(folder.getID()).setName(input.value.trim());
-                    input.remove();
-                    updateFolders(folder.getID(),helper.getActiveTaskID());
-                } else if (event.key === "Escape") {
-                    input.remove();
-                    updateFolders(folder.getID(),helper.getActiveTaskID());
-                }
-            });
-            input.focus();
-            return;
-        }
-    });
-
     return name;
 }
 
 function trashFolder() {
     list.deleteFolder(list.getFolder(this.parentElement.id));
+    helper.deactivateActiveFolderElement();
     updateFolders();
 }
 

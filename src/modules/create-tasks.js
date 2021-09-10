@@ -53,19 +53,19 @@ function initCompleted (button) {
             completedTasks = helper.newDiv("id","completed-tasks");
             taskWrapper.appendChild(completedTasks);
         }
-        updateTasks(helper.getActiveTaskID());
+        updateTasks();
     }
 }
 
-function updateTasks (activeID) {
+function updateTasks () {
+    const activeID = helper.getActiveTaskElement() ? helper.getActiveTaskElement().id : null;
     const tasks = document.querySelector("#tasks");
     const completedTasks = document.querySelector("#completed-tasks")
     helper.removeAllChildren(tasks);
     helper.removeAllChildren(completedTasks);
     addTasksFromList();
     if (activeID) {
-        const task = document.querySelector(`[id="${activeID}"]`);
-        task.classList.add("active");
+        helper.activateElementByID(activeID);
     }
     helper.updateTaskDialog();
 }
@@ -91,20 +91,6 @@ function addTasksFromList() {
 function createName (task) {
     const name = helper.newDiv("class","name");
     name.textContent = task.getName();
-    // name.addEventListener("click", function (event) {
-    //     let activeID = null;
-    //     if (this.parentElement.classList.contains("active")) {
-    //         this.parentElement.classList.remove("active");
-    //     } else {
-    //         const currentActive = document.querySelector(".active.task");
-    //         if (currentActive) {
-    //             currentActive.classList.remove("active");
-    //         }
-    //         this.parentElement.classList.add("active");
-    //         activeID = task.getID();
-    //     }
-    //     updateTasks(activeID);
-    // });
     return name;
 }
 
@@ -127,13 +113,10 @@ function createCheckBox (task) {
     checkBox.appendChild(helper.newIcon(fontAwesomeString));
     checkBox.onclick = () => { 
         task.toggleCompleted();
-        let activeID = null;
-        if (helper.getActiveTaskID() === task.getID() && task.isCompleted()){
-            activeID = null;
-        } else {
-            activeID = helper.getActiveTaskID();
+        if (helper.getActiveTaskElement().id === task.getID() && task.isCompleted()){
+            helper.deactivateActiveTaskElement();
         }
-        updateTasks(activeID);
+        updateTasks();
     }
     return checkBox;
 }
