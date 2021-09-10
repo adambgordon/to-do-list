@@ -75,17 +75,18 @@ function initNotes (task) {
     notes.textContent = task.getNotes();
 
     notes.addEventListener("click", function (event) {
+        const text = notes.textContent;
+        notes.remove();
         const notesEditField = document.createElement("textarea");
         notesEditField.id = "notes-edit-field";
-        notesEditField.textContent = notes.textContent;
-        notes.remove();
         notesWrapper.appendChild(notesEditField);
+        notesEditField.focus();
+        notesEditField.value = text;
         notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
         notesEditField.addEventListener("input", function (event) {
             notesEditField.style.height = "auto";
             notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
         });
-        notesEditField.focus();
     });
     window.addEventListener("click", function (event) {
         const notesEditField = document.querySelector("#notes-edit-field");
