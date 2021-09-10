@@ -85,7 +85,7 @@ body {
 .input-wrapper {
     background-color: rgba(0,0,0,20%);
 }
-input:focus {
+input:focus, textarea:focus {
     outline: none;
 }
 .name, input {
@@ -105,14 +105,35 @@ input {
 input::placeholder, .fa-plus {
     color: rgba(255,255,255,60%);
 }
-#task-dialog .input-wrapper {
-    background-color: white;
-    color: rgb(80,80,80);
-
-
+#notes-wrapper {
+    margin: 0.5rem 0;
+    display: block;
+    min-height: 3.75rem;
 }
-#task-dialog input {
+#notes-field {
+    width: 14rem;
+    padding: 0.5rem;
+    line-height: 1.25rem;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    min-height: 2.5rem;
+}
+#notes-field:hover {
+    cursor: text;
+}
+#notes-edit-field {
+    width: 14rem;
+    padding: 0.5rem;
+    font: inherit;
     color: rgb(80,80,80);
+    line-height: 1.25rem;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+}
+#notes-field, #notes-edit-field {
+    /* border: 1px solid black; */
 }
 .fa-star[data-prefix="fas"] {
     color: rgb(80,80,80);
@@ -122,15 +143,19 @@ input::placeholder, .fa-plus {
     white-space: nowrap;
     overflow: hidden;
 }
-#task-dialog > .input-wrapper > input {
-    
-}
+
 .folder.active {
     background-color: white;
 }
-.task.active, .task.active > div > svg {
-    color: black !important;
+.task.active {
+    color: black;
     font-weight: 700;
+}
+.task.active > div > svg {
+    color: rgb(80,80,80);
+}
+.task.active > div > svg:hover {
+    color: black;
 }
 #show-completed {
     color: white;
@@ -149,6 +174,16 @@ input::placeholder, .fa-plus {
 }
 #folder-edit-field {
     color: rgba(80,80,80,50%);
+}
+#task-dialog .input-wrapper {
+    background-color: white;
+    color: rgb(80,80,80);
+}
+#task-dialog input {
+    color: rgb(80,80,80);
+}
+#task-dialog > .input-wrapper > input {
+    
 }
 .task, .name, .due-date, .check-box, .star {
     /* border: 1px solid black; */

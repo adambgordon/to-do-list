@@ -44,7 +44,6 @@ function updateFolders (activeFolderID,activeTaskID) {
     const folders = document.querySelector("#folders");
     helper.removeAllChildren(folders);
     addFoldersFromList(folders);
-    // (newFolder ? folders.lastChild : folders.firstChild).classList.add("active");
     (activeFolderID ? document.querySelector(`[id="${activeFolderID}"]`) : folders.firstChild).classList.add("active");
     helper.updateTasks(activeTaskID);
 }

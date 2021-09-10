@@ -67,19 +67,37 @@ function initDueDate (task) {
     return dueDate;
 }
 function initNotes (task) {
-    const notes = helper.createInput("text");
-    const input = notes.firstChild;
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            if (!input.value || input.value.trim() === "") return;
-            const task = list.getTask(document.querySelector(".active.task").id);
-            task.setNotes(input.value.trim());
-            input.value = "";
-            helper.updateTasks(task.getID());
-        }
+    const notesWrapper = helper.newDiv("class","input-wrapper");
+    notesWrapper.id = "notes-wrapper";
+
+    const notes = helper.newDiv("id","notes-field");
+    notesWrapper.appendChild(notes);
+    notes.textContent = task.getNotes();
+
+    notes.addEventListener("click", function (event) {
+        const notesEditField = document.createElement("textarea");
+        notesEditField.id = "notes-edit-field";
+        notesEditField.textContent = notes.textContent;
+        notes.remove();
+        notesWrapper.appendChild(notesEditField);
+        notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
+        notesEditField.addEventListener("input", function (event) {
+            notesEditField.style.height = "auto";
+            notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
+        });
+        notesEditField.focus();
     });
-    input.value = task.getNotes();
-    return notes;
+    window.addEventListener("click", function (event) {
+        const notesEditField = document.querySelector("#notes-edit-field");
+        if (notesEditField && event.target !== notesEditField && event.target.id !== "notes-field") {
+            console.log(event.target);
+            const activeID = helper.getActiveTaskID();
+            list.getTask(activeID).setNotes(notesEditField.value);
+            notesEditField.remove()
+            helper.updateTasks(activeID);
+        }
+    });  
+    return notesWrapper;
 }
 function initDateAdded (task) {
     const dateAdded = helper.newDiv("class","date-added");
