@@ -113,7 +113,8 @@ function createCheckBox (task) {
     checkBox.appendChild(helper.newIcon(fontAwesomeString));
     checkBox.onclick = () => { 
         task.toggleCompleted();
-        if (helper.getActiveTaskElement().id === task.getID() && task.isCompleted()){
+        const activeTask = helper.getActiveTaskElement();
+        if (activeTask && activeTask.id === task.getID() && task.isCompleted()){
             helper.deactivateActiveTaskElement();
         }
         updateTasks();

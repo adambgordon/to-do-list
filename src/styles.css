@@ -32,6 +32,7 @@ body {
     margin-right: auto;
     border-radius: 5px;
     background-color: rgba(255,255,255,65%);
+    /* background-color: rgba(0,0,0,20%); */
     padding: 0.5rem;
     width: 15rem;
     height: fit-content;
@@ -58,9 +59,10 @@ body {
 .folder-icon, .check-box, .fa-plus {
     margin: 0 auto 0 12px;
 }
-.star, .trash {
-    margin: 0 6px 0 auto;
+.star, .folder .trash {
+    margin: 0 12px 0 auto;
 }
+
 .due-date {
     font-size: 0.6rem;
     white-space: nowrap;
@@ -105,21 +107,10 @@ input {
 input::placeholder, .fa-plus {
     color: rgba(255,255,255,60%);
 }
+
 #notes-wrapper {
-    margin: 0.5rem 0;
     display: block;
-    min-height: 3.75rem;
-}
-#notes-field {
-    width: 14rem;
-    padding: 0.5rem;
-    line-height: 1.25rem;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-    min-height: 2.5rem;
-}
-#notes-field:hover {
-    cursor: text;
+    min-height: 4.75rem;
 }
 #notes-edit-field {
     width: 14rem;
@@ -131,9 +122,6 @@ input::placeholder, .fa-plus {
     border: none;
     border-radius: 5px;
     resize: none;
-}
-#notes-field, #notes-edit-field {
-    /* border: 1px solid black; */
 }
 .fa-star[data-prefix="fas"] {
     color: rgb(80,80,80);
@@ -151,10 +139,10 @@ input::placeholder, .fa-plus {
     color: black;
     font-weight: 700;
 }
-.task.active > div > svg {
+.task.active  svg {
     color: rgb(80,80,80);
 }
-.task.active > div > svg:hover {
+.task.active svg:hover {
     color: black;
 }
 #show-completed {
@@ -182,9 +170,31 @@ input::placeholder, .fa-plus {
 #task-dialog input {
     color: rgb(80,80,80);
 }
-#task-dialog > .input-wrapper > input {
-    
+#task-dialog svg {
+    color: rgb(80,80,80);
 }
-.task, .name, .due-date, .check-box, .star {
-    /* border: 1px solid black; */
+#task-dialog svg:hover {
+    color: black;
+}
+.date-added, #task-dialog .trash{
+    display: inline-block;
+    margin-top: 4px;
+}
+.date-added {
+    margin-left: 3px;
+}
+#task-dialog .trash {
+    float: right;
+    margin-right: 12px;
+}
+textarea::placeholder {
+    color: rgb(180,180,180);
+}
+
+/* placeholder text style */
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+  /* color: red; */
 }

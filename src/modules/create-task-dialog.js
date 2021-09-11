@@ -20,9 +20,6 @@ function addDialogFromTask () {
     const taskDialog = document.querySelector("#task-dialog");
     const task = list.getTask(active.id);
 
-    const notesSpacer = helper.newDiv();
-    notesSpacer.textContent = "Notes";
-
     const name = initName(task);
     const star = helper.createStarButton(task);
     const dueDate = initDueDate(task);
@@ -30,10 +27,9 @@ function addDialogFromTask () {
     const dateAdded = initDateAdded(task);
     const trash = initTrash(task);
     
+    name.appendChild(star)
     taskDialog.appendChild(name);
-    taskDialog.appendChild(star);
     taskDialog.appendChild(dueDate);
-    taskDialog.appendChild(notesSpacer);
     taskDialog.appendChild(notes);
     taskDialog.appendChild(dateAdded);
     taskDialog.appendChild(trash);
@@ -72,6 +68,7 @@ function initNotes (task) {
     const notesEditField = document.createElement("textarea");
     notesEditField.id = "notes-edit-field";
     notesWrapper.appendChild(notesEditField);
+    notesEditField.placeholder = "Notes";
     notesEditField.value = task.getNotes();
 
     setTimeout(function() {
@@ -88,7 +85,7 @@ function initNotes (task) {
 }
 function initDateAdded (task) {
     const dateAdded = helper.newDiv("class","date-added");
-    dateAdded.textContent = "Created " + helper.format(parseInt(task.getID()), "E, MMM do");
+    dateAdded.textContent = "Created " + helper.format(parseInt(task.getID()), "E, MMM do, y");
     return dateAdded;
 }
 function initTrash (task) {
