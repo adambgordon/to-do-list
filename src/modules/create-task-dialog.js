@@ -54,6 +54,7 @@ function initName (task) {
 }
 function initDueDate (task) {
     const dueDate = helper.createInput("date");
+    dueDate.id = "due-date-input-wrapper";
     const input = dueDate.getElementsByTagName("input")[0];
     input.addEventListener("change", function (event) {
         const task = list.getTask(helper.getActiveTaskElement().id);
@@ -63,7 +64,11 @@ function initDueDate (task) {
     input.value = task.getDueDate();
     if (task.getDueDate()) {
         input.style.setProperty("--due-date-color","#505050");
+        const x = helper.newDiv("id","x-date");
+        x.textContent = "+";
+        dueDate.prepend(x);
     }
+    
     return dueDate;
 }
 function initNotes (task) {
