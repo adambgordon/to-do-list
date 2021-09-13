@@ -190,21 +190,22 @@ input::placeholder, .fa-plus {
     border-radius: 5px;
 }
 .bottom-row .trash {
-    margin-right: 6px;
+    margin-right: 4px;
 }
 .date-added {
     font-size: 0.6rem;
     color: rgb(80,80,80);
 }
 textarea::placeholder {
-    color: rgb(200,200,200);
+    color: rgb(220,220,220);
 }
 #due-date-input-wrapper {
     height: 2.5rem;
     position: relative;
 }
 input[type="date"] {
-    --due-date-color: rgb(200,200,200);
+    --due-date-color: rgb(220,220,220);
+    --calendar-picker-indicator-offset: 8px;
     position: absolute;
     width: 14rem;
 }
@@ -219,6 +220,9 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 /* approximately rgb(80,80,80) */
 ::-webkit-calendar-picker-indicator {
     filter: opacity(68.6%); 
+    position: absolute;
+    top: 11px;
+    right: var(--calendar-picker-indicator-offset);
 }
 ::-webkit-calendar-picker-indicator:hover {
     cursor: pointer;
@@ -227,13 +231,12 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 #x-date {
     font-family: 'Lato';
     font-weight: 300;
-    z-index: 1;
-    margin: 0;
-    position: absolute;
-    right: 2.5rem;
-    top: 3px;
-    font-size: 27px;
     transform: rotate(45deg);
+    z-index: 1;
+    position: absolute;
+    top: 3px;
+    right: 9px;
+    font-size: 27px;
     color: rgb(160,160,160);
 }
 #x-date:hover {

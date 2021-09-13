@@ -64,9 +64,14 @@ function initDueDate (task) {
     input.value = task.getDueDate();
     if (task.getDueDate()) {
         input.style.setProperty("--due-date-color","#505050");
+        input.style.setProperty("--calendar-picker-indicator-offset","2rem");
         const x = helper.newDiv("id","x-date");
         x.textContent = "+";
-        dueDate.prepend(x);
+        dueDate.appendChild(x);
+        x.addEventListener("click", function (event) {
+            task.setDueDate(false);
+            helper.updateTasks();
+        });
     }
     
     return dueDate;
