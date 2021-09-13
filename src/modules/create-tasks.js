@@ -1,7 +1,4 @@
 const list = require("./list.js");
-import compareAsc from "date-fns/compareAsc";
-import endOfToday from "date-fns/endOfToday";
-import startOfTomorrow from "date-fns/startOfTomorrow";
 import * as helper from "./helper-functions.js";
 
 export {createTasks, updateTasks};

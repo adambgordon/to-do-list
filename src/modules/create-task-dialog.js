@@ -24,15 +24,17 @@ function addDialogFromTask () {
     const star = helper.createStarButton(task);
     const dueDate = initDueDate(task);
     const notes = initNotes(task);
+    const bottomRow = helper.newDiv("class","bottom-row")
     const dateAdded = initDateAdded(task);
     const trash = initTrash(task);
     
     name.appendChild(star)
+    bottomRow.appendChild(dateAdded);
+    bottomRow.appendChild(trash);
     taskDialog.appendChild(name);
     taskDialog.appendChild(dueDate);
     taskDialog.appendChild(notes);
-    taskDialog.appendChild(dateAdded);
-    taskDialog.appendChild(trash);
+    taskDialog.appendChild(bottomRow);
 }
 
 function initName (task) {
@@ -52,13 +54,16 @@ function initName (task) {
 }
 function initDueDate (task) {
     const dueDate = helper.createInput("date");
-    const input = dueDate.firstChild;
+    const input = dueDate.getElementsByTagName("input")[0];
     input.addEventListener("change", function (event) {
         const task = list.getTask(helper.getActiveTaskElement().id);
         task.setDueDate(input.value);
         helper.updateTasks();
     });
     input.value = task.getDueDate();
+    if (task.getDueDate()) {
+        input.style.setProperty("--due-date-color","#505050");
+    }
     return dueDate;
 }
 function initNotes (task) {

@@ -31,7 +31,7 @@ body {
 #task-dialog {
     margin-right: auto;
     border-radius: 5px;
-    background-color: rgba(255,255,255,65%);
+    background-color: rgba(255,255,255,75%);
     /* background-color: rgba(0,0,0,20%); */
     padding: 0.5rem;
     width: 15rem;
@@ -110,7 +110,7 @@ input::placeholder, .fa-plus {
 
 #notes-wrapper {
     display: block;
-    min-height: 4.75rem;
+    min-height: 6rem;
 }
 #notes-edit-field {
     width: 14rem;
@@ -167,6 +167,9 @@ input::placeholder, .fa-plus {
     background-color: white;
     color: rgb(80,80,80);
 }
+#task-dialog > div{
+    margin-top: 0;
+}
 #task-dialog input {
     color: rgb(80,80,80);
 }
@@ -176,25 +179,43 @@ input::placeholder, .fa-plus {
 #task-dialog svg:hover {
     color: black;
 }
-.date-added, #task-dialog .trash{
-    display: inline-block;
-    margin-top: 4px;
+.bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+    border-radius: 5px;
+}
+.bottom-row .trash {
+    margin-right: 6px;
 }
 .date-added {
-    margin-left: 3px;
-}
-#task-dialog .trash {
-    float: right;
-    margin-right: 12px;
+    font-size: 0.6rem;
+    color: rgb(80,80,80);
 }
 textarea::placeholder {
-    color: rgb(180,180,180);
+    color: rgb(200,200,200);
 }
 
-/* placeholder text style */
+input[type="date"] {
+    --due-date-color: rgb(200,200,200);
+    user-select: none !important;
+
+}
 input[type="date"]::-webkit-datetime-edit-text,
 input[type="date"]::-webkit-datetime-edit-month-field,
 input[type="date"]::-webkit-datetime-edit-day-field,
 input[type="date"]::-webkit-datetime-edit-year-field {
-  /* color: red; */
+    color: var(--due-date-color);
+
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: opacity(68.6%);
+}
+::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+    filter: opacity(100%);
 }
