@@ -56,26 +56,51 @@ function initDueDate (task) {
     const dueDate = helper.createInput("date");
     dueDate.id = "due-date-input-wrapper";
     const input = dueDate.getElementsByTagName("input")[0];
+    const dueDateInputText = helper.newDiv("class","due-date-input-text");
+    dueDate.prepend(dueDateInputText);
+    dueDateInputText.textContent = "Add Due Date";
     input.addEventListener("change", function (event) {
         const task = list.getTask(helper.getActiveTaskElement().id);
         task.setDueDate(input.value);
         helper.updateTasks();
     });
     input.value = task.getDueDate();
+
+    let dateColor = "rgb(80,80,80)";
+    let dateColorHover = "rgb(160,160,160";
+
     if (task.getDueDate()) {
-        input.style.setProperty("--due-date-display","inline");
-        input.style.setProperty("--due-date-color","#505050");
-        input.style.setProperty("--calendar-picker-indicator-offset","2.5rem");
-        const x = helper.newDiv("id","x-date");
+        let date = task.getDueDate().split("-");
+        date = new Date (date[0],date[1]-1,date[2]);
+        dueDateInputText.textContent = "Due " + helper.format(date, "E, MMM do, y");
+        
+        if (helper.compareAsc(date,helper.startOfToday()) === -1) {
+            dateColor = "red";
+            dateColorHover = "rgb(255,120,120)";
+        }
+
+        dueDate.style.setProperty("--due-date-input-text-color",dateColor);
+        dueDate.style.setProperty("--due-date-input-text-hover-color",dateColorHover);
+
+        input.style.setProperty("--calendar-picker-indicator-filter","opacity(0%)");
+        input.style.setProperty("--calendar-picker-indicator-hover-filter","opacity(0%)");
+        const x_Date = helper.newDiv("id","x-date");
+        const x = helper.newDiv();
         x.textContent = "+";
-        dueDate.appendChild(x);
-        x.addEventListener("click", function (event) {
+        x_Date.appendChild(x);
+        dueDate.appendChild(x_Date);
+        x_Date.addEventListener("mouseenter", function(event) {
+            dueDate.style.setProperty("--due-date-input-text-hover-color",dateColor);
+        });
+        x_Date.addEventListener("mouseleave", function(event) {
+            dueDate.style.setProperty("--due-date-input-text-hover-color",dateColorHover);
+        });
+        x_Date.addEventListener("click", function (event) {
             task.setDueDate(false);
             helper.updateTasks();
         });
+        
     }
-    // const temp = window.getComputedStyle(input,"::-webkit-datetime-edit-text");
-    // console.log(temp.getPropertyValue("display"));
     return dueDate;
 }
 function initNotes (task) {
