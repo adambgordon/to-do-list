@@ -63,6 +63,7 @@ function initDueDate (task) {
     });
     input.value = task.getDueDate();
     if (task.getDueDate()) {
+        input.style.setProperty("--due-date-display","inline");
         input.style.setProperty("--due-date-color","#505050");
         input.style.setProperty("--calendar-picker-indicator-offset","2.5rem");
         const x = helper.newDiv("id","x-date");
@@ -73,7 +74,8 @@ function initDueDate (task) {
             helper.updateTasks();
         });
     }
-    
+    // const temp = window.getComputedStyle(input,"::-webkit-datetime-edit-text");
+    // console.log(temp.getPropertyValue("display"));
     return dueDate;
 }
 function initNotes (task) {
