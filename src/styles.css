@@ -28,19 +28,24 @@ body {
     width: 0;
     height: 0;
     padding: 0;
+    box-shadow: none;
 }
 #task-dialog {
     margin-right: auto;
     border-radius: 5px;
-    background-color: rgba(255,255,255,75%);
-    /* background-color: rgba(0,0,0,20%); */
-    padding: 0.5rem;
+    /* background-color: rgba(255,255,255,30%); */
+    background-color: rgba(0,0,0,15%);
+    /* padding: 5px; */
     width: 15rem;
     height: fit-content;
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 3px 4px 4px rgba(0,0,0,15%);
+    /* box-shadow: 0 2px 5px 5px rgba(255, 255, 255, 20%); */
+
 }
 .folder, .task, .input-wrapper {
     border-radius: 5px;
-    margin: 3px 0;
+    margin: 0 0 2px 0;
     display: flex;
     align-items: center;
 }
@@ -56,6 +61,7 @@ body {
 }
 .check-box, .star, .trash {
     color: rgb(160,160,160);
+    display: flex;
 }
 .folder-icon, .check-box, .fa-plus {
     margin: 0 auto 0 12px;
@@ -63,7 +69,6 @@ body {
 .star, .folder .trash {
     margin: 0 12px 0 auto;
 }
-
 .due-date {
     font-size: 0.6rem;
     white-space: nowrap;
@@ -98,7 +103,7 @@ input:focus, textarea:focus {
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 0 0.5rem;
+    padding: 0 0.75rem;
 }
 input {
     border: none;
@@ -137,8 +142,7 @@ input::placeholder, .fa-plus {
     background-color: white;
 }
 .task.active {
-    color: black;
-    font-weight: 700;
+    font-weight: 900;
 }
 .task.active  svg {
     color: rgb(80,80,80);
@@ -168,9 +172,6 @@ input::placeholder, .fa-plus {
     background-color: white;
     color: rgb(80,80,80);
 }
-#task-dialog > div{
-    margin-top: 0;
-}
 #task-dialog input {
     color: rgb(80,80,80);
 }
@@ -193,7 +194,8 @@ input::placeholder, .fa-plus {
     margin-right: 4px;
 }
 .date-added {
-    font-size: 0.6rem;
+    font-weight: 300;
+    font-size: 0.65rem;
     color: rgb(80,80,80);
 }
 textarea::placeholder {
@@ -205,7 +207,7 @@ textarea::placeholder {
 }
 input[type="date"] {
     --due-date-color: rgb(220,220,220);
-    --calendar-picker-indicator-offset: 8px;
+    --calendar-picker-indicator-offset: 16px;
     position: absolute;
     width: 14rem;
 }
@@ -216,7 +218,6 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     color: var(--due-date-color);
 
 }
-
 /* approximately rgb(80,80,80) */
 ::-webkit-calendar-picker-indicator {
     filter: opacity(68.6%); 
