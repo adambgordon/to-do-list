@@ -27,8 +27,18 @@ function buildFolders() {
 }
 
 function initInput (inputContainer) {
+    const plus = inputContainer.firstChild;
+    plus.addEventListener("click", function (event) {
+        if (input.placeholder === "Add Folder") {
+            input.placeholder = "";
+            plus.firstChild.classList.remove("rotated-180");
+        } else {
+            input.placeholder = "Add Folder";
+            plus.firstChild.classList.add("rotated-180");
+        }
+    });
     const input = inputContainer.getElementsByTagName("input")[0];
-    input.placeholder = "Add Folder";
+    // input.placeholder = "Add Folder";
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;

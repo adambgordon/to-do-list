@@ -40,15 +40,23 @@ function initInput (inputContainer) {
 }
 
 function initCompleted (button) {
-    button.textContent = "Show Completed";
+    const text = helper.newDiv();
+    text.textContent = "Completed";
+    const arrow = helper.newDiv("class","arrow");
+    const arrowIcon = helper.newIcon("fas fa-caret-right")
+    arrow.appendChild(arrowIcon);
+    button.appendChild(text);
+    button.appendChild(arrow);
     button.onclick = () => {
         const taskWrapper = document.querySelector("#task-wrapper");
         let completedTasks = document.querySelector("#completed-tasks");
         if (completedTasks) {
             completedTasks.remove();
+            arrow.classList.remove("rotated-90");
         } else {
             completedTasks = helper.newDiv("id","completed-tasks");
             taskWrapper.appendChild(completedTasks);
+            arrow.classList.add("rotated-90");
         }
         updateTasks();
     }

@@ -82,8 +82,13 @@ export function createInput (type,fontAwesomeString) {
     input.type = type;
     const inputWrapper = newDiv("class","input-wrapper");
     if (fontAwesomeString) {
+        const wrapper = newDiv();
+        const wrapper2 = newDiv();
+        if (fontAwesomeString === "fas fa-plus") wrapper.classList.add("plus");
         const icon = newIcon(fontAwesomeString);
-        inputWrapper.appendChild(icon);
+        wrapper.appendChild(wrapper2);
+        wrapper2.appendChild(icon);
+        inputWrapper.appendChild(wrapper);
     }
     inputWrapper.appendChild(input);
     return inputWrapper;
