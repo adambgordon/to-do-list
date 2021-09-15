@@ -28,17 +28,36 @@ function buildFolders() {
 
 function initInput (inputContainer) {
     const plus = inputContainer.firstChild;
-    plus.addEventListener("click", function (event) {
-        if (input.placeholder === "Add Folder") {
-            input.placeholder = "";
-            plus.firstChild.classList.remove("rotated-180");
-        } else {
-            input.placeholder = "Add Folder";
-            plus.firstChild.classList.add("rotated-180");
-        }
-    });
     const input = inputContainer.getElementsByTagName("input")[0];
-    // input.placeholder = "Add Folder";
+    input.placeholder = "Add Folder";
+    console.log(input.style.display === "");
+
+    let maxWidth = "2.25rem";
+    let backgroundColor = "none";
+    let display = "none"
+    let timeout = 0;
+    plus.addEventListener("click", function (event) {
+        if (plus.firstChild.classList.contains("rotated-180")) {
+            plus.firstChild.classList.remove("rotated-180");
+            maxWidth = "2.25rem";
+            backgroundColor = "none";
+            display = "none";
+            timeout = 50;
+        } else {
+            plus.firstChild.classList.add("rotated-180");
+            maxWidth = "12rem";
+            backgroundColor = "rgba(0,0,0,20%)";
+            display = "flex";
+            timeout = 300;
+        }
+        inputContainer.style.setProperty("--folder-input-wrapper-max-width",maxWidth);
+        inputContainer.style.setProperty("--folder-input-wrapper-background-color",backgroundColor);
+        
+        setTimeout(function() {
+            inputContainer.style.setProperty("--folder-input-display",display);
+        }, timeout);
+    });
+
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
