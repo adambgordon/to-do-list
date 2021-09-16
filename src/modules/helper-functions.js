@@ -94,6 +94,17 @@ export function createInput (type,fontAwesomeString) {
     return inputWrapper;
 }
 
+export function createLeftHandIconWrapper (fontAwesomeString) {
+    const leftHandIconWrapper = newDiv("class","left-hand-icon-wrapper");
+    const innerWrapper = newDiv();
+    const icon = newIcon(fontAwesomeString);
+
+    leftHandIconWrapper.append(innerWrapper);
+    innerWrapper.appendChild(icon);
+    
+    return leftHandIconWrapper;
+}
+
 export function initWindowListener () {
     window.onclick = function (event) {
         const activeTask = getActiveTaskElement();
@@ -139,7 +150,7 @@ export function initWindowListener () {
             && activeFolder.textContent !== "Starred") {
                 
             const folder = list.getFolder(activeFolder.id);
-            while (!activeFolder.lastChild.classList.contains("folder-icon")) {
+            while (!activeFolder.lastChild.classList.contains("left-hand-icon-wrapper")) {
                 activeFolder.lastChild.remove()
             }
             const input = document.createElement("input");

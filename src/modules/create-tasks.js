@@ -5,24 +5,33 @@ export {createTasks, updateTasks};
 
 function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
-    const taskInput = helper.createInput("text","fas fa-plus");
+    const taskInputWrapper = helper.newDiv("class","input-wrapper");
+    // const taskInput = helper.createInput("text","fas fa-plus");
     const tasks = helper.newDiv("id","tasks");
     const showCompleted = helper.newDiv("id","show-completed");
 
-    initInput(taskInput);
+    initInputWrapper(taskInputWrapper);
     initCompleted(showCompleted);
 
-    taskWrapper.appendChild(taskInput);
+    taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
     taskWrapper.appendChild(showCompleted);
 
     return taskWrapper;
 }
 
-
-function initInput (inputContainer) {
-    const input = inputContainer.getElementsByTagName("input")[0];
+function initInputWrapper (inputWrapper) {
+    const leftHandIconWrapper = helper.createLeftHandIconWrapper("fas fa-plus");
+    const plus = leftHandIconWrapper.firstChild;
+    plus.classList.add("plus");
+    
+    const input = document.createElement("input");
+    input.type = "text";
     input.placeholder = "Add Task";
+
+    inputWrapper.appendChild(leftHandIconWrapper);
+    inputWrapper.appendChild(input);
+
     input.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
             if (!input.value || input.value.trim() === "") return;
@@ -113,9 +122,12 @@ function createDueDate (task) {
 }
 
 function createCheckBox (task) {
-    const checkBox = helper.newDiv("class","check-box");
     const fontAwesomeString =  task.isCompleted() ? "fas fa-check-square" : "far fa-square";
-    checkBox.appendChild(helper.newIcon(fontAwesomeString));
+    const leftHandIconWrapper = helper.createLeftHandIconWrapper(fontAwesomeString);
+    
+    const checkBox = leftHandIconWrapper.firstChild;
+    checkBox.classList.add("check-box");
+
     checkBox.onclick = () => { 
         task.toggleCompleted();
         const activeTask = helper.getActiveTaskElement();
@@ -124,5 +136,5 @@ function createCheckBox (task) {
         }
         updateTasks();
     }
-    return checkBox;
+    return leftHandIconWrapper;
 }
