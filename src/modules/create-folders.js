@@ -44,28 +44,44 @@ function initInputWrapper (inputWrapper) {
     inputWrapper.appendChild(input);
 }
 
-function toggleInputField() {
-    const inputWrapper = this.parentElement;
-    const iconWrapper = this.firstChild;
-    const input = inputWrapper.children[1];
-    const expanded = "expanded";
-    
-    if (inputWrapper.classList.contains(expanded)) {
-        iconWrapper.classList.remove(expanded);
-        inputWrapper.classList.remove(expanded);
-        input.classList.remove(expanded);
-    } else {
-        iconWrapper.classList.add(expanded);
-        inputWrapper.classList.add(expanded);
-        setTimeout(() => {
-            input.classList.add(expanded);
-        }, 50);
-        input.focus();
-    }
+function toggleInputField() {    
+    this.parentElement.classList.contains("expanded") ? removeExpanded(this) : addExpanded(this);
 }
 
+function removeExpanded(plus) {
+    const inputWrapper = plus.parentElement;
+    const iconWrapper = plus.firstChild;
+    const input = inputWrapper.children[1];
+    const expanded = "expanded";
 
-function receiveInput () {
+    iconWrapper.classList.remove(expanded);
+    inputWrapper.classList.remove(expanded);
+    input.classList.remove(expanded);
+}
+
+function addExpanded(plus) {
+    const inputWrapper = plus.parentElement;
+    const iconWrapper = plus.firstChild;
+    const input = inputWrapper.children[1];
+    const expanded = "expanded";
+
+    iconWrapper.classList.add(expanded);
+    inputWrapper.classList.add(expanded);
+    setTimeout(() => {input.classList.add(expanded);}, 50);
+    setTimeout(() => {input.focus();}, 400);
+    // autoCollapseInput(plus,input);
+}
+
+// async function autoCollapseInput(plus, input) {
+//     await sleep(5000);
+//     if (input.value.trim() === "") removeExpanded(plus);
+// }
+
+// function sleep(ms) {
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
+
+function receiveInput() {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         const folder = helper.folderFactory(this.value.trim(), Date.now().toString());
