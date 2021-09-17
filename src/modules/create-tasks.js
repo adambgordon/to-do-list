@@ -6,46 +6,44 @@ export {createTasks, updateTasks};
 function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
     const taskInputWrapper = helper.newDiv("class","input-wrapper");
-    // const taskInput = helper.createInput("text","fas fa-plus");
     const tasks = helper.newDiv("id","tasks");
     const showCompleted = helper.newDiv("id","show-completed");
-
     initInputWrapper(taskInputWrapper);
     initCompleted(showCompleted);
-
     taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
     taskWrapper.appendChild(showCompleted);
-
     return taskWrapper;
 }
 
 function initInputWrapper (inputWrapper) {
-    const leftHandIconContainer = helper.createLeftHandIconContainer("fas fa-plus");
-    const plus = leftHandIconContainer.firstChild;
-    plus.classList.add("plus");
-    
+    const plus = helper.createPlus();
+    const input = createInput();
+    inputWrapper.appendChild(plus);
+    inputWrapper.appendChild(input);
+
+    input.onkeydown = receiveInput;
+}
+function receiveInput () {
+    if (event.key === "Enter") {
+        if (!this.value || this.value.trim() === "") return;
+        const folder = list.getFolder(helper.getActiveFolderID());
+        const task = helper.taskFactory(
+            this.value.trim(),
+            Date.now().toString(),
+            folder.getName() === "Starred" ? parseInt(folder.getID())-1 : folder.getID());
+        if (folder.getName() === "Starred") task.toggleStar();
+        this.value = "";
+        list.addTask(task);
+        updateTasks();
+    }
+}
+
+function createInput () {
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "Add Task";
-
-    inputWrapper.appendChild(leftHandIconContainer);
-    inputWrapper.appendChild(input);
-
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            if (!input.value || input.value.trim() === "") return;
-            const folder = list.getFolder(document.querySelector(".active.folder").id);
-            const task = helper.taskFactory(
-                input.value,
-                Date.now().toString(),
-                folder.getName() === "Starred" ? parseInt(folder.getID())-1 : folder.getID());
-            if (folder.getName() === "Starred") task.toggleStar();
-            input.value = "";
-            list.addTask(task);
-            updateTasks();
-        }
-    });
+    return input;
 }
 
 function initCompleted (button) {
@@ -56,40 +54,40 @@ function initCompleted (button) {
     arrow.appendChild(arrowIcon);
     button.appendChild(text);
     button.appendChild(arrow);
-    button.onclick = () => {
-        const taskWrapper = document.querySelector("#task-wrapper");
-        let completedTasks = document.querySelector("#completed-tasks");
-        if (completedTasks) {
-            completedTasks.remove();
-            arrow.classList.remove("rotated-90");
-        } else {
-            completedTasks = helper.newDiv("id","completed-tasks");
-            taskWrapper.appendChild(completedTasks);
-            arrow.classList.add("rotated-90");
-        }
-        updateTasks();
+    button.onclick = toggleCompleted;
+}
+
+function toggleCompleted () {
+    const taskWrapper = document.querySelector("#task-wrapper");
+    const arrow = this.getElementsByClassName("arrow")[0];
+    let completedTasks = document.querySelector("#completed-tasks");
+    if (completedTasks) {
+        completedTasks.remove();
+        arrow.classList.remove("rotated-90");
+    } else {
+        completedTasks = helper.newDiv("id","completed-tasks");
+        taskWrapper.appendChild(completedTasks);
+        arrow.classList.add("rotated-90");
     }
+    updateTasks();
 }
 
 function updateTasks () {
-    const activeID = helper.getActiveTaskElement() ? helper.getActiveTaskElement().id : null;
+    const activeID = helper.getActiveTaskID();
     const tasks = document.querySelector("#tasks");
     const completedTasks = document.querySelector("#completed-tasks")
     helper.removeAllChildren(tasks);
     helper.removeAllChildren(completedTasks);
     addTasksFromList();
-    if (activeID) {
-        helper.activateElementByID(activeID);
-    }
+    if (activeID) helper.activateElementByID(activeID);
     helper.updateTaskDialog();
 }
 
 function addTasksFromList() {
     const tasks = document.querySelector("#tasks");
     const completedTasks = document.querySelector("#completed-tasks");
-    list.getTasksByFolder(list.getFolder(document.querySelector(".active.folder").id)).forEach( (task) => {
-        const taskElement = helper.newDiv("id",task.getID());
-        taskElement.classList.add("task");
+    list.getTasksByFolder(list.getFolder(helper.getActiveFolderID())).forEach( (task) => {
+        const taskElement = helper.newDiv("id",task.getID(),"class","task");
         taskElement.appendChild(createCheckBox(task));
         taskElement.appendChild(createName(task));
         taskElement.appendChild(createDueDate(task));
@@ -113,10 +111,14 @@ function createDueDate (task) {
     if (!task.getDueDate()) {
         dueDate.textContent = "";
     } else {
-        let date = task.getDueDate().split("-");
-        date = new Date (date[0],date[1]-1,date[2]);
+        const date = helper.parseDate(task.getDueDate());
         dueDate.textContent = helper.format(date, "E, MMM do");
-        if (helper.compareAsc(date,helper.startOfToday()) === -1) dueDate.style.color = "red";
+        const compared = helper.compareAsc(date,helper.startOfToday());
+        if (compared === -1) {
+            dueDate.style.color = "red";
+        } else if (compared === 0) {
+            dueDate.style.color = "rgb(255,123,0)";
+        }
     }
     return dueDate;
 }
@@ -124,17 +126,18 @@ function createDueDate (task) {
 function createCheckBox (task) {
     const fontAwesomeString =  task.isCompleted() ? "fas fa-check-square" : "far fa-square";
     const leftHandIconContainer = helper.createLeftHandIconContainer(fontAwesomeString);
-    
     const checkBox = leftHandIconContainer.firstChild;
     checkBox.classList.add("check-box");
-
-    checkBox.onclick = () => { 
-        task.toggleCompleted();
-        const activeTask = helper.getActiveTaskElement();
-        if (activeTask && activeTask.id === task.getID() && task.isCompleted()){
-            helper.deactivateActiveTaskElement();
-        }
-        updateTasks();
-    }
+    checkBox.onclick = completeTask;
     return leftHandIconContainer;
+}
+
+function completeTask() {
+    const task = list.getTask(this.parentElement.parentElement.id);
+    task.toggleCompleted();
+    const activeTaskID = helper.getActiveTaskID()
+    if (activeTaskID === task.getID() && task.isCompleted()){
+        helper.deactivateActiveTaskElement();
+    }
+    updateTasks();
 }

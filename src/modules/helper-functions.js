@@ -211,3 +211,8 @@ export function createPlus() {
     plus.classList.add("plus");
     return plus;
 }
+export function parseDate(date) {
+    let parsed = date.split("-");
+    parsed = new Date (parsed[0],parsed[1]-1,parsed[2]);
+    return parsed;
+}

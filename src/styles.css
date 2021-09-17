@@ -213,6 +213,7 @@ input[type="text"]::placeholder {
     width: 5rem;
     user-select: none;
     box-shadow: 0 1px 3px 1px rgba(0,0,0,20%);
+    text-shadow: 0px 1px 3px rgba(0,0,0,50%);
 }
 #show-completed:hover {
     cursor: pointer;
@@ -230,6 +231,9 @@ input[type="text"]::placeholder {
 .rotated-90 {
     transform: rotate(90deg);
     transition: all 100ms ease;
+}
+.arrow svg {
+    filter: drop-shadow(0px 1px 3px rgba(0,0,0,50%));
 }
 
 .name {
