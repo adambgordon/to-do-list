@@ -67,47 +67,47 @@ function receiveDateInput () {
     task.setDueDate(this.value);
     helper.updateTasks();
 }
+function startDateHover () {
+    this.parentElement.firstChild.classList.add("date-hover");
+}
+function endDateHover () {
+    this.parentElement.firstChild.classList.remove("date-hover");
+}
 function createDueDate (task) {
     const dueDate = createInput("date");
-    dueDate.id = "due-date-input-wrapper";
+    dueDate.classList.add("date");
     const input = dueDate.firstChild;
     
-    const dueDateInputText = helper.newDiv("class","due-date-input-text");
+    const dueDateInputText = helper.newDiv();
     dueDate.prepend(dueDateInputText);
     dueDateInputText.textContent = "Add Due Date";
     
     input.value = task.getDueDate();
     input.onchange = receiveDateInput;
 
-    let dateColor = "rgb(80,80,80)";
-    let dateColorHover = "rgb(160,160,160";
+    input.onmouseenter = startDateHover;
+    input.onmouseleave = endDateHover;
 
     if (task.getDueDate()) {
         const date = helper.parseDate(task.getDueDate());
         dueDateInputText.textContent = "Due " + helper.format(date, "E, MMM do, y");
-        
-        if (helper.compareAsc(date,helper.startOfToday()) === -1) {
-            dateColor = "red";
-            dateColorHover = "rgb(255,120,120)";
+        dueDateInputText.classList.add("has-date");
+
+        const compared = helper.compareAsc(date,helper.startOfToday());
+        if (compared === -1) {
+            dueDateInputText.classList.add("past-due");
+        } else if (compared === 0) {
+            dueDateInputText.classList.add("due-today");
         }
 
-        dueDate.style.setProperty("--due-date-input-text-color",dateColor);
-        dueDate.style.setProperty("--due-date-input-text-hover-color",dateColorHover);
-
-        input.style.setProperty("--calendar-picker-indicator-filter","opacity(0%)");
-        input.style.setProperty("--calendar-picker-indicator-hover-filter","opacity(0%)");
+        input.classList.add("has-date");
 
         const x_Date = helper.newDiv("id","x-date");
         const x = helper.newDiv();
         x.textContent = "+";
         x_Date.appendChild(x);
         dueDate.appendChild(x_Date);
-        x_Date.addEventListener("mouseenter", function(event) {
-            dueDate.style.setProperty("--due-date-input-text-hover-color",dateColor);
-        });
-        x_Date.addEventListener("mouseleave", function(event) {
-            dueDate.style.setProperty("--due-date-input-text-hover-color",dateColorHover);
-        });
+        
         x_Date.addEventListener("click", function (event) {
             task.setDueDate(false);
             helper.updateTasks();

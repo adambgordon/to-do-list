@@ -245,9 +245,9 @@ input[type="text"]::placeholder {
 
 #task-dialog .input-wrapper {
     background-color: white;
-    color: rgb(80,80,80);
 }
-#task-dialog input {
+#task-dialog input[type="text"] {
+    margin-left: 0.75rem;
     color: rgb(80,80,80);
 }
 #task-dialog svg {
@@ -265,9 +265,6 @@ input[type="text"]::placeholder {
     padding: 0 0.75rem;
     border-radius: 5px;
 }
-.bottom-row .trash {
-    margin-right: 2px;
-}
 .date-added {
     font-weight: 300;
     font-size: 0.65rem;
@@ -283,43 +280,60 @@ textarea::placeholder {
 
 /* TASK DIALOG DUE DATE STYLING */
 
-#due-date-input-wrapper {
+.input-wrapper.date {
     height: 2.5rem;
     position: relative;
-    --due-date-input-text-color: rgb(220,220,220);
-    --due-date-input-text-hover-color: rgb(160,160,160);
 }
-#due-date-input-wrapper:hover .due-date-input-text {
-    color: var(--due-date-input-text-hover-color);
-}
-.due-date-input-text {
+.input-wrapper.date > div {
     margin-left: 0.75rem;
-    color: var(--due-date-input-text-color);
+    color: rgb(220,220,220);
+}
+.input-wrapper.date > div.has-date {
+    color: rgb(80,80,80);
+}
+/* FIX THIS */
+.input-wrapper.date > div.past-due {
+    color: red;
+}
+.input-wrapper.date > div.due-today {
+    color: rgb(255,123,0);
+}
+.input-wrapper.date > div.date-hover.has-date {
+    opacity: 54.5%;
+}
+.input-wrapper.date > div.date-hover:not(.has-date) {
+    color: rgb(120,120,120);
 }
 input[type="date"] {
-    --calendar-picker-indicator-filter: opacity(68.6%); /* approximately rgb(80,80,80) */
-    --calendar-picker-indicator-hover-filter: opacity(100%);
     position: absolute;
     width: 15rem;
     padding: 0;
+    background: none;
+    border: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+    z-index: 1;
+    padding: 12px 10px 11px 212px;
+    filter: opacity(68.6%); /* approximately rgb(80,80,80) */
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+    filter: opacity(100%);
+}
+input[type="date"].has-date {
+    width: 13rem;
+}
+input[type="date"].has-date::-webkit-calendar-picker-indicator {
+    filter: opacity(0%);
 }
 input[type="date"]::-webkit-datetime-edit-text,
 input[type="date"]::-webkit-datetime-edit-month-field,
 input[type="date"]::-webkit-datetime-edit-day-field,
 input[type="date"]::-webkit-datetime-edit-year-field {
     display: none;
-}
-::-webkit-calendar-picker-indicator {
-    z-index: 1;
-    padding: 12px 10px 11px 212px;
-    filter: var(--calendar-picker-indicator-filter);
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
-::-webkit-calendar-picker-indicator:hover {
-    cursor: pointer;
-    filter: var(--calendar-picker-indicator-hover-filter);
 }
 #x-date {
     z-index: 2;
