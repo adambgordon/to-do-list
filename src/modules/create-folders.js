@@ -68,6 +68,8 @@ function receiveInput() {
         updateFolders();
         helper.deactivateActiveFolderElement();
         helper.activateElementByID(folder.getID());
+        helper.deactivateActiveTaskElement();
+        helper.updateTasks();
     }
 }
 

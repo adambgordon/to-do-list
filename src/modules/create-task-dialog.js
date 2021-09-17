@@ -75,50 +75,51 @@ function endDateHover () {
 }
 function createDueDate (task) {
     const dueDate = createInput("date");
-    dueDate.classList.add("date");
     const input = dueDate.firstChild;
-    
     const dueDateInputText = helper.newDiv();
+
+    dueDate.classList.add("date");
     dueDate.prepend(dueDateInputText);
     dueDateInputText.textContent = "Add Due Date";
-    
+
     input.value = task.getDueDate();
     input.onchange = receiveDateInput;
-
     input.onmouseenter = startDateHover;
     input.onmouseleave = endDateHover;
 
     if (task.getDueDate()) {
-        const date = helper.parseDate(task.getDueDate());
-        dueDateInputText.textContent = "Due " + helper.format(date, "E, MMM do, y");
-        dueDateInputText.classList.add("has-date");
-
-        const compared = helper.compareAsc(date,helper.startOfToday());
-        if (compared === -1) {
-            dueDateInputText.classList.add("past-due");
-        } else if (compared === 0) {
-            dueDateInputText.classList.add("due-today");
-        }
-
+        updateDueDateInputText(dueDateInputText,task.getDueDate());
         input.classList.add("has-date");
-
-        const x_Date = helper.newDiv("id","x-date");
-        const x = helper.newDiv();
-        x.textContent = "+";
-        x_Date.appendChild(x);
-        dueDate.appendChild(x_Date);
-        
-        x_Date.addEventListener("click", function (event) {
-            task.setDueDate(false);
-            helper.updateTasks();
-        });
-        
+        dueDate.appendChild(createX());
     }
     return dueDate;
 }
+
+function updateDueDateInputText(text,unformattedDate) {
+    const date = helper.parseDate(unformattedDate);
+    text.textContent = "Due " + helper.format(date, "E, MMM do, y");
+    text.classList.add("has-date");
+    const compared = helper.compareAsc(date,helper.startOfToday());
+    if (compared === -1) {
+        text.classList.add("past-due");
+    } else if (compared === 0) {
+        text.classList.add("due-today");
+    }
+}
+function createX () {
+    const x_Date = helper.newDiv("id","x-date");
+    const x = helper.newDiv();
+    x.textContent = "+";
+    x_Date.appendChild(x);
+    x_Date.onclick = clearDueDate;
+    return x_Date;
+}
+function clearDueDate () {
+    list.getTask(helper.getActiveTaskId()).setDueDate(false);
+    helper.updateTasks();
+}
 function createNotesEditField () {
     const notesEditField = document.createElement("textarea");
-    notesEditField.id = "notes-edit-field";
     notesEditField.placeholder = "Notes";
     return notesEditField;
 }
@@ -136,7 +137,7 @@ function resize () {
     setProperHeight(this);
 }
 function setProperHeight (element) {
-    element.style.height = (element.scrollHeight-19) + "px";
+    element.style.height = (element.scrollHeight-27) + "px";
 }
 function createDateAdded (task) {
     const dateAdded = helper.newDiv("class","date-added");

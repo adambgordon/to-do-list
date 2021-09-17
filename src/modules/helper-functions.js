@@ -114,7 +114,7 @@ export function initWindowListener () {
     window.onclick = function (event) {
         const activeTask = getActiveTaskElement();
         const activeFolder = getActiveFolderElement();
-        const notesEditField = document.getElementById("notes-edit-field");
+        const notesEditField = document.getElementsByTagName("textarea")[0];
         if (notesEditField && event.target !== notesEditField) {
             list.getTask(activeTask.id).setNotes(notesEditField.value);
         }

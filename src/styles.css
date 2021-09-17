@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 
+/* ------------------------------ */
+/* GENERAL & SHARED STYLING */
+/* ------------------------------ */
 body {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 0.8rem;
@@ -17,45 +20,12 @@ body {
     flex: 1;
     margin: 1rem;
 }
-#folder-wrapper {
-    margin-left: auto;
-    width: 12rem;
-}
-#task-wrapper {
-    width: 25rem;
-}
-#task-dialog:empty {
-    width: 0;
-    height: 0;
-    padding: 0;
-    box-shadow: none;
-}
-#task-dialog {
-    margin-right: auto;
-    border-radius: 5px;
-    background-color: rgba(0,0,0,30%);
-    width: 15rem;
-    height: fit-content;
-    box-shadow: 0 2px 10px 4px rgba(0,0,0,40%);
-
-}
 .folder, .task, .input-wrapper {
     border-radius: 5px;
     margin: 0 0 2px 0;
     display: flex;
     align-items: center;
 }
-.folder {
-    background-color: rgba(255,255,255,60%);
-    font-weight: 500;
-}
-.task {
-    background-color: white;
-    position: relative;
-}
-/* .input-wrapper {
-    background-color: rgba(0,0,0,20%);
-} */
 input:focus, textarea:focus {
     outline: none;
 }
@@ -63,7 +33,6 @@ input:focus, textarea:focus {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 0.8rem;
     height: 2.5rem;
-    /* padding: 0 0.75rem; */
     flex-grow: 1;
     display: flex;
     align-items: center;
@@ -98,7 +67,7 @@ input[type="text"]::placeholder {
     color: white;
     display: block;
 }
-.plus:hover {
+#folder-wrapper .plus:hover {
     cursor: pointer;
 }
 .plus > div {
@@ -112,6 +81,21 @@ input[type="text"]::placeholder {
 .plus > div.expanded {
     transform: rotate(180deg);
     transition: all 300ms ease;
+}
+.name {
+    user-select: none;
+}
+
+/* ------------------------------ */
+/* FOLDER STYLING */
+/* ------------------------------ */
+#folder-wrapper {
+    margin-left: auto;
+    width: 12rem;
+}
+.folder {
+    background-color: rgba(255,255,255,60%);
+    font-weight: 500;
 }
 #folder-wrapper > .input-wrapper {
     height: 2.5rem;
@@ -144,7 +128,32 @@ input[type="text"]::placeholder {
 #folder-edit-field {
     color: rgba(80,80,80,50%);
 }
-
+.folder .trash {
+    display: none;
+}
+.folder:hover .trash{
+    display: block;
+    color: rgb(120,120,120);
+}
+.folder:hover .trash:hover {
+    color: rgb(80,80,80);
+}
+.folder.active {
+    background-color: white;
+}
+/* ------------------------------ */
+/* TASK LIST STYLING */
+/* ------------------------------ */
+#task-wrapper {
+    width: 25rem;
+}
+.task {
+    background-color: white;
+    position: relative;
+}
+#task-wrapper > .input-wrapper {
+    background-color: rgba(0,0,0,20%);
+}
 .due-date {
     font-size: 0.6rem;
     white-space: nowrap;
@@ -156,42 +165,12 @@ input[type="text"]::placeholder {
     cursor: pointer;
     color: rgb(80,80,80);
 }
-.folder .trash {
-    display: none;
-}
-.folder:hover .trash{
-    display: block;
-    color: rgb(120,120,120);
-}
-
-.folder:hover .trash:hover {
-    color: rgb(80,80,80);
-}
-
-#notes-wrapper {
-    display: block;
-    min-height: 6rem;
-}
-#notes-edit-field {
-    width: 14rem;
-    padding: 0.75rem;
-    font: inherit;
-    color: rgb(80,80,80);
-    line-height: 1.25rem;
-    background: none;
-    border: none;
-    border-radius: 5px;
-    resize: none;
-}
 .fa-star[data-prefix="fas"] {
     color: rgb(80,80,80);
 }
 .task .name {
     white-space: nowrap;
     overflow: hidden;
-}
-.folder.active {
-    background-color: white;
 }
 .task.active {
     font-weight: 600;
@@ -236,13 +215,23 @@ input[type="text"]::placeholder {
     filter: drop-shadow(0px 1px 3px rgba(0,0,0,50%));
 }
 
-.name {
-    user-select: none;
-}
-
-
+/* ------------------------------ */
 /* TASK DIALOG STYLING */
-
+/* ------------------------------ */
+#task-dialog:empty {
+    width: 0;
+    height: 0;
+    padding: 0;
+    box-shadow: none;
+}
+#task-dialog {
+    margin-right: auto;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,30%);
+    width: 15rem;
+    height: fit-content;
+    box-shadow: 0 2px 10px 4px rgba(0,0,0,40%);
+}
 #task-dialog .input-wrapper {
     background-color: white;
 }
@@ -255,6 +244,26 @@ input[type="text"]::placeholder {
 }
 #task-dialog svg:hover {
     color: black;
+}
+#notes-wrapper {
+    display: block;
+    min-height: 6rem;
+}
+textarea {
+    width: 13.5rem;
+    padding: 0.75rem;
+    font: inherit;
+    color: rgb(80,80,80);
+    line-height: 1.25rem;
+    background: none;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    min-height: 4.2rem;
+    /* border: 1px solid green; */
+}
+textarea::placeholder {
+    color: rgb(220,220,220);
 }
 .bottom-row {
     display: flex;
@@ -274,12 +283,11 @@ input[type="text"]::placeholder {
 .date-added:hover {
     cursor: default;
 }
-textarea::placeholder {
-    color: rgb(220,220,220);
-}
 
+
+/* ------------------------------ */
 /* TASK DIALOG DUE DATE STYLING */
-
+/* ------------------------------ */
 .input-wrapper.date {
     height: 2.5rem;
     position: relative;
@@ -291,7 +299,6 @@ textarea::placeholder {
 .input-wrapper.date > div.has-date {
     color: rgb(80,80,80);
 }
-/* FIX THIS */
 .input-wrapper.date > div.past-due {
     color: red;
 }
