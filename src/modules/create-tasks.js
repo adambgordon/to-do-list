@@ -21,15 +21,15 @@ function createTasks () {
 }
 
 function initInputWrapper (inputWrapper) {
-    const leftHandIconWrapper = helper.createLeftHandIconWrapper("fas fa-plus");
-    const plus = leftHandIconWrapper.firstChild;
+    const leftHandIconContainer = helper.createLeftHandIconContainer("fas fa-plus");
+    const plus = leftHandIconContainer.firstChild;
     plus.classList.add("plus");
     
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "Add Task";
 
-    inputWrapper.appendChild(leftHandIconWrapper);
+    inputWrapper.appendChild(leftHandIconContainer);
     inputWrapper.appendChild(input);
 
     input.addEventListener("keydown", function (event) {
@@ -123,9 +123,9 @@ function createDueDate (task) {
 
 function createCheckBox (task) {
     const fontAwesomeString =  task.isCompleted() ? "fas fa-check-square" : "far fa-square";
-    const leftHandIconWrapper = helper.createLeftHandIconWrapper(fontAwesomeString);
+    const leftHandIconContainer = helper.createLeftHandIconContainer(fontAwesomeString);
     
-    const checkBox = leftHandIconWrapper.firstChild;
+    const checkBox = leftHandIconContainer.firstChild;
     checkBox.classList.add("check-box");
 
     checkBox.onclick = () => { 
@@ -136,5 +136,5 @@ function createCheckBox (task) {
         }
         updateTasks();
     }
-    return leftHandIconWrapper;
+    return leftHandIconContainer;
 }

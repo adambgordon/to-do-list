@@ -23,11 +23,16 @@ export {
     updateTaskDialog
 };
 
-export function newDiv (type, value) {
+export function newDiv (type1, value1, type2, value2) {
     const div = document.createElement("div");
-    if (type && value) {
-        type === "id" ? div.id = value
-            : type === "class" ? div.classList.add(value)
+    if (type1 && value1) {
+        type1 === "id" ? div.id = value1
+            : type1 === "class" ? div.classList.add(value1)
+            : null;
+    }
+    if (type2 && value2) {
+        type2 === "id" ? div.id = value2
+            : type2 === "class" ? div.classList.add(value2)
             : null;
     }
     return div;
@@ -94,15 +99,15 @@ export function createInput (type,fontAwesomeString) {
     return inputWrapper;
 }
 
-export function createLeftHandIconWrapper (fontAwesomeString) {
-    const leftHandIconWrapper = newDiv("class","left-hand-icon-wrapper");
+export function createLeftHandIconContainer (fontAwesomeString) {
+    const leftHandIconContainer = newDiv("class","left-hand-icon-wrapper");
     const innerWrapper = newDiv();
     const icon = newIcon(fontAwesomeString);
 
-    leftHandIconWrapper.append(innerWrapper);
+    leftHandIconContainer.append(innerWrapper);
     innerWrapper.appendChild(icon);
     
-    return leftHandIconWrapper;
+    return leftHandIconContainer;
 }
 
 export function initWindowListener () {
@@ -178,22 +183,31 @@ export function getActiveTaskElement () {
     const activeTask = document.querySelector(".active.task");
     return  activeTask ? activeTask : null;
 }
-
+export function getActiveTaskID () {
+    const activeTask = getActiveTaskElement();
+    return activeTask ? activeTask.id : null;
+}
 export function deactivateActiveTaskElement () {
     const activeTask = getActiveTaskElement();
     if (activeTask) activeTask.classList.remove("active");
 }
-
 export function activateElementByID (id) {
     document.getElementById(id).classList.add("active");
 }
-
 export function getActiveFolderElement () {
     const activeFolder = document.querySelector(".active.folder");
     return activeFolder ? activeFolder : null;
 }
-
+export function getActiveFolderID () {
+    const activeFolder = getActiveFolderElement();
+    return activeFolder ? activeFolder.id : null;
+}
 export function deactivateActiveFolderElement () {
     const activeFolder = getActiveFolderElement();
     if (activeFolder) activeFolder.classList.remove("active");
+}
+export function createPlus() {
+    const plus = createLeftHandIconContainer("fas fa-plus");
+    plus.classList.add("plus");
+    return plus;
 }
