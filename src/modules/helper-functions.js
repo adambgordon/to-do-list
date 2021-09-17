@@ -114,11 +114,11 @@ export function initWindowListener () {
     window.onclick = function (event) {
         const activeTask = getActiveTaskElement();
         const activeFolder = getActiveFolderElement();
-        const notesEditField = document.querySelector("#notes-edit-field");
+        const notesEditField = document.getElementById("notes-edit-field");
         if (notesEditField && event.target !== notesEditField) {
             list.getTask(activeTask.id).setNotes(notesEditField.value);
         }
-        const folderEditField = document.querySelector("#folder-edit-field");
+        const folderEditField = document.getElementById("folder-edit-field");
         if (folderEditField && event.target !== folderEditField) {
             updateFolders();
         }
@@ -183,7 +183,7 @@ export function getActiveTaskElement () {
     const activeTask = document.querySelector(".active.task");
     return  activeTask ? activeTask : null;
 }
-export function getActiveTaskID () {
+export function getActiveTaskId () {
     const activeTask = getActiveTaskElement();
     return activeTask ? activeTask.id : null;
 }
@@ -198,7 +198,7 @@ export function getActiveFolderElement () {
     const activeFolder = document.querySelector(".active.folder");
     return activeFolder ? activeFolder : null;
 }
-export function getActiveFolderID () {
+export function getActiveFolderId () {
     const activeFolder = getActiveFolderElement();
     return activeFolder ? activeFolder.id : null;
 }

@@ -27,7 +27,7 @@ function initInputWrapper (inputWrapper) {
 function receiveInput () {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
-        const folder = list.getFolder(helper.getActiveFolderID());
+        const folder = list.getFolder(helper.getActiveFolderId());
         const task = helper.taskFactory(
             this.value.trim(),
             Date.now().toString(),
@@ -58,9 +58,9 @@ function initCompleted (button) {
 }
 
 function toggleCompleted () {
-    const taskWrapper = document.querySelector("#task-wrapper");
+    const taskWrapper = document.getElementById("task-wrapper");
     const arrow = this.getElementsByClassName("arrow")[0];
-    let completedTasks = document.querySelector("#completed-tasks");
+    let completedTasks = document.getElementById("completed-tasks");
     if (completedTasks) {
         completedTasks.remove();
         arrow.classList.remove("rotated-90");
@@ -73,9 +73,9 @@ function toggleCompleted () {
 }
 
 function updateTasks () {
-    const activeID = helper.getActiveTaskID();
-    const tasks = document.querySelector("#tasks");
-    const completedTasks = document.querySelector("#completed-tasks")
+    const activeID = helper.getActiveTaskId();
+    const tasks = document.getElementById("tasks");
+    const completedTasks = document.getElementById("completed-tasks")
     helper.removeAllChildren(tasks);
     helper.removeAllChildren(completedTasks);
     addTasksFromList();
@@ -84,9 +84,9 @@ function updateTasks () {
 }
 
 function addTasksFromList() {
-    const tasks = document.querySelector("#tasks");
-    const completedTasks = document.querySelector("#completed-tasks");
-    list.getTasksByFolder(list.getFolder(helper.getActiveFolderID())).forEach( (task) => {
+    const tasks = document.getElementById("tasks");
+    const completedTasks = document.getElementById("completed-tasks");
+    list.getTasksByFolder(list.getFolder(helper.getActiveFolderId())).forEach( (task) => {
         const taskElement = helper.newDiv("id",task.getID(),"class","task");
         taskElement.appendChild(createCheckBox(task));
         taskElement.appendChild(createName(task));
@@ -135,7 +135,7 @@ function createCheckBox (task) {
 function completeTask() {
     const task = list.getTask(this.parentElement.parentElement.id);
     task.toggleCompleted();
-    const activeTaskID = helper.getActiveTaskID()
+    const activeTaskID = helper.getActiveTaskId()
     if (activeTaskID === task.getID() && task.isCompleted()){
         helper.deactivateActiveTaskElement();
     }

@@ -3,30 +3,30 @@ import *  as helper from "./helper-functions.js";
 
 export {createTaskDialog, updateTaskDialog};
 
-function createTaskDialog (list) {
+function createTaskDialog () {
     const taskDialog = helper.newDiv("id","task-dialog");
     return taskDialog;
 }
 
 function updateTaskDialog () {
-    const taskDialog = document.querySelector("#task-dialog");
+    const taskDialog = document.getElementById("task-dialog");
     helper.removeAllChildren(taskDialog);
     addDialogFromTask();
 }
 
 function addDialogFromTask () {
-    const active = helper.getActiveTaskElement();
-    if (!active) return;
-    const taskDialog = document.querySelector("#task-dialog");
-    const task = list.getTask(active.id);
+    const activeID = helper.getActiveTaskId();
+    if (!activeID) return;
+    const taskDialog = document.getElementById("task-dialog");
+    const task = list.getTask(activeID);
 
-    const name = initName(task);
+    const name = createName(task);
     const star = helper.createStarButton(task);
-    const dueDate = initDueDate(task);
-    const notes = initNotes(task);
+    const dueDate = createDueDate(task);
+    const notes = createNotes(task);
     const bottomRow = helper.newDiv("class","bottom-row")
-    const dateAdded = initDateAdded(task);
-    const trash = initTrash(task);
+    const dateAdded = createDateAdded(task);
+    const trash = createTrash(task);
     
     name.appendChild(star)
     bottomRow.appendChild(dateAdded);
@@ -37,41 +37,53 @@ function addDialogFromTask () {
     taskDialog.appendChild(bottomRow);
 }
 
-function initName (task) {
-    const name = helper.createInput("text");
-    const input = name.getElementsByTagName("input")[0];
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            if (!input.value || input.value.trim() === "") return;
-            const task = list.getTask(helper.getActiveTaskElement().id);
-            task.setName(input.value.trim());
-            input.value = "";
-            helper.updateTasks();
-        }
-    });
+function createName (task) {
+    const name = createInput("text");
+    const input = name.firstChild;
     input.value = task.getName();
+    input.onkeydown = receiveNameInput;
     return name;
 }
-function initDueDate (task) {
-    const dueDate = helper.createInput("date");
+
+function createInput(type) {
+    const input = document.createElement("input");
+    input.type = type;
+    const inputWrapper = helper.newDiv("class","input-wrapper");
+    inputWrapper.appendChild(input);
+    return inputWrapper;
+}
+
+function receiveNameInput () {
+    if (event.key === "Enter") {
+        if (!this.value || this.value.trim() === "") return;
+        const task = list.getTask(helper.getActiveTaskId());
+        task.setName(this.value.trim());
+        this.value = "";
+        helper.updateTasks();
+    }
+}
+function receiveDateInput () {
+    const task = list.getTask(helper.getActiveTaskId());
+    task.setDueDate(this.value);
+    helper.updateTasks();
+}
+function createDueDate (task) {
+    const dueDate = createInput("date");
     dueDate.id = "due-date-input-wrapper";
-    const input = dueDate.getElementsByTagName("input")[0];
+    const input = dueDate.firstChild;
+    
     const dueDateInputText = helper.newDiv("class","due-date-input-text");
     dueDate.prepend(dueDateInputText);
     dueDateInputText.textContent = "Add Due Date";
-    input.addEventListener("change", function (event) {
-        const task = list.getTask(helper.getActiveTaskElement().id);
-        task.setDueDate(input.value);
-        helper.updateTasks();
-    });
+    
     input.value = task.getDueDate();
+    input.onchange = receiveDateInput;
 
     let dateColor = "rgb(80,80,80)";
     let dateColorHover = "rgb(160,160,160";
 
     if (task.getDueDate()) {
-        let date = task.getDueDate().split("-");
-        date = new Date (date[0],date[1]-1,date[2]);
+        const date = helper.parseDate(task.getDueDate());
         dueDateInputText.textContent = "Due " + helper.format(date, "E, MMM do, y");
         
         if (helper.compareAsc(date,helper.startOfToday()) === -1) {
@@ -84,6 +96,7 @@ function initDueDate (task) {
 
         input.style.setProperty("--calendar-picker-indicator-filter","opacity(0%)");
         input.style.setProperty("--calendar-picker-indicator-hover-filter","opacity(0%)");
+
         const x_Date = helper.newDiv("id","x-date");
         const x = helper.newDiv();
         x.textContent = "+";
@@ -103,43 +116,41 @@ function initDueDate (task) {
     }
     return dueDate;
 }
-function initNotes (task) {
-    const notesWrapper = helper.newDiv("class","input-wrapper");
-    notesWrapper.id = "notes-wrapper";
-
+function createNotesEditField () {
     const notesEditField = document.createElement("textarea");
     notesEditField.id = "notes-edit-field";
-    notesWrapper.appendChild(notesEditField);
     notesEditField.placeholder = "Notes";
+    return notesEditField;
+}
+function createNotes (task) {
+    const notesWrapper = helper.newDiv("id","notes-wrapper","class","input-wrapper");
+    const notesEditField = createNotesEditField();
     notesEditField.value = task.getNotes();
-
-    setTimeout(function() {
-        notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
-    },0);
-
-    notesEditField.addEventListener("input", function (event) {
-        notesEditField.style.height = "auto";
-        notesEditField.style.height = (notesEditField.scrollHeight-19) + "px";
-    });
-
-    
+    notesEditField.oninput = resize;
+    setTimeout(function() {setProperHeight(notesEditField);},0);
+    notesWrapper.appendChild(notesEditField);
     return notesWrapper;
 }
-function initDateAdded (task) {
+function resize () {
+    this.style.height = "auto";
+    setProperHeight(this);
+}
+function setProperHeight (element) {
+    element.style.height = (element.scrollHeight-19) + "px";
+}
+function createDateAdded (task) {
     const dateAdded = helper.newDiv("class","date-added");
     dateAdded.textContent = "Created " + helper.format(parseInt(task.getID()), "E, MMM do, y");
     return dateAdded;
 }
-function initTrash (task) {
+function createTrash (task) {
     const trash = helper.createTrashButton();
-    trash.addEventListener("click", function (event) {
-        trashTask(task.getID());
-    });
+    trash.onclick = trashTask;
     return trash;
 }
 
-function trashTask(taskID) {
-    list.deleteTask(list.getTask(taskID));
+function trashTask() {
+    list.deleteTask(list.getTask(helper.getActiveTaskId()));
     helper.deactivateActiveTaskElement();
     helper.updateTasks();
 }

@@ -73,8 +73,8 @@ function receiveInput() {
 
 
 function updateFolders () {
-    const activeFolderID = helper.getActiveFolderID();
-    const folders = document.querySelector("#folders");
+    const activeFolderID = helper.getActiveFolderId();
+    const folders = document.getElementById("folders");
     helper.removeAllChildren(folders);
     addFoldersFromList(folders);
     activeFolderID ? helper.activateElementByID(activeFolderID) : folders.firstChild.classList.add("active");
