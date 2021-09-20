@@ -64,7 +64,6 @@ input[type="text"]::placeholder {
     margin: 0 12px 0 auto;
 }
 .plus {
-    color: white;
     display: block;
 }
 #folder-wrapper .plus:hover {
@@ -131,15 +130,18 @@ input[type="text"]::placeholder {
 .folder .trash {
     display: none;
 }
-.folder:hover .trash{
+.folder.active:hover .trash{
     display: block;
     color: rgb(120,120,120);
 }
-.folder:hover .trash:hover {
+.folder.active:hover .trash:hover {
     color: rgb(80,80,80);
 }
 .folder.active {
     background-color: white;
+}
+#folder-wrapper .plus {
+    color: white;
 }
 /* ------------------------------ */
 /* TASK LIST STYLING */
@@ -182,6 +184,9 @@ input[type="text"]::placeholder {
 }
 .task.active svg:hover {
     color: black;
+}
+#task-wrapper .plus {
+    color: rgba(255,255,255,60%);
 }
 #show-completed {
     display: flex;

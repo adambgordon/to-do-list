@@ -70,6 +70,7 @@ function receiveInput() {
         helper.activateElementByID(folder.getID());
         helper.deactivateActiveTaskElement();
         helper.updateTasks();
+        toggleExpanded(this.previousSibling);
     }
 }
 
@@ -90,11 +91,46 @@ function addFoldersFromList (folders) {
             : folder.getName() === "Starred" ? "fas fa-star"
             : "fas fa-folder";
         folderElement.appendChild(helper.createLeftHandIconContainer(fontAwesomeString));
-        folderElement.appendChild(createName(folder));
+
+        const name = createName(folder);
+        name.ondblclick = editFolderName;
+        folderElement.appendChild(name);
+
         addTrash(folderElement,folder);
         folders.appendChild(folderElement);
     });
 }
+
+function editFolderName () {
+    const taskElement = this.parentElement;
+    if (!taskElement.classList.contains("active")) return;
+    if (this.textContent === "All Tasks" || this.textContent === "Starred") return;
+    const folder = list.getFolder(taskElement.id);
+    while (!taskElement.lastChild.classList.contains("left-hand-icon-wrapper")) {
+        taskElement.lastChild.remove();
+    }
+    const input = document.createElement("input");
+    taskElement.appendChild(input);
+    input.id = "folder-edit-field"; // get rid of this
+    input.type = "text";
+    input.value = folder.getName();
+    input.onkeydown = receiveFolderEdit;
+    input.focus();
+    input.select();
+}
+
+function receiveFolderEdit () {
+    if (event.key === "Enter") {
+        if (!this.value || this.value.trim() === "") return;
+        list.getFolder(this.parentElement.id).setName(this.value.trim());
+        this.remove();
+        updateFolders();
+    } else if (event.key === "Escape") {
+        this.remove();
+        updateFolders();
+    }
+}
+
 function addTrash (folderElement,folder) {
     if (folder.getName() !== "All Tasks" && folder.getName() !== "Starred") {
         const trash = helper.createTrashButton();
