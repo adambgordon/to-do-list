@@ -19,10 +19,14 @@ function createTasks () {
 function initInputWrapper (inputWrapper) {
     const plus = helper.createPlus();
     const input = createInput();
+    plus.onclick = directFocus;
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
 
     input.onkeydown = receiveInput;
+}
+function directFocus () {
+    this.nextSibling.focus();
 }
 function receiveInput () {
     if (event.key === "Enter") {

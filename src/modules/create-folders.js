@@ -56,13 +56,9 @@ function toggleExpanded(plus) {
         inputWrapper.classList.add(expanded);
         setTimeout(() => {input.classList.add(expanded);}, 50);
         setTimeout(() => {input.focus();}, 400);
-        // setTimeout(() => {window.onclick = clickAway;}, 500);
     }
 }
-function clickAway () {
-    console.log(event.target);
-    // if (event.target !)
-}
+
 function receiveInput () {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
@@ -77,7 +73,6 @@ function receiveInput () {
         toggleExpanded(this.previousSibling);
     }
 }
-
 
 function updateFolders () {
     const activeFolderID = helper.getActiveFolderId();
