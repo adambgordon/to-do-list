@@ -1,7 +1,7 @@
 const list = require("./list.js");
 import * as helper from "./helper-functions.js"
 
-export {createFolders, buildFolders, updateFolders};
+export {createFolders, buildFolders, updateFolders, toggleExpanded};
 
 function createFolders () {
     const folderWrapper = helper.newDiv("id","folder-wrapper");
@@ -56,10 +56,14 @@ function toggleExpanded(plus) {
         inputWrapper.classList.add(expanded);
         setTimeout(() => {input.classList.add(expanded);}, 50);
         setTimeout(() => {input.focus();}, 400);
+        // setTimeout(() => {window.onclick = clickAway;}, 500);
     }
-    
 }
-function receiveInput() {
+function clickAway () {
+    console.log(event.target);
+    // if (event.target !)
+}
+function receiveInput () {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         const folder = helper.folderFactory(this.value.trim(), Date.now().toString());
@@ -106,12 +110,11 @@ function editFolderName () {
     if (!taskElement.classList.contains("active")) return;
     if (this.textContent === "All Tasks" || this.textContent === "Starred") return;
     const folder = list.getFolder(taskElement.id);
-    while (!taskElement.lastChild.classList.contains("left-hand-icon-wrapper")) {
+    while (!taskElement.lastChild.classList.contains("left-hand-icon-container")) {
         taskElement.lastChild.remove();
     }
     const input = document.createElement("input");
     taskElement.appendChild(input);
-    input.id = "folder-edit-field"; // get rid of this
     input.type = "text";
     input.value = folder.getName();
     input.onkeydown = receiveFolderEdit;
@@ -123,10 +126,8 @@ function receiveFolderEdit () {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         list.getFolder(this.parentElement.id).setName(this.value.trim());
-        this.remove();
         updateFolders();
     } else if (event.key === "Escape") {
-        this.remove();
         updateFolders();
     }
 }

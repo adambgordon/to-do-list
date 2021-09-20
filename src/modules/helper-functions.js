@@ -6,7 +6,7 @@ import startOfToday from "date-fns/startOfToday";
 import taskFactory from "./task.js";
 import folderFactory from "./folder.js";
 import {createTasks, updateTasks} from "./create-tasks.js";
-import {createFolders, buildFolders, updateFolders} from "./create-folders.js"
+import {createFolders, buildFolders, updateFolders, toggleExpanded} from "./create-folders.js"
 import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
 export {
@@ -37,21 +37,18 @@ export function newDiv (type1, value1, type2, value2) {
     }
     return div;
 }
-
 export function newIcon (fontAwesomeString) {
     const classes = fontAwesomeString.split(" ");
     const icon = document.createElement("i");
     classes.forEach(element => { icon.classList.add(element); });
     return icon;
 }
-
 export function removeAllChildren (element) {
     if (!element) return;
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
 }
-
 export function createStarButton (task) {
     const star = newDiv("class","star");
     const fontAwesomeString =  ("fa-star").concat(" ",task.isStarred() ? "fas" : "far");
@@ -59,77 +56,35 @@ export function createStarButton (task) {
     star.onclick = toggleStar;
     return star;
 }
-
+// if current folder is "Starred" and active task is being de-starred, then deactivate
 function toggleStar () {
     const task = list.getTask(this.parentElement.classList.contains("task") ? this.parentElement.id : getActiveTaskId());
     task.toggleStar();
     if(task.isStarred()) list.bumpTaskToTop(task);
-    if (getActiveTaskElement() === this.parentElement && !task.isStarred()
-        && list.getFolder(getActiveFolderId()).getName() === "Starred") {
-            deactivateActiveTaskElement();
+    if (getActiveTaskElement() === this.parentElement
+        && !task.isStarred()
+        && list.getFolder(getActiveFolderId()).getName() === "Starred")
+    {
+        deactivateActiveTaskElement();
     }
     updateTasks();
 }
-
-// if current task is active task > pass thru active id
-//    but if now being unstarred and current folder is starred > pass null
-
 export function createTrashButton () {
     const trash = newDiv("class","trash");
     trash.appendChild(newIcon("far fa-trash-alt"));
     return trash;
 }
-
 export function createLeftHandIconContainer (fontAwesomeString) {
-    const leftHandIconContainer = newDiv("class","left-hand-icon-wrapper");
+    const leftHandIconContainer = newDiv("class","left-hand-icon-container");
     const innerWrapper = newDiv();
     const icon = newIcon(fontAwesomeString);
-
     leftHandIconContainer.append(innerWrapper);
     innerWrapper.appendChild(icon);
-    
     return leftHandIconContainer;
 }
-
 export function initWindowListener () {
-    window.onclick = function (event) {
-        const activeTask = getActiveTaskElement();
-        const activeFolder = getActiveFolderElement();
-        const notesEditField = document.getElementsByTagName("textarea")[0];
-        if (notesEditField && event.target !== notesEditField) {
-            list.getTask(activeTask.id).setNotes(notesEditField.value);
-        }
-        const folderEditField = document.getElementById("folder-edit-field");
-        if (folderEditField && event.target !== folderEditField) {
-            updateFolders();
-        }
-        if (activeTask
-            && (event.target.tagName === "HTML"
-            || event.target.id === "content"
-            || event.target.classList.contains("content-box")
-            || event.target.id === "task-wrapper")) {
-            deactivateActiveTaskElement();
-            updateTaskDialog();
-        }
-        if (event.target.classList.contains("name")) {
-            if (event.target.parentElement.classList.contains("task")) {
-                deactivateActiveTaskElement();
-                if (activeTask !== event.target.parentElement) {
-                    activateElementByID(event.target.parentElement.id);
-                }
-                updateTaskDialog();
-            } else if (event.target.parentElement.classList.contains("folder")) {
-                if (activeFolder !== event.target.parentElement) {
-                    deactivateActiveTaskElement();
-                    deactivateActiveFolderElement();
-                    activateElementByID(event.target.parentElement.id)
-                    updateTasks();
-                }
-            }
-        }
-    }
+    window.onclick = windowActions;
 }
-
 export function getActiveTaskElement () {
     const activeTask = document.querySelector(".active.task");
     return  activeTask ? activeTask : null;
@@ -166,4 +121,65 @@ export function parseDate(date) {
     let parsed = date.split("-");
     parsed = new Date (parsed[0],parsed[1]-1,parsed[2]);
     return parsed;
+}
+function windowActions () {
+    clickOnTask(event);
+    clickOnFolder(event);
+    clickAwayFromNotes(event);
+    clickAwayFromFolderAdd(event);
+    clickAwayFromFolderEdit(event);
+    clickAwayFromActiveTask(event);
+}
+function clickOnTask (event) {
+    const activeTask = getActiveTaskElement();
+    if (event.target.classList.contains("name") && event.target.parentElement.classList.contains("task")) {
+        deactivateActiveTaskElement();
+        if (activeTask !== event.target.parentElement) {
+            activateElementByID(event.target.parentElement.id);
+        }
+        updateTaskDialog();
+    }
+}
+function clickOnFolder (event) {
+    const folders = document.getElementById("folders");
+    if (folders.contains(event.target)) {
+        const activeFolder = getActiveFolderElement();
+        if (activeFolder.contains(event.target)) return;
+        const leftHandIconContainer = event.target.closest(".left-hand-icon-container");
+        if (event.target.classList.contains("name") || leftHandIconContainer) {
+            deactivateActiveTaskElement();
+            deactivateActiveFolderElement();
+            activateElementByID(event.target.closest(".folder").id);
+            updateTasks();
+        }
+    }
+}
+function clickAwayFromNotes (event) {
+    const notes = document.getElementsByTagName("textarea")[0];
+    if (notes && event.target !== notes) {
+        list.getTask(getActiveTaskId()).setNotes(notes.value);
+    }
+}
+function clickAwayFromFolderAdd (event) {
+    const folderInputWrapper = document.querySelector("#folder-wrapper .input-wrapper.expanded")
+    if (folderInputWrapper && !folderInputWrapper.contains(event.target)) {
+        toggleExpanded(folderInputWrapper.firstChild);
+    }
+}
+function clickAwayFromFolderEdit (event) {
+    const folderEditField = document.querySelector("#folders input");
+    if (folderEditField && event.target !== folderEditField) {
+        updateFolders();
+    }
+}
+function clickAwayFromActiveTask (event) {
+    const activeTask = getActiveTaskElement();
+    if (activeTask && (event.target.tagName === "HTML" 
+                        || event.target.id === "content"
+                        || event.target.classList.contains("content-box")
+                        || event.target.id === "task-wrapper"))
+    {
+        deactivateActiveTaskElement();
+        updateTaskDialog();
+    }
 }
