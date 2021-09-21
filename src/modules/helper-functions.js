@@ -56,14 +56,14 @@ export function createStarButton (task) {
     star.onclick = toggleStar;
     return star;
 }
-// if current folder is "Starred" and active task is being de-starred, then deactivate
+// if task is being destarred && current folder is "Starred" && this task is the active task, then deactivate
 function toggleStar () {
     const task = list.getTask(this.parentElement.classList.contains("task") ? this.parentElement.id : getActiveTaskId());
     task.toggleStar();
     if(task.isStarred()) list.bumpTaskToTop(task);
-    if (getActiveTaskElement() === this.parentElement
-        && !task.isStarred()
-        && list.getFolder(getActiveFolderId()).getName() === "Starred")
+    if (!task.isStarred()
+        && list.getFolder(getActiveFolderId()).getName() === "Starred"
+        && ( getActiveTaskElement() === this.parentElement || document.getElementById("task-dialog").contains(this)))
     {
         deactivateActiveTaskElement();
     }
