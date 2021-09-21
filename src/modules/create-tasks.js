@@ -7,12 +7,14 @@ function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
     const taskInputWrapper = helper.newDiv("class","input-wrapper");
     const tasks = helper.newDiv("id","tasks");
+    const menutButtons = helper.newDiv("id","menu-buttons");
     const showCompleted = helper.newDiv("id","show-completed");
     initInputWrapper(taskInputWrapper);
     initCompleted(showCompleted);
+    menutButtons.appendChild(showCompleted);
     taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
-    taskWrapper.appendChild(showCompleted);
+    taskWrapper.appendChild(menutButtons);
     return taskWrapper;
 }
 
