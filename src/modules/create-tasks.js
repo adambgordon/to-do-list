@@ -7,14 +7,12 @@ function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
     const taskInputWrapper = helper.newDiv("class","input-wrapper");
     const tasks = helper.newDiv("id","tasks");
-    const menutButtons = helper.newDiv("id","menu-buttons");
-    const showCompleted = helper.newDiv("id","show-completed");
+    const menuButtons = helper.newDiv("id","menu-buttons");
     initInputWrapper(taskInputWrapper);
-    initCompleted(showCompleted);
-    menutButtons.appendChild(showCompleted);
+    initMenuButtons(menuButtons);
     taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
-    taskWrapper.appendChild(menutButtons);
+    taskWrapper.appendChild(menuButtons);
     return taskWrapper;
 }
 
@@ -24,7 +22,6 @@ function initInputWrapper (inputWrapper) {
     plus.onclick = directFocus;
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
-
     input.onkeydown = receiveInput;
 }
 function directFocus () {
@@ -62,7 +59,12 @@ function initCompleted (button) {
     button.appendChild(arrow);
     button.onclick = toggleCompleted;
 }
+function initMenuButtons (menuButtons) {
+    const showCompleted = helper.newDiv("id","show-completed");
+    initCompleted(showCompleted);
+    menuButtons.appendChild(showCompleted);
 
+}
 function toggleCompleted () {
     const taskWrapper = document.getElementById("task-wrapper");
     const arrow = this.getElementsByClassName("arrow")[0];
@@ -89,6 +91,17 @@ function updateTasks () {
     helper.updateTaskDialog();
 }
 
+function adjustPositioning () {
+    const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
+    if (this.scrollTop === 0 && paddingTop !== 8) {
+        this.style.paddingTop = "8px";
+        this.style.marginTop = "-8px";
+    } else if (this.scrollTop !== 0 && paddingTop !== 0) {
+        this.style.paddingTop = "0px";
+        this.style.marginTop = "0px";
+    }
+}
+
 function addTasksFromList() {
     const tasks = document.getElementById("tasks");
     const completedTasks = document.getElementById("completed-tasks");
@@ -104,6 +117,8 @@ function addTasksFromList() {
             completedTasks.appendChild(taskElement);
         }}
     });
+    tasks.onscroll = adjustPositioning;
+    if (completedTasks) completedTasks.onscroll = adjustPositioning;
 }
 
 function createName (task) {

@@ -147,30 +147,35 @@ input[type="text"]::placeholder {
 /* ------------------------------ */
 #task-wrapper {
     width: 26.5rem;
-    /* border: 1px solid green; */
 }
 #task-wrapper > div {
     width: 25rem;
 }
 #tasks, #completed-tasks {
-    padding-top: 2px;
-    padding-bottom: 2px;
+    position: relative;
+    padding-top: 8px;
+    margin-top: -8px;
+    padding-bottom: 12px;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     max-height: 28rem;
     overflow-y: scroll;
-    /* border: 1px solid yellow; */
 }
 .task {
     background-color: white;
     position: relative;
 }
 #task-wrapper > .input-wrapper {
-    margin: 0 auto;
+    position: relative;
+    margin: 0 auto 2px;
     background-color: rgba(0,0,0,20%);
 }
+#task-wrapper > .input-wrapper:hover {
+    cursor: text;
+}
 #menu-buttons {
-    margin: 0 auto;
+    margin: 1rem auto;
+    padding: 0;
 }
 .due-date {
     font-size: 0.6rem;
@@ -210,20 +215,20 @@ input[type="text"]::placeholder {
     color: rgba(255,255,255,60%);
 }
 
-#show-completed {
+#menu-buttons > div {
     display: flex;
     color: white;
-    margin: 0.5rem 0;
     padding: 0.5rem 0.5rem 0.5rem 0.75rem;
     border-radius: 5px;                                                                 
     width: 5rem;
     user-select: none;
-    box-shadow: 0 1px 3px 1px rgba(0,0,0,20%);
-    text-shadow: 0px 1px 3px rgba(0,0,0,50%);
+    box-shadow: 0 1px 3px 1px rgba(0,0,0,30%);
+    text-shadow: 0px 1px 3px rgba(0,0,0,60%);
+    background-color: rgba(255,255,255,10%);
 }
-#show-completed:hover {
+#menu-buttons > div:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,20%);
+    background-color: rgba(0,0,0,15%);
     box-shadow: none;
 }
 .arrow {
