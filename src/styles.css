@@ -44,7 +44,7 @@ input[type="text"] {
     padding: 0;
 }
 input[type="text"]::placeholder {
-    color: rgba(255,255,255,60%);
+    color: rgba(255,255,255,75%);
 }
 .folder:hover, .task:hover {
     cursor: default;
@@ -71,11 +71,16 @@ input[type="text"]::placeholder {
 }
 .plus > div {
     position: relative;
-    top: 12px;
+    top: 14px;
     left: 10px;
     transition: all 300ms ease;
-    height: fit-content;
-    width: fit-content;
+    height: 12.8px;
+    width: 11.2px;
+}
+.plus svg {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 .plus > div.expanded {
     transform: rotate(180deg);
@@ -103,11 +108,11 @@ input[type="text"]::placeholder {
     transition: all 300ms ease;
 }
 #folder-wrapper > .input-wrapper:hover {
-    background-color: rgba(0,0,0,20%);
+    background-color: rgba(0,0,0,25%);
 }
 #folder-wrapper > .input-wrapper.expanded {
     max-width: 12rem;
-    background-color: rgba(0,0,0,20%);
+    background-color: rgba(0,0,0,25%);
 }
 
 #folder-wrapper > .input-wrapper > input {
@@ -141,6 +146,7 @@ input[type="text"]::placeholder {
 }
 #folder-wrapper .plus {
     color: white;
+    filter: drop-shadow(0px 1px 1px rgba(0,0,0,50%));
 }
 /* ------------------------------ */
 /* TASK LIST STYLING */
@@ -160,6 +166,7 @@ input[type="text"]::placeholder {
     padding-right: 0.75rem;
     max-height: 28rem;
     overflow-y: scroll;
+    overscroll-behavior-y: contain;
 }
 .task {
     background-color: white;
@@ -168,21 +175,18 @@ input[type="text"]::placeholder {
 #task-wrapper > .input-wrapper {
     position: relative;
     margin: 0 auto 2px;
-    background-color: rgba(0,0,0,20%);
+    background-color: rgba(0,0,0,25%);
 }
 #task-wrapper > .input-wrapper:hover {
     cursor: text;
 }
 #menu-buttons {
     margin: 1rem auto;
-    padding: 0;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* border: 1px solid green; */
-}
-#menu-buttons > div {
-    margin: 1rem auto;
+    font-size: 0.7rem;
+    border-radius: 5px;                 
+    background-color: rgba(0,0,0,25%);
     display: flex;
+    justify-content: space-between;
 }
 .due-date {
     font-size: 0.6rem;
@@ -209,7 +213,7 @@ input[type="text"]::placeholder {
     margin-top: -2px;
     margin-bottom: 0px;
     font-weight: 600;
-    box-shadow: 0 4px 8px 6px rgba(0,0,0,30%);
+    box-shadow: 0 3px 6px 6px rgba(0,0,0,30%);
     z-index: 1;
 }
 .task.active  svg {
@@ -219,57 +223,67 @@ input[type="text"]::placeholder {
     color: black;
 }
 #task-wrapper .plus {
-    color: rgba(255,255,255,60%);
+    color: rgba(255,255,255,75%);
 }
-#menu-buttons > div > div {
+#menu-buttons > div {
     display: flex;
     color: white;
-    margin-right: 1rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+    flex-grow: 1;
+    height: 2.5rem;
     border-radius: 5px;                                                                 
     user-select: none;
     align-items: center;
-    box-shadow: 0 1px 3px 1px rgba(0,0,0,30%);
-    text-shadow: 0px 1px 3px rgba(0,0,0,75%);
-    background-color: rgba(255,255,255,10%);
+    justify-content: center;
+    text-shadow: 0px 1px 1px rgba(0,0,0,50%);
+    transition: all 150ms ease;
 }
-#menu-buttons > div > div:hover {
+#menu-buttons > div:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,15%);
-    box-shadow: none;
-}
-.sort {
-    width: fit-content;
+    background-color: rgba(0,0,0,25%);
 }
 .sort > div {
     white-space: nowrap;
 }
-#menu-buttons svg {
-    filter: drop-shadow(0px 1px 3px rgba(0,0,0,75%));
+.sort > div:nth-child(2) {
+    margin: 0 4px;
 }
-#show-completed {
-    width: 5rem;
+#show-completed > div:nth-child(1) {
+    margin-right: 6px;
 }
 .caret {
-    font-size: 0.9rem;
-    margin-left: 10px;
+    position: relative;
+    font-size: 0.8rem;
+    height: 12.8px;
+    width: 4.8px;
     transition: all 100ms ease;
 }
-.caret.rotated-90 {
-    margin-left: 10px;
+.caret svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: drop-shadow(0px 1px 1px rgba(0,0,0,50%));
 }
 .rotated-90 {
+    filter: drop-shadow(1px 0px 1px rgba(0,0,0,50%));
     transform: rotate(90deg);
-    transition: all 100ms ease;
+    transition: all 150ms ease-in-out;
 }
 .arrows {
-    font-size: 0.9rem;  
-    margin-left: 8px;
-    transition: all 100ms ease;
+    position: relative;
+    height: 0.7rem;
+    width: 0.7rem;
 }
 .arrows svg {
-    vertical-align: middle;
     transform: rotate(90deg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: drop-shadow(1px 0px 1px rgba(0,0,0,50%));
+}
+.on {
+    filter: none;
+    transform: rotate(180deg);
+    transition: all 300ms ease-in-out;
 }
 
 
@@ -285,10 +299,10 @@ input[type="text"]::placeholder {
 #task-dialog {
     margin-right: auto;
     border-radius: 5px;
-    background-color: rgba(0,0,0,30%);
+    background-color: rgba(0,0,0,25%);
     width: 15rem;
     height: fit-content;
-    box-shadow: 0 4px 8px 6px rgba(0,0,0,30%);
+    box-shadow: 0 3px 6px 6px rgba(0,0,0,30%);
 }
 #task-dialog .input-wrapper {
     background-color: white;

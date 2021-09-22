@@ -69,27 +69,31 @@ function createSortButton (sortMethod,buttonText) {
     const arrows = helper.newDiv("class","arrows");
     const arrowsIcon = helper.newIcon("fas fas fa-exchange-alt");
     arrows.appendChild(arrowsIcon);
-    button.appendChild(text);
     button.appendChild(arrows);
+    button.appendChild(text);
     text.textContent = buttonText;
-    button.onclick = () => {sortBy(sortMethod);}
+    button.dataset.sortMethod = sortMethod;
+    button.onclick = sort;
     return button;
 }
-function sortBy(sortMethod) {
+function sort () {
+    const arrows = this.getElementsByClassName("arrows")[0];
+    arrows.addEventListener("transitionend", resetAnimation);
+    arrows.classList.add("on");
+    let sortMethod = this.dataset.sortMethod;
     sortMethod = sortMethod[0].toUpperCase() + sortMethod.slice(1);
     list["sortTasksBy"+sortMethod]();
     updateTasks();
 }
+function resetAnimation () {
+    this.classList.remove("on");
+}
 function initMenuButtons (menuButtons) {
-    const row1 = helper.newDiv();
-    const row2 = helper.newDiv();
-    row1.appendChild(createSortButton("name","A-Z"));
-    row1.appendChild(createSortButton("star","Starred"));
-    row1.appendChild(createSortButton("dueDate","Due Date"));
-    row1.appendChild(createSortButton("dateAdded","Date Added"));
-    row2.appendChild(createCompletedButton());
-    menuButtons.appendChild(row1);
-    menuButtons.appendChild(row2);
+    menuButtons.appendChild(createCompletedButton());
+    menuButtons.appendChild(createSortButton("name","A-Z"));
+    menuButtons.appendChild(createSortButton("star","Starred"));
+    menuButtons.appendChild(createSortButton("dueDate","Due Date"));
+    menuButtons.appendChild(createSortButton("dateAdded","Date Added"));
 }
 function toggleCompleted () {
     const taskWrapper = document.getElementById("task-wrapper");
