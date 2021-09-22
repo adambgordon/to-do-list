@@ -6,11 +6,10 @@
 /* ------------------------------ */
 body {
     font-family: 'Roboto', Arial, sans-serif;
-    font-size: 0.8rem;
+    font-size: 13px;
     background: url('./assets/background.jpeg') no-repeat center center fixed;
     background-size: cover;
     height: 100%;
-    /* overflow: hidden; */
     color: rgb(80,80,80);
 }
 #content {
@@ -31,7 +30,7 @@ input:focus, textarea:focus {
 }
 .name, input {
     font-family: 'Roboto', Arial, sans-serif;
-    font-size: 0.8rem;
+    font-size: 13px;
     height: 2.5rem;
     flex-grow: 1;
     display: flex;
@@ -74,8 +73,8 @@ input[type="text"]::placeholder {
     top: 14px;
     left: 10px;
     transition: all 300ms ease;
-    height: 12.8px;
-    width: 11.2px;
+    height: 13px;
+    width: 11.375px;
 }
 .plus svg {
     position: absolute;
@@ -143,6 +142,7 @@ input[type="text"]::placeholder {
 }
 .folder.active {
     background-color: white;
+    box-shadow: 0px 1px 3px 2px rgba(0,0,0,10%);
 }
 #folder-wrapper .plus {
     color: white;
@@ -168,6 +168,9 @@ input[type="text"]::placeholder {
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 }
+#tasks:empty, #completed-tasks:empty {
+    display: none;
+}
 .task {
     background-color: white;
     position: relative;
@@ -180,11 +183,12 @@ input[type="text"]::placeholder {
 #task-wrapper > .input-wrapper:hover {
     cursor: text;
 }
-#menu-buttons {
+#menu {
     margin: 1rem auto;
-    font-size: 0.7rem;
+    font-size: 11px;
     border-radius: 5px;                 
-    background-color: rgba(0,0,0,25%);
+    background-color: rgba(255,255,255,60%);
+    box-shadow: 0px 1px 3px 2px rgba(0,0,0,10%);
     display: flex;
     justify-content: space-between;
 }
@@ -213,7 +217,7 @@ input[type="text"]::placeholder {
     margin-top: -2px;
     margin-bottom: 0px;
     font-weight: 600;
-    box-shadow: 0 3px 6px 6px rgba(0,0,0,30%);
+    box-shadow: 0 2px 5px 5px rgba(0,0,0,20%);
     z-index: 1;
 }
 .task.active  svg {
@@ -225,67 +229,63 @@ input[type="text"]::placeholder {
 #task-wrapper .plus {
     color: rgba(255,255,255,75%);
 }
-#menu-buttons > div {
+#menu > div {
     display: flex;
-    color: white;
+    /* color: white; */
+    color: rgb(80,80,80);
     flex-grow: 1;
     height: 2.5rem;
     border-radius: 5px;                                                                 
     user-select: none;
     align-items: center;
     justify-content: center;
-    text-shadow: 0px 1px 1px rgba(0,0,0,50%);
     transition: all 150ms ease;
 }
-#menu-buttons > div:hover {
+#menu > div:hover {
     cursor: pointer;
-    background-color: rgba(0,0,0,25%);
+    background-color: rgba(255,255,255,100%);
 }
 .sort > div {
     white-space: nowrap;
 }
 .sort > div:nth-child(2) {
-    margin: 0 4px;
+    margin: 0 3px;
 }
 #show-completed > div:nth-child(1) {
     margin-right: 6px;
 }
 .caret {
     position: relative;
-    font-size: 0.8rem;
-    height: 12.8px;
-    width: 4.8px;
-    transition: all 100ms ease;
+    font-size: 13px;
+    height: 13px;
+    width: 4.875px;
+    transition: all 150ms ease;
 }
 .caret svg {
     position: absolute;
     top: 0;
     left: 0;
-    filter: drop-shadow(0px 1px 1px rgba(0,0,0,50%));
 }
 .rotated-90 {
-    filter: drop-shadow(1px 0px 1px rgba(0,0,0,50%));
     transform: rotate(90deg);
     transition: all 150ms ease-in-out;
 }
 .arrows {
+    font-size: 9px;
     position: relative;
-    height: 0.7rem;
-    width: 0.7rem;
+    height: 9px;
+    width: 9px;
 }
 .arrows svg {
     transform: rotate(90deg);
     position: absolute;
     top: 0;
     left: 0;
-    filter: drop-shadow(1px 0px 1px rgba(0,0,0,50%));
 }
 .on {
-    filter: none;
     transform: rotate(180deg);
-    transition: all 300ms ease-in-out;
+    transition: all 200ms ease-in-out;
 }
-
 
 /* ------------------------------ */
 /* TASK DIALOG STYLING */
@@ -299,10 +299,10 @@ input[type="text"]::placeholder {
 #task-dialog {
     margin-right: auto;
     border-radius: 5px;
-    background-color: rgba(0,0,0,25%);
+    background-color: rgba(0,0,0,20%);
     width: 15rem;
     height: fit-content;
-    box-shadow: 0 3px 6px 6px rgba(0,0,0,30%);
+    box-shadow: 0 2px 5px 5px rgba(0,0,0,20%);
 }
 #task-dialog .input-wrapper {
     background-color: white;

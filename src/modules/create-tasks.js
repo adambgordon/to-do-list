@@ -7,14 +7,14 @@ function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
     const taskInputWrapper = helper.newDiv("class","input-wrapper");
     const tasks = helper.newDiv("id","tasks");
-    const menuButtons = helper.newDiv("id","menu-buttons");
+    const menu = helper.newDiv("id","menu");
 
     initInputWrapper(taskInputWrapper);
-    initMenuButtons(menuButtons);
+    initMenu(menu);
 
     taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
-    taskWrapper.appendChild(menuButtons);
+    taskWrapper.appendChild(menu);
     return taskWrapper;
 }
 
@@ -88,12 +88,12 @@ function sort () {
 function resetAnimation () {
     this.classList.remove("on");
 }
-function initMenuButtons (menuButtons) {
-    menuButtons.appendChild(createCompletedButton());
-    menuButtons.appendChild(createSortButton("name","A-Z"));
-    menuButtons.appendChild(createSortButton("star","Starred"));
-    menuButtons.appendChild(createSortButton("dueDate","Due Date"));
-    menuButtons.appendChild(createSortButton("dateAdded","Date Added"));
+function initMenu (menu) {
+    menu.appendChild(createCompletedButton());
+    menu.appendChild(createSortButton("name","A-Z"));
+    menu.appendChild(createSortButton("star","Starred"));
+    menu.appendChild(createSortButton("dueDate","Due Date"));
+    menu.appendChild(createSortButton("dateAdded","Date Added"));
 }
 function toggleCompleted () {
     const taskWrapper = document.getElementById("task-wrapper");
@@ -118,6 +118,12 @@ function updateTasks () {
     addTasksFromList();
     if (activeID) helper.activateElementByID(activeID);
     helper.updateTaskDialog();
+    setMenuMargin();
+}
+
+function setMenuMargin() {
+    const menu = document.getElementById("menu");
+    menu.style.marginTop = menu.previousSibling.firstChild ? "1rem" : "0px";
 }
 
 function adjustPositioning () {
