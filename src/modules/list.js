@@ -45,8 +45,55 @@ const list = function () {
     const printTasks = function () {
         console.log(_tasks.map( (element) => { return element.getName(); }));
     }
-    const sortStarredFirst = function () {
-        return;
+    const sortTasksByCompleted = function () {
+        _tasks.sort(function(a,b) {
+            if (!a.isCompleted() && b.isCompleted()) return -1;
+            if (a.isCompleted() && !b.isCompleted()) return 1;
+            return 0;
+        });
+    }
+    const sortTasksByName = function () {
+        _tasks.sort(function(a,b) {
+            if (a.isCompleted() || b.isCompleted()) return 0;
+            const nameA = a.getName().toUpperCase();
+            const nameB = b.getName().toUpperCase();
+            if(nameA < nameB) return -1;
+            if(nameA > nameB) return 1;
+            return 0;
+        });
+    }
+    const sortTasksByStar = function () {
+        _tasks.sort(function(a,b) {
+            if (a.isCompleted() || b.isCompleted()) return 0;
+            if(a.isStarred() && !b.isStarred()) return -1;
+            if(!a.isStarred() && b.isStarred()) return 1;
+            return 0;
+        });
+    }
+    const sortTasksByDueDate = function () {
+        _tasks.sort(function(a,b) {
+            if (a.isCompleted() || b.isCompleted()) return 0;
+            const dueDateA = a.getDueDate();
+            const dueDateB = b.getDueDate();
+            if (dueDateA && dueDateB) {
+                if (dueDateA < dueDateB) return -1;
+                if (dueDateA > dueDateB) return 1;
+                return 0;
+            }
+            if (dueDateA && !dueDateB) return -1;
+            if (!dueDateA && dueDateB) return 1;
+            return 0;
+        });
+    }
+    const sortTasksByDateAdded = function () {
+        _tasks.sort(function(a,b) {
+            if (a.isCompleted() || b.isCompleted()) return 0;
+            const dateAddedA = a.getID();
+            const dateAddedB = b.getID();
+            if (dateAddedB < dateAddedA) return -1;
+            if (dateAddedB > dateAddedA) return 1;
+            return 0;
+        });
     }
     return {
         addFolder,
@@ -60,7 +107,11 @@ const list = function () {
         deleteTask,
         bumpTaskToTop,
         printTasks,
-        sortStarredFirst
+        sortTasksByCompleted,
+        sortTasksByName,
+        sortTasksByStar,
+        sortTasksByDueDate,
+        sortTasksByDateAdded
     };
 }();
 

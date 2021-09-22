@@ -8,8 +8,10 @@ function createTasks () {
     const taskInputWrapper = helper.newDiv("class","input-wrapper");
     const tasks = helper.newDiv("id","tasks");
     const menuButtons = helper.newDiv("id","menu-buttons");
+
     initInputWrapper(taskInputWrapper);
     initMenuButtons(menuButtons);
+
     taskWrapper.appendChild(taskInputWrapper);
     taskWrapper.appendChild(tasks);
     taskWrapper.appendChild(menuButtons);
@@ -49,37 +51,60 @@ function createInput () {
     return input;
 }
 
-function initCompleted (button) {
+function createCompletedButton () {
+    const button = helper.newDiv("id","show-completed");
     const text = helper.newDiv();
     text.textContent = "Completed";
-    const arrow = helper.newDiv("class","arrow");
-    const arrowIcon = helper.newIcon("fas fa-caret-right")
-    arrow.appendChild(arrowIcon);
+    const caret = helper.newDiv("class","caret");
+    const caretIcon = helper.newIcon("fas fa-caret-right");
+    caret.appendChild(caretIcon);
     button.appendChild(text);
-    button.appendChild(arrow);
+    button.appendChild(caret);
     button.onclick = toggleCompleted;
+    return button;
+}
+function createSortButton (sortMethod,buttonText) {
+    const button = helper.newDiv("class","sort");
+    const text = helper.newDiv();
+    const arrows = helper.newDiv("class","arrows");
+    const arrowsIcon = helper.newIcon("fas fas fa-exchange-alt");
+    arrows.appendChild(arrowsIcon);
+    button.appendChild(text);
+    button.appendChild(arrows);
+    text.textContent = buttonText;
+    button.onclick = () => {sortBy(sortMethod);}
+    return button;
+}
+function sortBy(sortMethod) {
+    sortMethod = sortMethod[0].toUpperCase() + sortMethod.slice(1);
+    list["sortTasksBy"+sortMethod]();
+    updateTasks();
 }
 function initMenuButtons (menuButtons) {
-    const showCompleted = helper.newDiv("id","show-completed");
-    initCompleted(showCompleted);
-    menuButtons.appendChild(showCompleted);
-
+    const row1 = helper.newDiv();
+    const row2 = helper.newDiv();
+    row1.appendChild(createSortButton("name","A-Z"));
+    row1.appendChild(createSortButton("star","Starred"));
+    row1.appendChild(createSortButton("dueDate","Due Date"));
+    row1.appendChild(createSortButton("dateAdded","Date Added"));
+    row2.appendChild(createCompletedButton());
+    menuButtons.appendChild(row1);
+    menuButtons.appendChild(row2);
 }
 function toggleCompleted () {
     const taskWrapper = document.getElementById("task-wrapper");
-    const arrow = this.getElementsByClassName("arrow")[0];
+    const caret = this.getElementsByClassName("caret")[0];
     let completedTasks = document.getElementById("completed-tasks");
     if (completedTasks) {
         completedTasks.remove();
-        arrow.classList.remove("rotated-90");
+        caret.classList.remove("rotated-90");
     } else {
         completedTasks = helper.newDiv("id","completed-tasks");
         taskWrapper.appendChild(completedTasks);
-        arrow.classList.add("rotated-90");
+        caret.classList.add("rotated-90");
     }
     updateTasks();
 }
-
 function updateTasks () {
     const activeID = helper.getActiveTaskId();
     const tasks = document.getElementById("tasks");
@@ -105,6 +130,7 @@ function adjustPositioning () {
 function addTasksFromList() {
     const tasks = document.getElementById("tasks");
     const completedTasks = document.getElementById("completed-tasks");
+    list.sortTasksByCompleted();
     list.getTasksByFolder(list.getFolder(helper.getActiveFolderId())).forEach( (task) => {
         const taskElement = helper.newDiv("id",task.getID(),"class","task");
         taskElement.appendChild(createCheckBox(task));
@@ -149,16 +175,17 @@ function createCheckBox (task) {
     const leftHandIconContainer = helper.createLeftHandIconContainer(fontAwesomeString);
     const checkBox = leftHandIconContainer.firstChild;
     checkBox.classList.add("check-box");
-    checkBox.onclick = completeTask;
+    checkBox.onclick = checkTask;
     return leftHandIconContainer;
 }
 
-function completeTask() {
+function checkTask() {
     const task = list.getTask(this.parentElement.parentElement.id);
     task.toggleCompleted();
     const activeTaskID = helper.getActiveTaskId()
     if (activeTaskID === task.getID() && task.isCompleted()){
         helper.deactivateActiveTaskElement();
     }
+    if (!task.isCompleted()) list.bumpTaskToTop(task);
     updateTasks();
 }

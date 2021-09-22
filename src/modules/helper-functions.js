@@ -60,7 +60,7 @@ export function createStarButton (task) {
 function toggleStar () {
     const task = list.getTask(this.parentElement.classList.contains("task") ? this.parentElement.id : getActiveTaskId());
     task.toggleStar();
-    if(task.isStarred()) list.bumpTaskToTop(task);
+    if(task.isStarred() && !task.isCompleted()) list.bumpTaskToTop(task);
     if (!task.isStarred()
         && list.getFolder(getActiveFolderId()).getName() === "Starred"
         && ( getActiveTaskElement() === this.parentElement || document.getElementById("task-dialog").contains(this)))

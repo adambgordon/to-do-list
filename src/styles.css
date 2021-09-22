@@ -176,6 +176,13 @@ input[type="text"]::placeholder {
 #menu-buttons {
     margin: 1rem auto;
     padding: 0;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* border: 1px solid green; */
+}
+#menu-buttons > div {
+    margin: 1rem auto;
+    display: flex;
 }
 .due-date {
     font-size: 0.6rem;
@@ -214,38 +221,57 @@ input[type="text"]::placeholder {
 #task-wrapper .plus {
     color: rgba(255,255,255,60%);
 }
-
-#menu-buttons > div {
+#menu-buttons > div > div {
     display: flex;
     color: white;
+    margin-right: 1rem;
     padding: 0.5rem 0.5rem 0.5rem 0.75rem;
     border-radius: 5px;                                                                 
-    width: 5rem;
     user-select: none;
+    align-items: center;
     box-shadow: 0 1px 3px 1px rgba(0,0,0,30%);
-    text-shadow: 0px 1px 3px rgba(0,0,0,60%);
+    text-shadow: 0px 1px 3px rgba(0,0,0,75%);
     background-color: rgba(255,255,255,10%);
 }
-#menu-buttons > div:hover {
+#menu-buttons > div > div:hover {
     cursor: pointer;
     background-color: rgba(0,0,0,15%);
     box-shadow: none;
 }
-.arrow {
+.sort {
+    width: fit-content;
+}
+.sort > div {
+    white-space: nowrap;
+}
+#menu-buttons svg {
+    filter: drop-shadow(0px 1px 3px rgba(0,0,0,75%));
+}
+#show-completed {
+    width: 5rem;
+}
+.caret {
     font-size: 0.9rem;
-    margin-left: 12px;
+    margin-left: 10px;
     transition: all 100ms ease;
 }
-.arrow.rotated-90 {
+.caret.rotated-90 {
     margin-left: 10px;
 }
 .rotated-90 {
     transform: rotate(90deg);
     transition: all 100ms ease;
 }
-.arrow svg {
-    filter: drop-shadow(0px 1px 3px rgba(0,0,0,50%));
+.arrows {
+    font-size: 0.9rem;  
+    margin-left: 8px;
+    transition: all 100ms ease;
 }
+.arrows svg {
+    vertical-align: middle;
+    transform: rotate(90deg);
+}
+
 
 /* ------------------------------ */
 /* TASK DIALOG STYLING */
