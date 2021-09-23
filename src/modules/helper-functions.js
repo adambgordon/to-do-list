@@ -129,14 +129,16 @@ function windowActions () {
     clickAwayFromFolderAdd(event);
     clickAwayFromFolderEdit(event);
     clickAwayFromActiveTask(event);
+    clickAwayFromTaskEdit(event);
 }
 function clickOnTask (event) {
     const activeTask = getActiveTaskElement();
-    if (event.target.classList.contains("name") && event.target.parentElement.classList.contains("task")) {
+    if (event.target.classList.contains("name")
+        && event.target.parentElement.classList.contains("task")
+        && activeTask !== event.target.parentElement)
+    {
         deactivateActiveTaskElement();
-        if (activeTask !== event.target.parentElement) {
-            activateElementByID(event.target.parentElement.id);
-        }
+        activateElementByID(event.target.parentElement.id);
         updateTaskDialog();
     }
 }
@@ -167,12 +169,19 @@ function clickAwayFromFolderAdd (event) {
     }
 }
 function clickAwayFromFolderEdit (event) {
-    const folderEditField = document.querySelector("#folders input");
+    const folderEditField = document.querySelector(".folder > input");
     if (folderEditField && event.target !== folderEditField) {
         updateFolders();
     }
 }
+function clickAwayFromTaskEdit (event) {
+    const taskEditField = document.querySelector(".task > input");
+    if (taskEditField && event.target !== taskEditField) {
+        updateTasks();
+    }
+}
 function clickAwayFromActiveTask (event) {
+    if (document.querySelector(".task > input")) return;
     const activeTask = getActiveTaskElement();
     if (activeTask && (event.target.tagName === "HTML" 
                         || event.target.id === "content"

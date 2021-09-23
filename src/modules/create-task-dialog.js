@@ -37,6 +37,7 @@ function addDialogFromTask () {
     taskDialog.appendChild(bottomRow);
 
     if (task.isCompleted()) {
+        taskDialog.firstChild.style.textDecoration = "line-through";
         for (let i = 0; i < taskDialog.children.length; i++) {
             taskDialog.children[i].style.backgroundColor = "rgba(255,255,255,75%)";
             taskDialog.children[i].style.backdropFilter = "blur(3px)";

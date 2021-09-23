@@ -92,7 +92,7 @@ function addFoldersFromList (folders) {
         folderElement.appendChild(helper.createLeftHandIconContainer(fontAwesomeString));
 
         const name = createName(folder);
-        name.ondblclick = editFolderName;
+        name.ondblclick = editName;
         folderElement.appendChild(name);
 
         addTrash(folderElement,folder);
@@ -100,24 +100,24 @@ function addFoldersFromList (folders) {
     });
 }
 
-function editFolderName () {
-    const taskElement = this.parentElement;
-    if (!taskElement.classList.contains("active")) return;
+function editName () {
+    const folderElement = this.parentElement;
+    if (!folderElement.classList.contains("active")) return;
     if (this.textContent === "All Tasks" || this.textContent === "Starred") return;
-    const folder = list.getFolder(taskElement.id);
-    while (!taskElement.lastChild.classList.contains("left-hand-icon-container")) {
-        taskElement.lastChild.remove();
+    const folder = list.getFolder(folderElement.id);
+    while (!folderElement.lastChild.classList.contains("left-hand-icon-container")) {
+        folderElement.lastChild.remove();
     }
     const input = document.createElement("input");
-    taskElement.appendChild(input);
+    folderElement.appendChild(input);
     input.type = "text";
     input.value = folder.getName();
-    input.onkeydown = receiveFolderEdit;
+    input.onkeydown = receiveEdit;
     input.focus();
     input.select();
 }
 
-function receiveFolderEdit () {
+function receiveEdit () {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         list.getFolder(this.parentElement.id).setName(this.value.trim());

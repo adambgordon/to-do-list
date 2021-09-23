@@ -160,9 +160,30 @@ function addTasksFromList() {
 function createName (task) {
     const name = helper.newDiv("class","name");
     name.textContent = task.getName();
+    name.ondblclick = editName;
     return name;
 }
-
+function editName () {
+    const taskElement = this.parentElement;
+    const task = list.getTask(taskElement.id);
+    this.remove();
+    const input = document.createElement("input");
+    taskElement.insertBefore(input,taskElement.firstChild.nextSibling);
+    input.type = "text";
+    input.value = task.getName();
+    input.onkeydown = receiveEdit;
+    input.focus();
+    input.select();
+}
+function receiveEdit () {
+    if (event.key === "Enter") {
+        if (!this.value || this.value.trim() === "") return;
+        list.getTask(this.parentElement.id).setName(this.value.trim());
+        updateTasks();
+    } else if (event.key === "Escape") {
+        updateTasks();
+    }
+}
 function createDueDate (task) {
     const dueDate = helper.newDiv("class","due-date");
     if (!task.getDueDate()) {
