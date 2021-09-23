@@ -133,7 +133,7 @@ function windowActions () {
 }
 function clickOnTask (event) {
     const activeTask = getActiveTaskElement();
-    if (event.target.classList.contains("name")
+    if ((event.target.classList.contains("name") || event.target.classList.contains("due-date"))
         && event.target.parentElement.classList.contains("task")
         && activeTask !== event.target.parentElement)
     {

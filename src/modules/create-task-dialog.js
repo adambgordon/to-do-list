@@ -115,12 +115,14 @@ function updateDueDateInputText(text,unformattedDate) {
     }
 }
 function createX () {
-    const x_Date = helper.newDiv("id","x-date");
+    const x_outer = helper.newDiv("id","x-date");
+    const x_inner = helper.newDiv();
     const x = helper.newDiv();
     x.textContent = "+";
-    x_Date.appendChild(x);
-    x_Date.onclick = clearDueDate;
-    return x_Date;
+    x_inner.append(x);
+    x_outer.appendChild(x_inner);
+    x_outer.onclick = clearDueDate;
+    return x_outer;
 }
 function clearDueDate () {
     list.getTask(helper.getActiveTaskId()).setDueDate(false);
