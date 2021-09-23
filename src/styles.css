@@ -99,6 +99,7 @@ input[type="text"]::placeholder {
 }
 .folder {
     background-color: rgba(255,255,255,60%);
+    backdrop-filter: blur(3px);
     font-weight: 500;
 }
 #folder-wrapper > .input-wrapper {
@@ -109,10 +110,12 @@ input[type="text"]::placeholder {
 }
 #folder-wrapper > .input-wrapper:hover {
     background-color: rgba(0,0,0,25%);
+    backdrop-filter: blur(3px);
 }
 #folder-wrapper > .input-wrapper.expanded {
     max-width: 12rem;
     background-color: rgba(0,0,0,25%);
+    backdrop-filter: blur(3px);
 }
 
 #folder-wrapper > .input-wrapper > input {
@@ -160,11 +163,9 @@ input[type="text"]::placeholder {
 }
 #tasks, #completed-tasks {
     position: relative;
-    padding-top: 8px;
-    margin-top: -8px;
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-    max-height: 28rem;
+    padding: 8px 12px;
+    margin: -8px 0px;
+    max-height: 26.5rem;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 }
@@ -176,14 +177,19 @@ input[type="text"]::placeholder {
     position: relative;
     box-shadow: 0px 1px 3px 2px rgba(0,0,0,10%);
 }
+.task:last-child {
+    margin-bottom: 0px;
+}
 #completed-tasks > .task {
     background-color: rgba(255,255,255,75%);
+    backdrop-filter: blur(3px);
     text-decoration: line-through;
 }
 #task-wrapper > .input-wrapper {
     position: relative;
-    margin: 0 auto 2px;
+    margin: 2px auto;
     background-color: rgba(0,0,0,25%);
+    backdrop-filter: blur(3px);
 }
 #task-wrapper > .input-wrapper:hover {
     cursor: text;
@@ -193,6 +199,7 @@ input[type="text"]::placeholder {
     font-size: 11px;
     border-radius: 5px;                 
     background-color: rgba(255,255,255,60%);
+    backdrop-filter: blur(3px);
     box-shadow: 0px 1px 3px 2px rgba(0,0,0,10%);
     display: flex;
     justify-content: space-between;
@@ -224,6 +231,9 @@ input[type="text"]::placeholder {
     font-weight: 600;
     box-shadow: 0 2px 5px 5px rgba(0,0,0,20%);
     z-index: 1;
+}
+.task:last-child.active {
+    margin-bottom: -2px;
 }
 .task.active  svg {
     color: rgb(80,80,80);

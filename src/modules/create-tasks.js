@@ -127,9 +127,9 @@ function adjustPositioning () {
     } else if (this.scrollTop !== 0 && paddingTop !== 0) {
         this.style.paddingTop = "0px";
         this.style.marginTop = "0px";
-    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 10) {
-        this.style.paddingBottom = "10px";
-        this.style.marginBottom = "-10px";
+    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 8) {
+        this.style.paddingBottom = "8px";
+        this.style.marginBottom = "-8px";
     } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) {
         this.style.paddingBottom = "0px";
         this.style.marginBottom = "0px";
@@ -152,6 +152,7 @@ function addTasksFromList() {
             completedTasks.appendChild(taskElement);
         }}
     });
+    adjustPositioning.call(tasks);
     tasks.onscroll = adjustPositioning;
     if (completedTasks) completedTasks.onscroll = adjustPositioning;
 }
