@@ -93,6 +93,7 @@ input[type="text"]::placeholder {
 /* FOLDER STYLING */
 /* ------------------------------ */
 #folder-wrapper {
+    margin-top: 4rem;
     margin-left: auto;
     width: 12rem;
 }
@@ -161,7 +162,6 @@ input[type="text"]::placeholder {
     position: relative;
     padding-top: 8px;
     margin-top: -8px;
-    padding-bottom: 12px;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     max-height: 28rem;
@@ -174,6 +174,11 @@ input[type="text"]::placeholder {
 .task {
     background-color: white;
     position: relative;
+    box-shadow: 0px 1px 3px 2px rgba(0,0,0,10%);
+}
+#completed-tasks > .task {
+    background-color: rgba(255,255,255,75%);
+    text-decoration: line-through;
 }
 #task-wrapper > .input-wrapper {
     position: relative;
@@ -184,7 +189,7 @@ input[type="text"]::placeholder {
     cursor: text;
 }
 #menu {
-    margin: 1rem auto;
+    margin: 0 auto 1.5rem;
     font-size: 11px;
     border-radius: 5px;                 
     background-color: rgba(255,255,255,60%);
@@ -297,6 +302,7 @@ input[type="text"]::placeholder {
     box-shadow: none;
 }
 #task-dialog {
+    margin-top: 4rem;
     margin-right: auto;
     border-radius: 5px;
     background-color: rgba(0,0,0,20%);

@@ -5,16 +5,14 @@ export {createTasks, updateTasks};
 
 function createTasks () {
     const taskWrapper = helper.newDiv("id","task-wrapper");
-    const taskInputWrapper = helper.newDiv("class","input-wrapper");
-    const tasks = helper.newDiv("id","tasks");
     const menu = helper.newDiv("id","menu");
-
-    initInputWrapper(taskInputWrapper);
+    const tasks = helper.newDiv("id","tasks");
+    const taskInputWrapper = helper.newDiv("class","input-wrapper");
     initMenu(menu);
-
-    taskWrapper.appendChild(taskInputWrapper);
-    taskWrapper.appendChild(tasks);
+    initInputWrapper(taskInputWrapper);
     taskWrapper.appendChild(menu);
+    taskWrapper.appendChild(tasks);
+    taskWrapper.appendChild(taskInputWrapper);
     return taskWrapper;
 }
 
@@ -118,22 +116,23 @@ function updateTasks () {
     addTasksFromList();
     if (activeID) helper.activateElementByID(activeID);
     helper.updateTaskDialog();
-    setMenuMargin();
-}
-
-function setMenuMargin() {
-    const menu = document.getElementById("menu");
-    menu.style.marginTop = menu.previousSibling.firstChild ? "1rem" : "0px";
 }
 
 function adjustPositioning () {
     const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
+    const paddingBottom = parseInt(window.getComputedStyle(this).paddingBottom.slice(0,-2));
     if (this.scrollTop === 0 && paddingTop !== 8) {
         this.style.paddingTop = "8px";
         this.style.marginTop = "-8px";
     } else if (this.scrollTop !== 0 && paddingTop !== 0) {
         this.style.paddingTop = "0px";
         this.style.marginTop = "0px";
+    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 10) {
+        this.style.paddingBottom = "10px";
+        this.style.marginBottom = "-10px";
+    } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) {
+        this.style.paddingBottom = "0px";
+        this.style.marginBottom = "0px";
     }
 }
 

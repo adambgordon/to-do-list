@@ -35,6 +35,12 @@ function addDialogFromTask () {
     taskDialog.appendChild(dueDate);
     taskDialog.appendChild(notes);
     taskDialog.appendChild(bottomRow);
+
+    if (task.isCompleted()) {
+        for (let i = 0; i < taskDialog.children.length; i++) {
+            taskDialog.children[i].style.backgroundColor = "rgba(255,255,255,75%)";
+        }
+    }
 }
 
 function createName (task) {
