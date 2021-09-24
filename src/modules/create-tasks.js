@@ -121,15 +121,15 @@ function updateTasks () {
 function adjustPositioning () {
     const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
     const paddingBottom = parseInt(window.getComputedStyle(this).paddingBottom.slice(0,-2));
-    if (this.scrollTop === 0 && paddingTop !== 8) {
-        this.style.paddingTop = "8px";
-        this.style.marginTop = "-8px";
+    if (this.scrollTop === 0 && paddingTop !== 12) {
+        this.style.paddingTop = "12px";
+        this.style.marginTop = "-12px";
     } else if (this.scrollTop !== 0 && paddingTop !== 0) {
         this.style.paddingTop = "0px";
         this.style.marginTop = "0px";
-    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 8) {
-        this.style.paddingBottom = "8px";
-        this.style.marginBottom = "-8px";
+    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 12) {
+        this.style.paddingBottom = "12px";
+        this.style.marginBottom = "-12px";
     } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) {
         this.style.paddingBottom = "0px";
         this.style.marginBottom = "0px";

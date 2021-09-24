@@ -77,9 +77,11 @@ function receiveDateInput () {
 }
 function startDateHover () {
     this.parentElement.firstChild.classList.add("date-hover");
+    document.getElementById("due-date-hover-background").classList.add("date-hover");
 }
 function endDateHover () {
     this.parentElement.firstChild.classList.remove("date-hover");
+    document.getElementById("due-date-hover-background").classList.remove("date-hover");
 }
 function createDueDate (task) {
     const dueDate = createInput("date");
@@ -95,14 +97,20 @@ function createDueDate (task) {
     input.onmouseenter = startDateHover;
     input.onmouseleave = endDateHover;
 
+    const hoverBackground = helper.newDiv("id","due-date-hover-background"); // resume here
+    dueDate.appendChild(hoverBackground);
+
     if (task.getDueDate()) {
         updateDueDateInputText(dueDateInputText,task.getDueDate());
         input.classList.add("has-date");
+        hoverBackground.classList.add("has-date");
         dueDate.appendChild(createX());
     }
+
+    
+    
     return dueDate;
 }
-
 function updateDueDateInputText(text,unformattedDate) {
     const date = helper.parseDate(unformattedDate);
     text.textContent = "Due " + helper.format(date, "E, MMM do, y");
