@@ -82,8 +82,10 @@ export function createLeftHandIconContainer (fontAwesomeString) {
     innerWrapper.appendChild(icon);
     return leftHandIconContainer;
 }
-export function initWindowListener () {
-    window.onclick = windowActions;
+export function initWindowListeners () {
+    window.onclick = windowClickActions;
+    window.onkeydown = windowKeyActions;
+
 }
 export function getActiveTaskElement () {
     const activeTask = document.querySelector(".active.task");
@@ -132,7 +134,7 @@ export function createTrashModal () {
     modal.appendChild(del);
     return modal;
 }
-function windowActions () {
+function windowClickActions () {
     clickOnTask(event);
     clickOnFolder(event);
     clickAwayFromNotes(event);
@@ -141,6 +143,8 @@ function windowActions () {
     clickAwayFromActiveTask(event);
     clickAwayFromTaskEdit(event);
     clickAwayFromModalDialog(event);
+}
+function windowKeyActions () {
     keyInputOnModalDialog(event);
 }
 function clickOnTask (event) {
@@ -214,4 +218,8 @@ function clickAwayFromModalDialog (event) {
 }
 function keyInputOnModalDialog (event) {
     const modal = document.querySelector(".modal");
+    if (modal) {
+        if (event.key === "Escape") modal.getElementsByClassName("cancel")[0].dispatchEvent(new Event("click"));
+        if (event.key === "Enter") modal.getElementsByClassName("delete")[0].dispatchEvent(new Event("click"));
+    }
 }
