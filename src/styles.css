@@ -1,14 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 
-/* 
-- circle background on icon hover
-- shadow when scrollable (make 0 height div with shadow and high z-index?)
-- add github
-- add sound
-- adjust background image
-*/
-
 /* ------------------------------ */
 /* GENERAL & SHARED STYLING */
 /* ------------------------------ */
@@ -171,6 +163,7 @@ input[type="text"]::placeholder {
 /* TASK LIST STYLING */
 /* ------------------------------ */
 #task-wrapper {
+    position: relative;
     width: 26.5rem;
 }
 #task-wrapper > div {
@@ -220,6 +213,35 @@ input[type="text"]::placeholder {
     display: flex;
     justify-content: space-between;
 }
+
+.scroll-shadow {
+    visibility: hidden;
+    position: absolute;
+    margin: 0;
+    height: 1rem;
+    width: 25rem;
+    left: 0.75rem;
+    z-index: 2;
+}
+.scroll-shadow.top {
+    background: linear-gradient(180deg, rgba(0,0,0,30%),rgba(0,0,0,0%));
+}
+.scroll-shadow.bottom {
+    background: linear-gradient(0deg, rgba(0,0,0,30%),rgba(0,0,0,0%));
+}
+.scroll-shadow.tasks.top {
+    top: 4rem;
+}
+.scroll-shadow.tasks.bottom {
+    top: 29.5rem;
+}
+.scroll-shadow.completed-tasks.top {
+    bottom: 25.5rem;
+}
+.scroll-shadow.completed-tasks.bottom {
+    bottom: 0rem;
+}
+
 .due-date:empty {
     display: none;
 }

@@ -13,7 +13,22 @@ function createTasks () {
     taskWrapper.appendChild(menu);
     taskWrapper.appendChild(tasks);
     taskWrapper.appendChild(taskInputWrapper);
+    initScrollShadows(taskWrapper);
     return taskWrapper;
+}
+function initScrollShadows (taskWrapper) {
+    const shadow1 = helper.newDiv("class","scroll-shadow","class","top");
+    const shadow2 = helper.newDiv("class","scroll-shadow","class","bottom");
+    const shadow3 = helper.newDiv("class","scroll-shadow","class","top");
+    const shadow4 = helper.newDiv("class","scroll-shadow","class","bottom");
+    shadow1.classList.add("tasks");
+    shadow2.classList.add("tasks");
+    shadow3.classList.add("completed-tasks");
+    shadow4.classList.add("completed-tasks");
+    taskWrapper.appendChild(shadow1);
+    taskWrapper.appendChild(shadow2);
+    taskWrapper.appendChild(shadow3);
+    taskWrapper.appendChild(shadow4);
 }
 
 function initInputWrapper (inputWrapper) {
@@ -119,26 +134,38 @@ function updateTasks () {
 }
 
 function adjustPositioning () {
+    if (!this) return;
+    const topShadow = document.querySelector(".scroll-shadow.top."+this.id);
+    const bottomShadow = document.querySelector(".scroll-shadow.bottom."+this.id);
     const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
     const paddingBottom = parseInt(window.getComputedStyle(this).paddingBottom.slice(0,-2));
-    if (this.scrollTop === 0 && paddingTop !== 12) {
+    if (this.scrollTop === 0 && paddingTop !== 12) { // if scrolled up to top
         this.style.paddingTop = "12px";
         this.style.marginTop = "-12px";
-    } else if (this.scrollTop !== 0 && paddingTop !== 0) {
+        topShadow.style.visibility = "hidden";
+    } else if (this.scrollTop !== 0 && paddingTop !== 0) { // if not scrolled up to top
         this.style.paddingTop = "0px";
         this.style.marginTop = "0px";
-    } else if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 12) {
+        topShadow.style.visibility = "visible";
+    }
+    if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 12) { // if scrolled down to bottom
         this.style.paddingBottom = "12px";
         this.style.marginBottom = "-12px";
-    } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) {
+        bottomShadow.style.visibility = "hidden";
+        if (this.id === "completed-tasks") topShadow.style.bottom = "26.25rem";
+    } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) { // if not scrolled down to bottom
         this.style.paddingBottom = "0px";
         this.style.marginBottom = "0px";
+        bottomShadow.style.visibility = "visible";
+        if (this.id === "completed-tasks") topShadow.style.bottom = "25.5rem";
     }
 }
 
 function addTasksFromList() {
+
     const tasks = document.getElementById("tasks");
     const completedTasks = document.getElementById("completed-tasks");
+    
     list.sortTasksByCompleted();
     list.getTasksByFolder(list.getFolder(helper.getActiveFolderId())).forEach( (task) => {
         const taskElement = helper.newDiv("id",task.getID(),"class","task");
@@ -153,6 +180,7 @@ function addTasksFromList() {
         }}
     });
     adjustPositioning.call(tasks);
+    adjustPositioning.call(completedTasks);
     tasks.onscroll = adjustPositioning;
     if (completedTasks) completedTasks.onscroll = adjustPositioning;
 }
