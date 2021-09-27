@@ -80,6 +80,9 @@ function updateFolders () {
     helper.removeAllChildren(folders);
     addFoldersFromList(folders);
     activeFolderID ? helper.activateElementByID(activeFolderID) : folders.firstChild.classList.add("active");
+    // if (helper.getActiveTaskElement() && list.getTask(helper.getActiveTaskId()).getHomeFolderID() === activeFolderID) {
+    //     helper.deactivateActiveTaskElement();
+    // }
     helper.updateTasks();
 }
 
@@ -141,15 +144,18 @@ function createName (folder) {
 }
 function prompt () {
     const modal = helper.createTrashModal();
+    modal.classList.add("folders");
     modal.getElementsByClassName("cancel")[0].onclick = removePrompt;
     modal.getElementsByClassName("delete")[0].onclick = trashFolder;
     this.parentElement.parentElement.insertBefore(modal,this.parentElement);
+    setTimeout(() => {modal.classList.add("fade-in");}, 0);
 }
 function removePrompt () {
     this.parentElement.remove();
 }
 function trashFolder () {
     list.deleteFolder(list.getFolder(helper.getActiveFolderId()));
+    helper.deactivateActiveTaskElement();
     helper.deactivateActiveFolderElement();
     updateFolders();
 }

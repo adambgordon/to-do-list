@@ -16,10 +16,14 @@ function updateTaskDialog () {
 
 function addDialogFromTask () {
     const activeID = helper.getActiveTaskId();
-    if (!activeID) return;
     const taskDialog = document.getElementById("task-dialog");
-    const task = list.getTask(activeID);
+    if (!activeID) {
+        taskDialog.classList.remove("fade-in");
+        return;
+    }
+    setTimeout(() => {taskDialog.classList.add("fade-in");}, 0);
 
+    const task = list.getTask(activeID);
     const name = createName(task);
     const star = helper.createStarButton(task);
     const dueDate = createDueDate(task);
@@ -162,10 +166,23 @@ function createDateAdded (task) {
     dateAdded.textContent = "Created " + helper.format(parseInt(task.getID()), "E, MMM do, y");
     return dateAdded;
 }
-function createTrash (task) {
+function createTrash () {
     const trash = helper.createTrashButton();
-    trash.onclick = trashTask;
+    trash.onclick = prompt;
     return trash;
+}
+
+function prompt () {
+    const modal = helper.createTrashModal();
+    modal.classList.add("task-dialog");
+    modal.getElementsByClassName("cancel")[0].onclick = removePrompt;
+    modal.getElementsByClassName("delete")[0].onclick = trashTask;
+    this.parentElement.parentElement.insertBefore(modal,this.parentElement);
+    setTimeout(() => {modal.classList.add("fade-in");}, 0);
+}
+
+function removePrompt () {
+    this.parentElement.remove();
 }
 
 function trashTask() {

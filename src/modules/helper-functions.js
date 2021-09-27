@@ -141,6 +141,7 @@ function windowActions () {
     clickAwayFromActiveTask(event);
     clickAwayFromTaskEdit(event);
     clickAwayFromModalDialog(event);
+    keyInputOnModalDialog(event);
 }
 function clickOnTask (event) {
     const activeTask = getActiveTaskElement();
@@ -204,9 +205,13 @@ function clickAwayFromActiveTask (event) {
     }
 }
 function clickAwayFromModalDialog (event) {
-    const modal = document.querySelector(".modal");
-    if (modal && event.target !== modal) {
-        console.log(event.target)
-        // modal.remove();
+    const modals = document.querySelectorAll(".modal");
+    for (let i = 0; i < modals.length; i++ ) {
+        if (modals[i] && !modals[i].contains(event.target) && !modals[i].nextSibling.querySelector(".trash").contains(event.target)) {
+            modals[i].remove();
+        }
     }
+}
+function keyInputOnModalDialog (event) {
+    const modal = document.querySelector(".modal");
 }
