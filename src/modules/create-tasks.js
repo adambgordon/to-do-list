@@ -135,10 +135,16 @@ function updateTasks () {
 
 function adjustPositioning () {
     if (!this) return;
+    if (this.id === "tasks" && !document.getElementById("completed-tasks")) {
+        const completedShadows = document.getElementsByClassName("scroll-shadow completed-tasks");
+        completedShadows[0].style.visibility = "hidden";
+        completedShadows[1].style.visibility = "hidden";
+    }
     const topShadow = document.querySelector(".scroll-shadow.top."+this.id);
     const bottomShadow = document.querySelector(".scroll-shadow.bottom."+this.id);
     const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
     const paddingBottom = parseInt(window.getComputedStyle(this).paddingBottom.slice(0,-2));
+
     if (this.scrollTop === 0 && paddingTop !== 12) { // if scrolled up to top
         this.style.paddingTop = "12px";
         this.style.marginTop = "-12px";
