@@ -99,6 +99,44 @@ input[type="text"]::placeholder {
 .name {
     user-select: none;
 }
+.modal {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    background-color: white;
+    border-radius: 5px;
+    padding: 8px;
+    box-shadow: 0 2px 5px 5px rgba(0,0,0,20%);
+}
+#folders > .modal {
+    right: -1rem;
+    margin-top: -1rem;
+}
+.modal > div {
+    font-weight: 400;
+    padding: 6px 8px;
+    border-radius: 5px;
+    width: 2.5rem;
+    text-align: center;
+}
+.cancel {
+    margin-bottom: 6px;
+}
+.modal > div:hover {
+    cursor: pointer;
+}
+.cancel:hover {
+    background-color: rgba(0,0,0,20%);
+}
+.delete {
+    background-color: rgb(120,120,120);
+    color: white;
+}
+.delete:hover {
+    background-color: rgb(80,80,80);
+}
 
 /* ------------------------------ */
 /* FOLDER STYLING */
@@ -108,10 +146,14 @@ input[type="text"]::placeholder {
     margin-left: auto;
     width: 12rem;
 }
+#folders {
+    position: relative;
+}
 .folder {
     background-color: rgba(255,255,255,60%);
     backdrop-filter: blur(4px);
     font-weight: 500;
+    position: relative;
 }
 #folder-wrapper > .input-wrapper {
     height: 2.5rem;
@@ -213,7 +255,6 @@ input[type="text"]::placeholder {
     display: flex;
     justify-content: space-between;
 }
-
 .scroll-shadow {
     visibility: hidden;
     position: absolute;
@@ -224,10 +265,10 @@ input[type="text"]::placeholder {
     z-index: 2;
 }
 .scroll-shadow.top {
-    background: linear-gradient(180deg, rgba(0,0,0,30%),rgba(0,0,0,0%));
+    background: linear-gradient(180deg, rgba(0,0,0,40%),rgba(0,0,0,0%));
 }
 .scroll-shadow.bottom {
-    background: linear-gradient(0deg, rgba(0,0,0,30%),rgba(0,0,0,0%));
+    background: linear-gradient(0deg, rgba(0,0,0,40%),rgba(0,0,0,0%));
 }
 .scroll-shadow.tasks.top {
     top: 4rem;
@@ -241,7 +282,6 @@ input[type="text"]::placeholder {
 .scroll-shadow.completed-tasks.bottom {
     bottom: 0rem;
 }
-
 .due-date:empty {
     display: none;
 }

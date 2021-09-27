@@ -130,7 +130,7 @@ function receiveEdit () {
 function addTrash (folderElement,folder) {
     if (folder.getName() !== "All Tasks" && folder.getName() !== "Starred") {
         const trash = helper.createTrashButton();
-        trash.onclick = trashFolder;
+        trash.onclick = prompt;
         folderElement.appendChild(trash);
     }
 }
@@ -139,8 +139,17 @@ function createName (folder) {
     name.textContent = folder.getName();
     return name;
 }
-function trashFolder() {
-    list.deleteFolder(list.getFolder(this.parentElement.id));
+function prompt () {
+    const modal = helper.createTrashModal();
+    modal.getElementsByClassName("cancel")[0].onclick = removePrompt;
+    modal.getElementsByClassName("delete")[0].onclick = trashFolder;
+    this.parentElement.parentElement.insertBefore(modal,this.parentElement);
+}
+function removePrompt () {
+    this.parentElement.remove();
+}
+function trashFolder () {
+    list.deleteFolder(list.getFolder(helper.getActiveFolderId()));
     helper.deactivateActiveFolderElement();
     updateFolders();
 }

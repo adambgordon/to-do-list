@@ -122,6 +122,16 @@ export function parseDate(date) {
     parsed = new Date (parsed[0],parsed[1]-1,parsed[2]);
     return parsed;
 }
+export function createTrashModal () {
+    const modal = newDiv("class","modal");
+    const cancel = newDiv("class","cancel");
+    const del = newDiv("class","delete");
+    cancel.textContent = "Cancel";
+    del.textContent = "Delete";
+    modal.appendChild(cancel);
+    modal.appendChild(del);
+    return modal;
+}
 function windowActions () {
     clickOnTask(event);
     clickOnFolder(event);
@@ -130,6 +140,7 @@ function windowActions () {
     clickAwayFromFolderEdit(event);
     clickAwayFromActiveTask(event);
     clickAwayFromTaskEdit(event);
+    clickAwayFromModalDialog(event);
 }
 function clickOnTask (event) {
     const activeTask = getActiveTaskElement();
@@ -190,5 +201,12 @@ function clickAwayFromActiveTask (event) {
     {
         deactivateActiveTaskElement();
         updateTaskDialog();
+    }
+}
+function clickAwayFromModalDialog (event) {
+    const modal = document.querySelector(".modal");
+    if (modal && event.target !== modal) {
+        console.log(event.target)
+        // modal.remove();
     }
 }
