@@ -4,25 +4,18 @@
 /* ------------------------------ */
 /* GENERAL & SHARED STYLING */
 /* ------------------------------ */
-
 body {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 13px;
     color: rgb(80,80,80);
-}
-body::before {
-    content: "";
     background: url('./assets/background.jpeg') no-repeat center center fixed;
     background-size: cover;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    
+    position: relative;
+    min-height: 95vh;
 }
 #content {
     display: flex;
+    padding-bottom: 3rem;
 }
 .content-box {
     flex: 1;
@@ -138,6 +131,8 @@ input[type="text"]::placeholder {
     border-radius: 5px;
     width: 2.5rem;
     text-align: center;
+    background-color: rgba(0,0,0,10%);
+
 }
 .cancel {
     margin-bottom: 6px;
@@ -145,7 +140,7 @@ input[type="text"]::placeholder {
 .modal > div:hover {
     cursor: pointer;
 }
-.cancel:hover {
+/* .cancel:hover {
     background-color: rgba(0,0,0,20%);
 }
 .delete {
@@ -154,7 +149,7 @@ input[type="text"]::placeholder {
 }
 .delete:hover {
     background-color: rgb(80,80,80);
-}
+} */
 
 /* ------------------------------ */
 /* FOLDER STYLING */
@@ -589,4 +584,38 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     position: absolute;
     top: -2.5px;
     right: 6.5px;
+}
+/* ------------------------------ */
+/* FOOTER DATE STYLING */
+/* ------------------------------ */
+#footer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    bottom: 0rem;
+    height: 2rem;
+}
+#footer > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,100%);
+    transition: all 150ms ease;
+}
+
+#footer > a:hover {
+    cursor: pointer;
+    text-shadow: 0 1px 3px rgba(0,0,0,50%);
+}
+#footer > a:hover svg {
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,50%));
+}
+#footer svg {
+    font-size: 18px;
+    margin-left: 8px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,100%));
+    transition: all 150ms ease;
 }

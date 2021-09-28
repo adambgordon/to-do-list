@@ -9,8 +9,9 @@ function initPage () {
     const folderSection = helper.newDiv("class","content-box");
     const taskSection = helper.newDiv("class","content-box");
     const taskDialogSection = helper.newDiv("class","content-box");
+    const footer = helper.createFooter();
 
-    const folders= helper.createFolders();
+    const folders = helper.createFolders();
     const tasks = helper.createTasks();
     const taskDialog = helper.createTaskDialog();
 
@@ -22,7 +23,9 @@ function initPage () {
     content.appendChild(taskSection);
     content.appendChild(taskDialogSection);
 
+
     document.body.appendChild(content);
+    document.body.appendChild(footer);
 
     helper.buildFolders(list);
     helper.initWindowListeners();

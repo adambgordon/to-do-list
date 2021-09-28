@@ -82,6 +82,20 @@ export function createLeftHandIconContainer (fontAwesomeString) {
     innerWrapper.appendChild(icon);
     return leftHandIconContainer;
 }
+export function createFooter () {
+    const footer = document.createElement("div");
+    footer.id = "footer";
+    // links to github page for this repo
+    const link = document.createElement("a");
+    link.onclick = () => {window.open("https://github.com/adambgordon/to-do-list","_blank");};
+    const copyright = document.createElement("div");
+    copyright.textContent = "© 2021 Adam Gordon"
+    const github_icon = newIcon("fab fa-github");
+    link.appendChild(copyright);
+    link.appendChild(github_icon);
+    footer.appendChild(link);
+    return footer;
+}
 export function initWindowListeners () {
     window.onclick = windowClickActions;
     window.onkeydown = windowKeyActions;
@@ -199,16 +213,23 @@ function clickAwayFromTaskEdit (event) {
 function clickAwayFromActiveTask (event) {
     if (document.querySelector(".task > input")) return;
     const activeTask = getActiveTaskElement();
-    console.log(event.target.tagName);
-    if (activeTask && (event.target.tagName.toLowerCase() === "body" 
-                        || event.target.id === "task-wrapper"
-                        || event.target.id === "tasks"
-                        || event.target.id === "completed-tasks"))
-    {
+    if (activeTask && shouldDeactivateTask(event)) {
         deactivateActiveTaskElement();
         updateTaskDialog();
     }
 }
+function shouldDeactivateTask (event) {
+    if (event.target.tagName.toLowerCase() === "html") return true;
+    if (event.target.tagName.toLowerCase() === "body") return true;
+    if (event.target.id === "content") return true;
+    if (event.target.id === "folder-wrapper") return true;
+    if (event.target.id === "task-wrapper") return true;
+    if (event.target.id === "tasks") return true;
+    if (event.target.id === "footer") return true;
+    if (event.target.classList.contains("content-box")) return true;
+    return false;
+}
+
 function clickAwayFromModalDialog (event) {
     const modals = document.querySelectorAll(".modal");
     for (let i = 0; i < modals.length; i++ ) {
