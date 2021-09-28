@@ -85,7 +85,11 @@ export function createLeftHandIconContainer (fontAwesomeString) {
 export function createTitle() {
     const title = newDiv("id","title");
     title.textContent = "To Do List";
+    title.onclick = refresh;
     return title;
+}
+function refresh () {
+    window.location.reload();
 }
 export function createFooter () {
     const footer = document.createElement("div");
@@ -145,12 +149,12 @@ export function parseDate(date) {
 }
 export function createTrashModal () {
     const modal = newDiv("class","modal");
-    const confirm = newDiv();
     const warning = newDiv();
-    confirm.textContent = "Confirm delete";
+    const confirm = newDiv();
     warning.textContent = "You cannot\r\nundo this action";
-    modal.appendChild(confirm);
+    confirm.textContent = "Confirm delete";
     modal.appendChild(warning);
+    modal.appendChild(confirm);
     return modal;
 }
 function windowClickActions () {
@@ -247,6 +251,6 @@ function keyInputOnModalDialog (event) {
     const modal = document.querySelector(".modal");
     if (modal) {
         if (event.key === "Escape") modal.remove();
-        if (event.key === "Enter") modal.firstChild.dispatchEvent(new Event("click"));
+        if (event.key === "Enter") modal.lastChild.dispatchEvent(new Event("click"));
     }
 }

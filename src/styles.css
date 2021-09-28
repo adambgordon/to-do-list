@@ -42,6 +42,10 @@ body {
     align-items: center;
     color: white;
     text-shadow: 0 1px 3px rgba(0,0,0,50%);
+    user-select: none;
+}
+#title:hover {
+    cursor: pointer;
 }
 .folder, .task, .input-wrapper {
     border-radius: 5px;
@@ -133,7 +137,7 @@ input[type="text"]::placeholder {
     padding: 12px;
     box-shadow: 0 2px 5px 5px rgba(0,0,0,20%);
     right: -3rem;
-    margin-top: -2rem;
+    margin-top: -1.5rem;
     opacity: 0%;
 }
 .fade-in {
@@ -145,6 +149,14 @@ input[type="text"]::placeholder {
     transition: all 300ms ease;
 }
 .modal > div:nth-child(1) {
+    font-weight: 300;
+    font-size: 12px;
+    user-select: none;
+    white-space: pre;
+    text-align: center;
+    margin: 4px 0 16px;
+}
+.modal > div:nth-child(2) {
     font-weight: 400;
     padding: 8px;
     border-radius: 5px;
@@ -152,18 +164,11 @@ input[type="text"]::placeholder {
     background-color: rgb(80,80,80);
     color: white;
 }
-.modal > div:nth-child(1):hover {
+.modal > div:nth-child(2):hover {
     background-color: black;
     cursor: pointer;
 }
-.modal > div:nth-child(2) {
-    font-weight: 300;
-    font-size: 11px;
-    user-select: none;
-    white-space: pre;
-    text-align: center;
-    margin: 12px 0 4px;
-}
+
 
 /* ------------------------------ */
 /* FOLDER STYLING */

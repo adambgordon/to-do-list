@@ -168,7 +168,7 @@ function createTrash () {
 
 function prompt () {
     const modal = helper.createTrashModal();
-    modal.firstChild.onclick = trashTask;
+    modal.lastChild.onclick = trashTask;
     this.parentElement.parentElement.insertBefore(modal,this.parentElement);
     setTimeout(() => {modal.classList.add("fade-in");}, 0);
 }

@@ -140,7 +140,7 @@ function createName (folder) {
 }
 function prompt () {
     const modal = helper.createTrashModal();
-    modal.firstChild.onclick = trashFolder;
+    modal.lastChild.onclick = trashFolder;
     this.parentElement.parentElement.insertBefore(modal,this.parentElement);
     setTimeout(() => {modal.classList.add("fade-in");}, 0);
 }
