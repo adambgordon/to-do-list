@@ -6,10 +6,8 @@ export {createFolders, buildFolders, updateFolders, toggleExpanded};
 function createFolders () {
     const folderWrapper = helper.newDiv("id","folder-wrapper");
     const folders = helper.newDiv("id","folders");
-    const folderInputWrapper = helper.newDiv("class","input-wrapper");
-    initInputWrapper(folderInputWrapper);
     folderWrapper.appendChild(folders);
-    folderWrapper.appendChild(folderInputWrapper);
+    folderWrapper.appendChild(createInputWrapper());
     return folderWrapper;
 }
 
@@ -28,14 +26,15 @@ function createInput() {
     input.placeholder = "Add Folder";
     return input;
 }
-
-function initInputWrapper (inputWrapper) {
+function createInputWrapper () {
+    const inputWrapper = helper.newDiv("class","input-wrapper");
     const plus = helper.createPlus();
     const input = createInput();
     plus.onclick = toggleInputField;
     input.onkeydown = receiveInput;
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
+    return inputWrapper;
 }
 
 function toggleInputField() {    
@@ -80,9 +79,6 @@ function updateFolders () {
     helper.removeAllChildren(folders);
     addFoldersFromList(folders);
     activeFolderID ? helper.activateElementByID(activeFolderID) : folders.firstChild.classList.add("active");
-    // if (helper.getActiveTaskElement() && list.getTask(helper.getActiveTaskId()).getHomeFolderID() === activeFolderID) {
-    //     helper.deactivateActiveTaskElement();
-    // }
     helper.updateTasks();
 }
 
@@ -144,14 +140,9 @@ function createName (folder) {
 }
 function prompt () {
     const modal = helper.createTrashModal();
-    modal.classList.add("folders");
-    modal.getElementsByClassName("cancel")[0].onclick = removePrompt;
-    modal.getElementsByClassName("delete")[0].onclick = trashFolder;
+    modal.firstChild.onclick = trashFolder;
     this.parentElement.parentElement.insertBefore(modal,this.parentElement);
     setTimeout(() => {modal.classList.add("fade-in");}, 0);
-}
-function removePrompt () {
-    this.parentElement.remove();
 }
 function trashFolder () {
     list.deleteFolder(list.getFolder(helper.getActiveFolderId()));

@@ -168,17 +168,10 @@ function createTrash () {
 
 function prompt () {
     const modal = helper.createTrashModal();
-    modal.classList.add("task-dialog");
-    modal.getElementsByClassName("cancel")[0].onclick = removePrompt;
-    modal.getElementsByClassName("delete")[0].onclick = trashTask;
+    modal.firstChild.onclick = trashTask;
     this.parentElement.parentElement.insertBefore(modal,this.parentElement);
     setTimeout(() => {modal.classList.add("fade-in");}, 0);
 }
-
-function removePrompt () {
-    this.parentElement.remove();
-}
-
 function trashTask() {
     list.deleteTask(list.getTask(helper.getActiveTaskId()));
     helper.deactivateActiveTaskElement();
