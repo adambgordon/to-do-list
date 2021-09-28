@@ -40,13 +40,7 @@ function addDialogFromTask () {
     taskDialog.appendChild(notes);
     taskDialog.appendChild(bottomRow);
 
-    if (task.isCompleted()) {
-        taskDialog.firstChild.style.textDecoration = "line-through";
-        for (let i = 0; i < taskDialog.children.length; i++) {
-            taskDialog.children[i].style.backgroundColor = "rgba(255,255,255,75%)";
-            taskDialog.children[i].style.backdropFilter = "blur(3px)";
-        }
-    }
+    task.isCompleted() ? taskDialog.classList.add("completed") : taskDialog.classList.remove("completed");
 }
 
 function createName (task) {

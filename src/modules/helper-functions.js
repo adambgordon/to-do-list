@@ -199,10 +199,11 @@ function clickAwayFromTaskEdit (event) {
 function clickAwayFromActiveTask (event) {
     if (document.querySelector(".task > input")) return;
     const activeTask = getActiveTaskElement();
-    if (activeTask && (event.target.tagName === "HTML" 
-                        || event.target.id === "content"
-                        || event.target.classList.contains("content-box")
-                        || event.target.id === "task-wrapper"))
+    console.log(event.target.tagName);
+    if (activeTask && (event.target.tagName.toLowerCase() === "body" 
+                        || event.target.id === "task-wrapper"
+                        || event.target.id === "tasks"
+                        || event.target.id === "completed-tasks"))
     {
         deactivateActiveTaskElement();
         updateTaskDialog();

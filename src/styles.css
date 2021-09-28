@@ -4,13 +4,22 @@
 /* ------------------------------ */
 /* GENERAL & SHARED STYLING */
 /* ------------------------------ */
+
 body {
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 13px;
+    color: rgb(80,80,80);
+}
+body::before {
+    content: "";
     background: url('./assets/background.jpeg') no-repeat center center fixed;
     background-size: cover;
-    height: 100%;
-    color: rgb(80,80,80);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    
 }
 #content {
     display: flex;
@@ -18,6 +27,9 @@ body {
 .content-box {
     flex: 1;
     margin: 1rem;
+}
+.content-box:nth-child(2) {
+    flex: 0;
 }
 .folder, .task, .input-wrapper {
     border-radius: 5px;
@@ -261,13 +273,13 @@ input[type="text"]::placeholder {
     display: flex;
     justify-content: space-between;
 }
-.scroll-shadow {
+#task-wrapper .scroll-shadow {
     visibility: hidden;
     position: absolute;
     margin: 0;
     height: 1rem;
-    width: 25rem;
-    left: 0.75rem;
+    width: calc(25rem + 4px);
+    left: calc(0.75rem - 2px);
     z-index: 2;
 }
 .scroll-shadow.top {
@@ -464,8 +476,19 @@ textarea::placeholder {
 .date-added:hover {
     cursor: default;
 }
-
-
+#task-dialog.completed > div {
+    background-color: rgba(255,255,255,75%);
+    backdrop-filter: blue(3px);
+}
+#task-dialog.completed input[type="text"] {
+    text-decoration: line-through;
+}
+#task-dialog.completed textarea::placeholder {
+    color: rgb(180,180,180);
+}
+#task-dialog.completed > .input-wrapper.date > div:nth-child(1):not(.has-date) {
+    color: rgb(180,180,180);
+}
 /* ------------------------------ */
 /* TASK DIALOG DUE DATE STYLING */
 /* ------------------------------ */
