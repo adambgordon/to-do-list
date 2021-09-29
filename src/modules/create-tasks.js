@@ -34,13 +34,18 @@ function initScrollShadows (taskWrapper) {
 function initInputWrapper (inputWrapper) {
     const plus = helper.createPlus();
     const input = createInput();
-    plus.onclick = directFocus;
+    plus.onclick = () => directFocus.call(input);
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
     input.onkeydown = receiveInput;
 }
 function directFocus () {
-    this.nextSibling.focus();
+    if (!this.value || this.value.trim() === "") {
+        this.focus();
+        return;
+    }
+    this.dispatchEvent(new KeyboardEvent("keydown",{"key":"Enter"}));
+
 }
 function receiveInput () {
     if (event.key === "Enter") {
@@ -54,6 +59,9 @@ function receiveInput () {
         this.value = "";
         list.addTask(task);
         updateTasks();
+    } else if (event.key === "Escape") {
+        this.value = "";
+        this.blur();
     }
 }
 
@@ -131,6 +139,7 @@ function updateTasks () {
     addTasksFromList();
     if (activeID) helper.activateElementByID(activeID);
     helper.updateTaskDialog();
+    // setTimeout(() => {helper.updateTaskDialog();}, 0);
 }
 
 function adjustPositioning () {
@@ -206,15 +215,18 @@ function editName () {
     input.type = "text";
     input.value = task.getName();
     input.onkeydown = receiveEdit;
+    input.onblur = receiveEdit;
     input.focus();
     input.select();
 }
-function receiveEdit () {
-    if (event.key === "Enter") {
+async function receiveEdit () {
+    if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getTask(this.parentElement.id).setName(this.value.trim());
-        updateTasks();
+        helper.updateTaskDialog();
+        setTimeout(() => {updateTasks();}, 0);
     } else if (event.key === "Escape") {
+        this.onblur = () => null;
         updateTasks();
     }
 }

@@ -160,11 +160,11 @@ export function createTrashModal () {
 function windowClickActions () {
     clickOnTask(event);
     clickOnFolder(event);
-    clickAwayFromNotes(event);
+    // clickAwayFromNotes(event);
     clickAwayFromFolderAdd(event);
     clickAwayFromFolderEdit(event);
     clickAwayFromActiveTask(event);
-    clickAwayFromTaskEdit(event);
+    // clickAwayFromTaskEdit(event);
     clickAwayFromModalDialog(event);
 }
 function windowKeyActions () {
@@ -195,12 +195,12 @@ function clickOnFolder (event) {
         }
     }
 }
-function clickAwayFromNotes (event) {
-    const notes = document.getElementsByTagName("textarea")[0];
-    if (notes && event.target !== notes) {
-        list.getTask(getActiveTaskId()).setNotes(notes.value);
-    }
-}
+// function clickAwayFromNotes (event) {
+//     const notes = document.getElementsByTagName("textarea")[0];
+//     if (notes && event.target !== notes) {
+//         list.getTask(getActiveTaskId()).setNotes(notes.value);
+//     }
+// }
 function clickAwayFromFolderAdd (event) {
     const folderInputWrapper = document.querySelector("#folder-wrapper .input-wrapper.expanded")
     if (folderInputWrapper && !folderInputWrapper.contains(event.target)) {
@@ -213,12 +213,12 @@ function clickAwayFromFolderEdit (event) {
         updateFolders();
     }
 }
-function clickAwayFromTaskEdit (event) {
-    const taskEditField = document.querySelector(".task > input");
-    if (taskEditField && event.target !== taskEditField) {
-        updateTasks();
-    }
-}
+// function clickAwayFromTaskEdit (event) {
+//     const taskEditField = document.querySelector(".task > input");
+//     if (taskEditField && event.target !== taskEditField) {
+//         updateTasks();
+//     }
+// }
 function clickAwayFromActiveTask (event) {
     if (document.querySelector(".task > input")) return;
     const activeTask = getActiveTaskElement();

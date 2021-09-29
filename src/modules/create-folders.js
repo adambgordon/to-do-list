@@ -112,20 +112,20 @@ function editName () {
     input.type = "text";
     input.value = folder.getName();
     input.onkeydown = receiveEdit;
+    input.addEventListener("blur",receiveEdit);
     input.focus();
     input.select();
 }
-
-function receiveEdit () {
-    if (event.key === "Enter") {
+function receiveEdit (event) {
+    if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getFolder(this.parentElement.id).setName(this.value.trim());
-        updateFolders();
+        setTimeout(() => {updateFolders();}, 0);
     } else if (event.key === "Escape") {
+        this.removeEventListener("blur",receiveEdit);
         updateFolders();
-    }
+    } 
 }
-
 function addTrash (folderElement,folder) {
     if (folder.getName() !== "All Tasks" && folder.getName() !== "Starred") {
         const trash = helper.createTrashButton();

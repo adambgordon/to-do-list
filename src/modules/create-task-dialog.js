@@ -48,9 +48,9 @@ function createName (task) {
     const input = name.firstChild;
     input.value = task.getName();
     input.onkeydown = receiveNameInput;
+    input.onblur = receiveNameInput;
     return name;
 }
-
 function createInput(type) {
     const input = document.createElement("input");
     input.type = type;
@@ -58,9 +58,8 @@ function createInput(type) {
     inputWrapper.appendChild(input);
     return inputWrapper;
 }
-
 function receiveNameInput () {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || event.key === "Escape" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         const task = list.getTask(helper.getActiveTaskId());
         task.setName(this.value.trim());
@@ -104,8 +103,6 @@ function createDueDate (task) {
         hoverBackground.classList.add("has-date");
         dueDate.appendChild(createX());
     }
-
-    
     
     return dueDate;
 }
@@ -144,6 +141,7 @@ function createNotes (task) {
     const notesEditField = createNotesEditField();
     notesEditField.value = task.getNotes();
     notesEditField.oninput = resize;
+    notesEditField.onblur = saveNotes;
     setTimeout(function() {setProperHeight(notesEditField);},0);
     notesWrapper.appendChild(notesEditField);
     return notesWrapper;
@@ -151,6 +149,9 @@ function createNotes (task) {
 function resize () {
     this.style.height = "auto";
     setProperHeight(this);
+}
+function saveNotes () {
+    list.getTask(helper.getActiveTaskId()).setNotes(this.value);
 }
 function setProperHeight (element) {
     element.style.height = (element.scrollHeight-27) + "px";
@@ -165,7 +166,6 @@ function createTrash () {
     trash.onclick = prompt;
     return trash;
 }
-
 function prompt () {
     const modal = helper.createTrashModal();
     modal.lastChild.onclick = trashTask;
