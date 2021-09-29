@@ -36,7 +36,7 @@ body {
     justify-content: center;
     align-items: center;
     color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,75%);
+    text-shadow: 0 1px 4px rgba(0,0,0,75%);
     user-select: none;
 }
 #title:hover {
@@ -603,7 +603,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     right: 6.5px;
 }
 /* ------------------------------ */
-/* FOOTER DATE STYLING */
+/* FOOTER STYLING */
 /* ------------------------------ */
 #footer {
     position: absolute;
@@ -619,19 +619,17 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     justify-content: center;
     align-items: center;
     color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,100%);
-    transition: all 150ms ease;
-}
-#footer > a:hover {
-    cursor: pointer;
-    text-shadow: 0 1px 3px rgba(0,0,0,50%);
-}
-#footer > a:hover svg {
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,50%));
+    text-shadow: 0 1px 4px rgba(0,0,0,100%);
 }
 #footer svg {
     font-size: 18px;
     margin-left: 8px;
-    filter: drop-shadow(0 1px 3px rgba(0,0,0,100%));
-    transition: all 150ms ease;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,100%));
+}
+#footer > a:hover {
+    cursor: pointer;
+    text-shadow: 0 0px 3px rgba(0,0,0,100%);
+}
+#footer > a:hover svg {
+    filter: drop-shadow(0 0 3px rgba(0,0,0,100%));
 }

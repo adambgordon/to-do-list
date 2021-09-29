@@ -223,6 +223,7 @@ async function receiveEdit () {
     if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getTask(this.parentElement.id).setName(this.value.trim());
+        console.log(event.target);
         helper.updateTaskDialog();
         setTimeout(() => {updateTasks();}, 0);
     } else if (event.key === "Escape") {
