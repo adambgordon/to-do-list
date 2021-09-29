@@ -123,7 +123,8 @@ export function deactivateActiveTaskElement () {
     if (activeTask) activeTask.classList.remove("active");
 }
 export function activateElementByID (id) {
-    document.getElementById(id).classList.add("active");
+    const element = document.getElementById(id);
+    element.classList.add("active");
 }
 export function getActiveFolderElement () {
     const activeFolder = document.querySelector(".active.folder");
@@ -160,12 +161,10 @@ export function createTrashModal () {
 function windowClickActions () {
     clickOnTask(event);
     clickOnFolder(event);
-    // clickAwayFromNotes(event);
     clickAwayFromFolderAdd(event);
-    clickAwayFromFolderEdit(event);
     clickAwayFromActiveTask(event);
-    // clickAwayFromTaskEdit(event);
     clickAwayFromModalDialog(event);
+    clickAwayFromMobileTaskDialog(event);
 }
 function windowKeyActions () {
     keyInputOnModalDialog(event);
@@ -207,12 +206,12 @@ function clickAwayFromFolderAdd (event) {
         toggleExpanded(folderInputWrapper.firstChild);
     }
 }
-function clickAwayFromFolderEdit (event) {
-    const folderEditField = document.querySelector(".folder > input");
-    if (folderEditField && event.target !== folderEditField) {
-        updateFolders();
-    }
-}
+// function clickAwayFromFolderEdit (event) {
+//     const folderEditField = document.querySelector(".folder > input");
+//     if (folderEditField && event.target !== folderEditField) {
+//         updateFolders();
+//     }
+// }
 // function clickAwayFromTaskEdit (event) {
 //     const taskEditField = document.querySelector(".task > input");
 //     if (taskEditField && event.target !== taskEditField) {
@@ -252,5 +251,14 @@ function keyInputOnModalDialog (event) {
     if (modal) {
         if (event.key === "Escape") modal.remove();
         if (event.key === "Enter") modal.lastChild.dispatchEvent(new Event("click"));
+    }
+}
+function clickAwayFromMobileTaskDialog (event) {
+    const taskDialog = document.getElementById("task-dialog");
+    const contentBox = taskDialog.parentElement;
+    if (screen.width <= 1000 && taskDialog.hasChildNodes()) {
+        contentBox.style.height = "100vh";
+    } else {
+        contentBox.style.height = "0";
     }
 }
