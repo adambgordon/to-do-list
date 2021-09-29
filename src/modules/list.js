@@ -1,6 +1,14 @@
+/*
+list.js creates and exports the list module, which stores and
+manipulates two arrays, one for folders and one for tasks
+ */
+
 const list = function () {
+
     let _folders = [];
     let _tasks = [];
+
+    /* folder based fn's below */
 
     const getFolder = function (folderID) {
         for (let i = 0; i < _folders.length; i++) {
@@ -17,9 +25,9 @@ const list = function () {
             if (_folders[i] === folder) { return _folders.splice(i,1)[0]; }
         }
     }
-    const printFolders = function () {
-        console.log(_folders.map( (folder) => { return folder.getName(); }));
-    }
+
+    /* task based fn's below */
+
     const getTask = function (taskID) {
         for (let i = 0; i < _tasks.length; i++) {
             if (_tasks[i].getID() === taskID) return _tasks[i];
@@ -42,6 +50,7 @@ const list = function () {
     const bumpTaskToTop = function (task) {
         _tasks.unshift(deleteTask(task));
     }
+    // print fn is for dev & debugging purposes
     const printTasks = function () {
         console.log(_tasks.map( (element) => { return element.getName(); }));
     }
@@ -95,6 +104,11 @@ const list = function () {
             return 0;
         });
     }
+    // print fn is for dev & debugging purposes
+    const printFolders = function () {
+        console.log(_folders.map( (folder) => { return folder.getName(); }));
+    }
+    
     return {
         addFolder,
         getFolder,

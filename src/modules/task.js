@@ -1,4 +1,9 @@
+/*
+task.js creates and exports the factory function for creating task objects
+ */
+
 const taskFactory = function (_name, _ID, _homeFolderID) {
+    
     const _itemType = "task";
     let _completed = false;
     let _starred = false;
@@ -44,6 +49,7 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
     const setNotes = function (notes) {
         _notes = notes;
     }
+    // print fn is for dev & debugging purposes
     const print = function () {
         console.log([
             ["_name", _name],

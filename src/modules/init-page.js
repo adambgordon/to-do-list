@@ -1,3 +1,7 @@
+/*
+init-page.js creates & exports a singl function to create and initialize all page elements
+ */
+
 const list = require("./list.js");
 import * as helper from "./helper-functions.js";
 
