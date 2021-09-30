@@ -34,20 +34,21 @@ function initScrollShadows (taskWrapper) {
 function initInputWrapper (inputWrapper) {
     const plus = helper.createPlus();
     const input = createInput();
-    plus.onclick = () => directFocus.call(input);
+    plus.onclick = receiveClick;
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
     input.onkeydown = receiveInput;
 }
-function directFocus () {
-    if (!this.value || this.value.trim() === "") {
-        this.focus();
+function receiveClick (event) {
+    const input = this.nextSibling;
+    if (input.value.trim() === "") {
+        input.focus();
         return;
     }
-    this.dispatchEvent(new KeyboardEvent("keydown",{"key":"Enter"}));
-
+    input.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+    input.focus();
 }
-function receiveInput () {
+function receiveInput (event) {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         const folder = list.getFolder(helper.getActiveFolderId());

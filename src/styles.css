@@ -199,7 +199,7 @@ input[type="text"]::placeholder {
 }
 
 #folder-wrapper > .input-wrapper > input {
-    color: rgba(255,255,255,60%);
+    color: rgba(255,255,255,100%);
     visibility: hidden;
     width: 0;
     padding: 0;

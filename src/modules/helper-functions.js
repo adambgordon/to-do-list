@@ -15,7 +15,7 @@ import startOfToday from "date-fns/startOfToday";
 import taskFactory from "./task.js";
 import folderFactory from "./folder.js";
 import {createTasks, updateTasks} from "./create-tasks.js";
-import {createFolders, buildFolders, toggleExpanded} from "./create-folders.js"
+import {createFolders, buildFolders, collapseInputField} from "./create-folders.js"
 import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
 // fn's below are imported fn's being re-exported
@@ -238,7 +238,7 @@ function clickOnFolder (event) {
 function clickAwayFromFolderAdd (event) {
     const folderInputWrapper = document.querySelector("#folder-wrapper .input-wrapper.expanded")
     if (folderInputWrapper && !folderInputWrapper.contains(event.target)) {
-        toggleExpanded(folderInputWrapper.firstChild);
+        collapseInputField(folderInputWrapper);
     }
 }
 // deactivates task based on click location (blur event not used because div is not being focused)

@@ -1,7 +1,7 @@
 const list = require("./list.js");
 import * as helper from "./helper-functions.js"
 
-export {createFolders, buildFolders, updateFolders, toggleExpanded};
+export {createFolders, buildFolders, updateFolders, collapseInputField};
 
 function createFolders () {
     const folderWrapper = helper.newDiv("id","folder-wrapper");
@@ -30,35 +30,46 @@ function createInputWrapper () {
     const inputWrapper = helper.newDiv("class","input-wrapper");
     const plus = helper.createPlus();
     const input = createInput();
-    plus.onclick = toggleInputField;
+    plus.onclick = receiveClick;
     input.onkeydown = receiveInput;
     inputWrapper.appendChild(plus);
     inputWrapper.appendChild(input);
     return inputWrapper;
 }
-
-function toggleInputField() {    
-    toggleExpanded(this);
-}
-
-function toggleExpanded(plus) {
-    const inputWrapper = plus.parentElement;
-    const iconWrapper = plus.firstChild;
-    const input = inputWrapper.children[1];
-    const expanded = "expanded";
-    if (iconWrapper.classList.contains(expanded)) {
-        iconWrapper.classList.remove(expanded);
-        inputWrapper.classList.remove(expanded);
-        input.classList.remove(expanded);
+function receiveClick (event) {
+    const inputWrapper = this.parentElement;
+    const input = this.nextSibling;
+    if (inputWrapper.classList.contains("expanded")) {
+        if (input.value.trim() === "") {
+            input.focus();
+        } else {
+            input.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+        }
     } else {
-        iconWrapper.classList.add(expanded);
-        inputWrapper.classList.add(expanded);
-        setTimeout(() => {input.classList.add(expanded);}, 50);
-        setTimeout(() => {input.focus();}, 400);
+        expandInputField(inputWrapper);
     }
 }
+function expandInputField (inputWrapper) {
+    const iconWrapper = inputWrapper.firstChild.firstChild;
+    const input = inputWrapper.lastChild;
+    const expanded = "expanded";
+    input.value = "";
+    input.addEventListener("blur", receiveInput);
+    iconWrapper.classList.add(expanded);
+    inputWrapper.classList.add(expanded);
+    setTimeout(() => {input.classList.add(expanded);}, 50);
+    setTimeout(() => {input.focus();}, 400);
+}
+function collapseInputField (inputWrapper) {
+    const iconWrapper = inputWrapper.firstChild.firstChild;
+    const input = inputWrapper.lastChild;
+    const expanded = "expanded";
+    iconWrapper.classList.remove(expanded);
+    input.classList.remove(expanded);
+    inputWrapper.classList.remove(expanded);
+}
 
-function receiveInput () {
+function receiveInput (event) {
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
         const folder = helper.folderFactory(this.value.trim(), Date.now().toString());
@@ -69,7 +80,9 @@ function receiveInput () {
         helper.activateElementByID(folder.getID());
         helper.deactivateActiveTaskElement();
         helper.updateTasks();
-        toggleExpanded(this.previousSibling);
+        collapseInputField(this.parentElement);
+    } else if (event.key === "Escape") {
+        collapseInputField(this.parentElement);
     }
 }
 
