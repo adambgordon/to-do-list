@@ -1,6 +1,6 @@
 /*
 create-tasks.js creates all task related DOM elements (excluding the detailed task dialog)
-as wells as all functions required to manipulate and access task items both in
+as well as all functions required to manipulate and access task items both in
 the DOM and in the list module
 */
 
@@ -207,7 +207,7 @@ function adjustPositioning () {
         if (this.id === "completed-tasks") topShadow.style.bottom = "25.5rem";
     }
 }
-// creates and appends task elements from list module and into regular or completed list
+// creates and appends task elements from list module and into regular or completed task list
 function addTasksFromList() {
 
     const tasks = document.getElementById("tasks");
@@ -235,14 +235,15 @@ function addTasksFromList() {
     tasks.onscroll = adjustPositioning;
     if (completedTasks) completedTasks.onscroll = adjustPositioning;
 }
-
+// initializes and returns the name element
 function createName (task) {
     const name = helper.newDiv("class","name");
     name.textContent = task.getName();
     name.ondblclick = editName;
     return name;
 }
-function editName () {
+// double click event handler to edit the name of a task
+function editName (event) {
     const taskElement = this.parentElement;
     const task = list.getTask(taskElement.id);
     this.remove();
@@ -251,21 +252,23 @@ function editName () {
     input.type = "text";
     input.value = task.getName();
     input.onkeydown = receiveEdit;
-    input.onblur = receiveEdit;
+    input.addEventListener("blur",receiveEdit);
     input.focus();
     input.select();
 }
-async function receiveEdit () {
+// event handler to update or clear the edited task name
+function receiveEdit (event) {
     if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getTask(this.parentElement.id).setName(this.value.trim());
-        helper.updateTaskDialog();
-        setTimeout(() => {updateTasks();}, 0);
+        helper.updateTaskDialog(); // update dialog first to protect if user blurs directly to dialog name 
+        setTimeout(() => {updateTasks();}, 0); // timeout allows elements to be updated in correct order
     } else if (event.key === "Escape") {
-        this.onblur = () => null;
+        this.removeEventListener("blur",receiveEdit); // prevents updateTasks from triggering blur here
         updateTasks();
     }
 }
+// returns formatted and styled due date element based on task
 function createDueDate (task) {
     const dueDate = helper.newDiv("class","due-date");
     if (!task.getDueDate()) {
@@ -275,14 +278,14 @@ function createDueDate (task) {
         dueDate.textContent = helper.format(date, "E, MMM do");
         const compared = helper.compareAsc(date,helper.startOfToday());
         if (compared === -1) {
-            dueDate.style.color = "red";
+            dueDate.style.color = "red"; // red if past due
         } else if (compared === 0) {
-            dueDate.style.color = "rgb(255,123,0)";
+            dueDate.style.color = "rgb(255,123,0)"; // orange if due today
         }
     }
     return dueDate;
 }
-
+// returns check box container element (either empty square or checked square) based on task
 function createCheckBox (task) {
     const fontAwesomeString =  task.isCompleted() ? "fas fa-check-square" : "far fa-square";
     const leftHandIconContainer = helper.createLeftHandIconContainer(fontAwesomeString);
@@ -292,13 +295,14 @@ function createCheckBox (task) {
     return leftHandIconContainer;
 }
 
-function checkTask() {
+// click event handler for check box
+function checkTask (event) {
     const task = list.getTask(this.parentElement.parentElement.id);
     task.toggleCompleted();
     const activeTaskID = helper.getActiveTaskId()
     if (activeTaskID === task.getID() && task.isCompleted()){
         helper.deactivateActiveTaskElement();
     }
-    if (!task.isCompleted()) list.bumpTaskToTop(task);
+    if (!task.isCompleted()) list.bumpTaskToTop(task); // if "unchecking" task move it back up to top
     updateTasks();
 }

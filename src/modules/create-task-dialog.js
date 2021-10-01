@@ -1,20 +1,31 @@
+/*
+create-task-dialog.js creates all task dialog related DOM elements as well as
+all functions required to manipulate and access details for any given task both in
+the DOM and in the list module
+*/
+
 const list = require("./list.js");
 import *  as helper from "./helper-functions.js";
 
 export {createTaskDialog, updateTaskDialog};
 
+// creates and returns the task dialog element
+// note: does not initialize child elements because task dialog is
+// not always displayed; it is called dynamically
 function createTaskDialog () {
     const taskDialog = helper.newDiv("id","task-dialog");
     return taskDialog;
 }
-
+// updates task dialog elements in the DOM by removing the curent elements
+// and adding the updated task detail elements from the list module
 function updateTaskDialog () {
     const taskDialog = document.getElementById("task-dialog");
     helper.removeAllChildren(taskDialog);
     addDialogFromTask();
 }
-
+// creates and appends task dialog elements from list module
 function addDialogFromTask () {
+
     const activeID = helper.getActiveTaskId();
     const taskDialog = document.getElementById("task-dialog");
     if (!activeID) {
@@ -40,17 +51,19 @@ function addDialogFromTask () {
     taskDialog.appendChild(notes);
     taskDialog.appendChild(bottomRow);
 
+    // updated dialog classlist for proper styling based on if task is already completed
     task.isCompleted() ? taskDialog.classList.add("completed") : taskDialog.classList.remove("completed");
 }
-
+// create and initialize task name input
 function createName (task) {
     const name = createInput("text");
     const input = name.firstChild;
     input.value = task.getName();
     input.onkeydown = receiveNameInput;
-    input.onblur = receiveNameInput;
+    input.addEventListener("blur", receiveNameInput);
     return name;
 }
+// dynamically create and return and input wrapper and input of specified type, e.g. text, date, etc.
 function createInput(type) {
     const input = document.createElement("input");
     input.type = type;
@@ -58,15 +71,17 @@ function createInput(type) {
     inputWrapper.appendChild(input);
     return inputWrapper;
 }
-function receiveNameInput () {
+// event handler to save and update the name of task in the dialog input
+function receiveNameInput (event) {
     if (event.key === "Enter" || event.key === "Escape" || event.type === "blur") {
+        if (event.type !== "blur") this.removeEventListener("blur",receiveNameInput); // prevent blur from being triggered
         if (!this.value || this.value.trim() === "") return;
         const task = list.getTask(helper.getActiveTaskId());
         task.setName(this.value.trim());
-        this.value = "";
         helper.updateTasks();
     }
 }
+
 function receiveDateInput () {
     const task = list.getTask(helper.getActiveTaskId());
     task.setDueDate(this.value);
@@ -141,7 +156,7 @@ function createNotes (task) {
     const notesEditField = createNotesEditField();
     notesEditField.value = task.getNotes();
     notesEditField.oninput = resize;
-    notesEditField.onblur = saveNotes;
+    notesEditField.onblur = saveNotes; // change!!!!????
     setTimeout(function() {setProperHeight(notesEditField);},0);
     notesWrapper.appendChild(notesEditField);
     return notesWrapper;
