@@ -18,7 +18,7 @@ import {createTasks, updateTasks} from "./create-tasks.js";
 import {createFolders, buildFolders, collapseInputField} from "./create-folders.js"
 import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
-// fn's below are imported fn's being re-exported
+// functinss below are the imported functions being re-exported
 export {
     format,
     compareAsc,
@@ -32,6 +32,8 @@ export {
     createTaskDialog,
     updateTaskDialog
 };
+
+/* MAIN HELPER FUNCTIONS */
 
 // creates a div DOM element and assigns id's and/or classes if desired
 // (parameters not required)
@@ -49,6 +51,7 @@ export function newDiv (type1, value1, type2, value2) {
     }
     return div;
 }
+
 // creates an i (icon) DOM element and assigns font awesome classes based on string param
 export function newIcon (fontAwesomeString) {
     const classes = fontAwesomeString.split(" ");
@@ -56,6 +59,7 @@ export function newIcon (fontAwesomeString) {
     classes.forEach(element => { icon.classList.add(element); });
     return icon;
 }
+
 // removes all children for a given DOM element
 export function removeAllChildren (element) {
     if (!element) return;
@@ -63,46 +67,55 @@ export function removeAllChildren (element) {
         element.removeChild(element.firstChild);
     }
 }
+
+
+/* SHARED DOM GETTERS & SETTERS */
+
 // returns element for active task or null if element does not exist
 export function getActiveTaskElement () {
     const activeTask = document.querySelector(".active.task");
     return  activeTask ? activeTask : null;
 }
+
 // returns id for active task element or null if element does not exist
 export function getActiveTaskId () {
     const activeTask = getActiveTaskElement();
     return activeTask ? activeTask.id : null;
 }
+
 // deactivates active element if it exists
 export function deactivateActiveTaskElement () {
     const activeTask = getActiveTaskElement();
     if (activeTask) activeTask.classList.remove("active");
 }
+
 // returns element for active folder or null if element does not exist
 export function getActiveFolderElement () {
     const activeFolder = document.querySelector(".active.folder");
     return activeFolder ? activeFolder : null;
 }
+
 // returns id for active folder element or null if element does not exist
 export function getActiveFolderId () {
     const activeFolder = getActiveFolderElement();
     return activeFolder ? activeFolder.id : null;
 }
+
 // deactivates active element if it exists
 export function deactivateActiveFolderElement () {
     const activeFolder = getActiveFolderElement();
     if (activeFolder) activeFolder.classList.remove("active");
 }
+
 // activates element based on element id
 export function activateElementByID (id) {
     const element = document.getElementById(id);
     element.classList.add("active");
 }
-// initializes window event listeners
-export function initWindowListeners () {
-    window.onclick = windowClickActions;
-    window.onkeydown = windowKeyActions;
-}
+
+
+/* SHARED CREATION & INITIALIZATION FUNCTIONS */
+
 // creates and returns the title element
 export function createTitle() {
     const title = newDiv("id","title");
@@ -110,10 +123,12 @@ export function createTitle() {
     title.onclick = refresh;
     return title;
 }
+
 // event handler for title click
 function refresh () {
     window.location.reload();
 }
+
 // creates and return the footer element: includes copyright, github icon, and link to this repo
 export function createFooter () {
     const footer = document.createElement("div");
@@ -130,6 +145,7 @@ export function createFooter () {
     footer.appendChild(link);
     return footer;
 }
+
 // creates and returns a div with a star icon based on task param
 export function createStarButton (task) {
     const star = newDiv("class","star");
@@ -139,6 +155,7 @@ export function createStarButton (task) {
     star.onclick = toggleStar;
     return star;
 }
+
 // event handler for a star being clicked/toggled
 // if task is being destarred && current folder is "Starred" && this task is the active task, then deactivate
 function toggleStar () {
@@ -156,12 +173,14 @@ function toggleStar () {
     }
     updateTasks();
 }
+
 // creates and returns a div with a trash icon
 export function createTrashButton () {
     const trash = newDiv("class","trash");
     trash.appendChild(newIcon("far fa-trash-alt"));
     return trash;
 }
+
 // creates and returns a div with a div wrapper for icon
 export function createLeftHandIconContainer (fontAwesomeString) {
     const leftHandIconContainer = newDiv("class","left-hand-icon-container");
@@ -171,18 +190,21 @@ export function createLeftHandIconContainer (fontAwesomeString) {
     innerWrapper.appendChild(icon);
     return leftHandIconContainer;
 }
+
 // creates and return left-hand-icon-container, specifically with a plus icon
 export function createPlus() {
     const plus = createLeftHandIconContainer("fas fa-plus");
     plus.classList.add("plus");
     return plus;
 }
+
 // parses a date string ("YYYY-MM-DD") and returns date object
 export function parseDate(date) {
     let parsed = date.split("-");
     parsed = new Date (parsed[0],parsed[1]-1,parsed[2]);
     return parsed;
 }
+
 // creates and return modal dialog for trashing/deleting a folder/task
 export function createTrashModal () {
     const modal = newDiv("class","modal");
@@ -194,6 +216,15 @@ export function createTrashModal () {
     modal.appendChild(confirm);
     return modal;
 }
+
+/* WINDOW EVENT FUNCTIONS */
+
+// initializes window event listeners
+export function initWindowListeners () {
+    window.onclick = windowClickActions;
+    window.onkeydown = windowKeyActions;
+}
+
 // window click event handler that calls subsiary window click event handlers
 function windowClickActions (event) {
     clickOnTask(event);
@@ -203,10 +234,12 @@ function windowClickActions (event) {
     clickAwayFromModalDialog(event);
     createTaskDialogForMobile();
 }
+
 // window keyboard event handler that calls subsiary window keyboard event handlers
 function windowKeyActions (event) {
     keyInputOnModalDialog(event);
 }
+
 // activates/deactivates/updates tasks based on task status & click target
 function clickOnTask (event) {
     const activeTask = getActiveTaskElement();
@@ -219,6 +252,7 @@ function clickOnTask (event) {
         updateTaskDialog();
     }
 }
+
 // activates/deactivates/updates folders based on folder status & click target
 function clickOnFolder (event) {
     const folders = document.getElementById("folders");
@@ -234,13 +268,15 @@ function clickOnFolder (event) {
         }
     }
 }
-// fix this -- switch to blur event
+
+// collapses folder-add input wrapper when user clicks elsewhere
 function clickAwayFromFolderAdd (event) {
     const folderInputWrapper = document.querySelector("#folder-wrapper .input-wrapper.expanded")
     if (folderInputWrapper && !folderInputWrapper.contains(event.target)) {
         collapseInputField(folderInputWrapper);
     }
 }
+
 // deactivates task based on click location (blur event not used because div is not being focused)
 function clickAwayFromActiveTask (event) {
     if (document.querySelector(".task > input")) return;
@@ -250,6 +286,7 @@ function clickAwayFromActiveTask (event) {
         updateTaskDialog();
     }
 }
+
 // boolean function to evaluate if click location should result in task deactivation
 function shouldDeactivateTask (event) {
     if (event.target.tagName.toLowerCase() === "html") return true;
@@ -262,6 +299,7 @@ function shouldDeactivateTask (event) {
     if (event.target.classList.contains("content-box")) return true;
     return false;
 }
+
 // clears modal dialog based on click location (blur event not used because div is not being focused)
 function clickAwayFromModalDialog (event) {
     const modals = document.querySelectorAll(".modal");
@@ -271,6 +309,7 @@ function clickAwayFromModalDialog (event) {
         }
     }
 }
+
 // clears modal dialog or deletes task/folder based on key input
 function keyInputOnModalDialog (event) {
     const modal = document.querySelector(".modal");
@@ -279,6 +318,7 @@ function keyInputOnModalDialog (event) {
         if (event.key === "Enter") modal.lastChild.dispatchEvent(new Event("click"));
     }
 }
+
 // reformats task dialog's content box to convert task dialog to modal dialog
 function createTaskDialogForMobile () {
     const taskDialog = document.getElementById("task-dialog");
