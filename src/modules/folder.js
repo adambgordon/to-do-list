@@ -1,6 +1,6 @@
 /*
 folder.js creates and exports the factory function for creating folder objects
- */
+*/
 
 const folderFactory = function (_name, _ID) {
     const _itemType = "folder";

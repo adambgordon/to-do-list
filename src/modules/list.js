@@ -1,7 +1,7 @@
 /*
 list.js creates and exports the list module, which stores and
 manipulates two arrays, one for folders and one for tasks
- */
+*/
 
 const list = function () {
 

@@ -1,11 +1,11 @@
 /*
-Helper-functions.js is designed for two purposes:
+helper-functions.js is designed for two purposes:
 1. Create & export functions that have repeated utility across multiple modules
 2. Serve as the universal conduit to import functions and re-export them to other modules
 
 This allows for all other modules to only need to import list.js and helper-function.js
 and still get full cross-functional access.
- */
+*/
 
 const list = require("./list.js");
 import "@fortawesome/fontawesome-free/js/all";

@@ -1,6 +1,6 @@
 /*
 task.js creates and exports the factory function for creating task objects
- */
+*/
 
 const taskFactory = function (_name, _ID, _homeFolderID) {
     
