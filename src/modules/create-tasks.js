@@ -101,11 +101,14 @@ function toggleCompleted (event) {
     const taskWrapper = document.getElementById("task-wrapper");
     const caret = this.getElementsByClassName("caret")[0];
     let completedTasks = document.getElementById("completed-tasks");
-    if (completedTasks) { // if completed tasks are already present, remove
+    
+    // if completed tasks are already present, remove
+    if (completedTasks) { 
         completedTasks.remove();
         caret.classList.remove("rotated-90");
-    } else {
-        // otherwise create and add
+
+    // otherwise create and add
+    } else {    
         completedTasks = helper.newDiv("id","completed-tasks");
         taskWrapper.appendChild(completedTasks);
         caret.classList.add("rotated-90");
@@ -138,7 +141,9 @@ function sort (event) {
     arrows.classList.add("on");
     let sortMethod = this.dataset.sortMethod;
     sortMethod = sortMethod[0].toUpperCase() + sortMethod.slice(1); // build dynamic fn name
-    list["sortTasksBy"+sortMethod](); // sort tasks in the list module accordingly
+    
+    // sort tasks in the list module accordingly
+    list["sortTasksBy"+sortMethod]();
     helper.updateTasksInStorage();
     updateTasks();
 }
@@ -174,6 +179,7 @@ function createInput () {
 // click event handler for the "plus"
 function receiveClick (event) {
     const input = this.nextSibling;
+    
     // if input is empty, focus
     if (input.value.trim() === "") {
         input.focus();
@@ -183,8 +189,10 @@ function receiveClick (event) {
     input.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
     input.focus();
 }
+
 // keyboard event handler for task-add input
 function receiveInput (event) {
+    
     // if enter, add the task
     if (event.key === "Enter") {
         if (!this.value || this.value.trim() === "") return;
@@ -198,6 +206,7 @@ function receiveInput (event) {
         list.addTask(task);
         helper.updateTasksInStorage();
         updateTasks();
+    
         // if escape, clear the input and remove focus
     } else if (event.key === "Escape") {
         this.value = "";
@@ -227,7 +236,9 @@ function checkTask (event) {
     if (activeTaskID === task.getID() && task.isCompleted()){
         helper.deactivateActiveTaskElement();
     }
-    if (!task.isCompleted()) list.bumpTaskToTop(task); // if "unchecking" task move it back up to top
+
+    // if "unchecking" task move it back up to top
+    if (!task.isCompleted()) list.bumpTaskToTop(task);
     updateTasks();
 }
 
@@ -260,10 +271,14 @@ function receiveEdit (event) {
         if (!this.value || this.value.trim() === "") return;
         list.getTask(this.parentElement.id).setName(this.value.trim());
         helper.updateTasksInStorage();
-        helper.updateTaskDialog(); // update dialog first to protect if user blurs directly to dialog name 
+        
+        // update dialog first to protect if user blurs directly to dialog name
+        helper.updateTaskDialog(); 
         setTimeout(() => {updateTasks();}, 0); // timeout allows elements to be updated in correct order
     } else if (event.key === "Escape") {
-        this.removeEventListener("blur",receiveEdit); // prevents updateTasks from triggering blur here
+
+        // prevents updateTasks from triggering blur here
+        this.removeEventListener("blur",receiveEdit); 
         updateTasks();
     }
 }
@@ -311,32 +326,35 @@ function adjustPositioning () {
         completedShadows[0].style.visibility = "hidden";
         completedShadows[1].style.visibility = "hidden";
     }
+
     // get shadow elemenets for this list (tasks or completed tasks)
     const topShadow = document.querySelector(".scroll-shadow.top."+this.id);
     const bottomShadow = document.querySelector(".scroll-shadow.bottom."+this.id);
     const paddingTop = parseInt(window.getComputedStyle(this).paddingTop.slice(0,-2));
     const paddingBottom = parseInt(window.getComputedStyle(this).paddingBottom.slice(0,-2));
 
+    // if scrolled up to top
     if (this.scrollTop === 0 && paddingTop !== 12) {
-        // if scrolled up to top
         this.style.paddingTop = "12px";
         this.style.marginTop = "-12px";
         topShadow.style.visibility = "hidden";
-        
+       
+    // if not scrolled up to top
     } else if (this.scrollTop !== 0 && paddingTop !== 0) { 
-        // if not scrolled up to top
         this.style.paddingTop = "0px";
         this.style.marginTop = "0px";
         topShadow.style.visibility = "visible";
     }
+
+    // if scrolled down to bottom
     if (this.scrollHeight === this.clientHeight + this.scrollTop && paddingBottom !== 12) {
-        // if scrolled down to bottom
         this.style.paddingBottom = "12px";
         this.style.marginBottom = "-12px";
         bottomShadow.style.visibility = "hidden";
         if (this.id === "completed-tasks") topShadow.style.bottom = "26.25rem";
+
+    // if not scrolled down to bottom
     } else if (this.scrollHeight !== this.clientHeight + this.scrollTop && paddingBottom !== 0) {
-        // if not scrolled down to bottom
         this.style.paddingBottom = "0px";
         this.style.marginBottom = "0px";
         bottomShadow.style.visibility = "visible";

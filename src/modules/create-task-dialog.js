@@ -84,7 +84,9 @@ function createInput(type) {
 // event handler to save and update the name of task in the dialog input
 function receiveNameInput (event) {
     if (event.key === "Enter" || event.key === "Escape" || event.type === "blur") {
-        if (event.type !== "blur") this.removeEventListener("blur",receiveNameInput); // prevent blur from being triggered
+
+        // prevent blur from being triggered
+        if (event.type !== "blur") this.removeEventListener("blur",receiveNameInput);
         if (!this.value || this.value.trim() === "") return;
         const task = list.getTask(helper.getActiveTaskId());
         task.setName(this.value.trim());
@@ -98,6 +100,7 @@ function receiveNameInput (event) {
 
 // initializes and returns a group of elements for the due date
 function createDueDate (task) {
+
     const dueDate = createInput("date");
     const input = dueDate.firstChild; // actual date input element
     const dueDateInputText = helper.newDiv(); // custom formatted display text for the due date
@@ -186,9 +189,15 @@ function createNotes (task) {
     const notesWrapper = helper.newDiv("id","notes-wrapper","class","input-wrapper");
     const notesEditField = createNotesEditField();
     notesEditField.value = task.getNotes();
-    notesEditField.oninput = resize; // continually adjust size as characters are added/removed
-    notesEditField.onblur = saveNotes; // save notes any time focus is lost
-    setTimeout(function() {setProperHeight(notesEditField);},0); // timeout allows for accurate height calculation
+
+    // continually adjust size as characters are added/removed
+    notesEditField.oninput = resize;
+
+    // save notes any time focus is lost
+    notesEditField.onblur = saveNotes; 
+
+    // timeout allows for accurate height calculation
+    setTimeout(function() {setProperHeight(notesEditField);},0); 
     notesWrapper.appendChild(notesEditField);
     return notesWrapper;
 }

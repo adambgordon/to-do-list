@@ -160,11 +160,14 @@ export function createStarButton (task) {
 // event handler for a star being clicked/toggled
 // if task is being destarred && current folder is "Starred" && this task is the active task, then deactivate
 function toggleStar () {
+
     // get task element being destarred based on whether star is child of task element or task dialog element
     const task = list.getTask(this.parentElement.classList.contains("task") ? this.parentElement.id : getActiveTaskId());
     task.toggleStar();
+
     // move task to top of list if star is being added and is not in the completed section
     if(task.isStarred() && !task.isCompleted()) list.bumpTaskToTop(task);
+
     // deactivate task if being destarred && current folder is "Starred" && the task being de-starred is the active task
     if (!task.isStarred()
         && list.getFolder(getActiveFolderId()).getName() === "Starred"
@@ -325,6 +328,7 @@ function keyInputOnModalDialog (event) {
 function createTaskDialogForMobile () {
     const taskDialog = document.getElementById("task-dialog");
     const contentBox = taskDialog.parentElement;
+    
     // if mobile screen width and task dialog is present,
     // set task dialog's content box to cover entire window,
     if (screen.width <= 1000 && taskDialog.hasChildNodes()) {

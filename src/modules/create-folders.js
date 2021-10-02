@@ -79,6 +79,7 @@ function editName (event) {
     if (!folderElement.classList.contains("active")) return;
     if (this.textContent === "All Tasks" || this.textContent === "Starred") return;
     const folder = list.getFolder(folderElement.id);
+
     // replaces name element with a new input element
     while (!folderElement.lastChild.classList.contains("left-hand-icon-container")) {
         folderElement.lastChild.remove();
@@ -95,12 +96,14 @@ function editName (event) {
 
 // event handler for actively editing folders
 function receiveEdit (event) {
+    
     // if enter or click away, save the folder name
     if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getFolder(this.parentElement.id).setName(this.value.trim());
         helper.updateFoldersInStorage();
         setTimeout(() => {updateFolders();}, 0); // timeout allows elements to be updated in correct order
+    
     // if escape, discard folder name
     } else if (event.key === "Escape") {
         this.removeEventListener("blur",receiveEdit);
@@ -180,6 +183,7 @@ function receiveInput (event) {
 function receiveClick (event) {
     const inputWrapper = this.parentElement;
     const input = this.nextSibling;
+    
     // if the input structure is already expanded, focus on input or submit a new folder
     if (inputWrapper.classList.contains("expanded")) {
         if (input.value.trim() === "") {
