@@ -11,17 +11,23 @@ and the "X" for the due date on the task dialog (a "+" in Lato rotated 45deg)
 /* GENERAL & SHARED STYLING */
 /* ------------------------------ */
 body {
-    font-family: 'Roboto', Arial, sans-serif;
-    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
     background: url('./assets/background.jpeg') no-repeat center center fixed;
     background-size: cover;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 13px;
     color: rgb(80,80,80);
-    position: relative;
-    min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    
 }
 #content {
     display: flex;
-    padding-bottom: 3rem;
+    flex-grow: 1;
+    margin-top: 1rem;
 }
 .content-box {
     flex: 1;
@@ -249,7 +255,6 @@ input[type="text"]::placeholder {
     margin: -12px 0px;
     max-height: 26.5rem;
     overflow-y: scroll;
-    overscroll-behavior-y: contain;
 }
 #tasks:empty, #completed-tasks:empty {
     display: none;
@@ -611,13 +616,12 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 /* FOOTER STYLING */
 /* ------------------------------ */
 #footer {
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    bottom: 0rem;
     height: 2rem;
+    padding: 2rem 0;
 }
 #footer > a {
     display: flex;
@@ -643,29 +647,40 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 /* STYLING FOR MOBILE */
 /* ------------------------------ */
 
-/* generally for mobile landscape orientation */
-@media screen and (max-device-width: 1000px) {
+/* Portain & Landscape */
+@media only screen and (max-width: 950px) { 
     .content-box:nth-child(3) {
-        position: absolute !important;
+        position: fixed !important;
         z-index: 1 !important;
-        top: 0 !important;
-        margin: -8px !important;
+        margin: 0 !important;
         width: 100vw !important;
         height: 0;
-        background-color: rgba(255,255,255,50%);
-        backdrop-filter: blur(1px);
+        top: 0 !important;
+        left: 0 !important;
+        background-color: rgba(255,255,255,50%) !important;
+        backdrop-filter: blur(1px) !important;
     }
     #task-dialog {
-        margin: 3rem auto auto auto !important;
-    }
-    .content-box:nth-child(1) {
-        flex: 0;
-        margin-left: 2rem;
+        margin: 5rem auto auto auto !important;
     }
 }
 
-/* generally for mobile portait orientation */
-@media screen and (max-device-width: 800px) {
+/* Landscape */
+@media only screen and (max-width: 950px) and (min-width: 501px) {
+    .content-box:nth-child(1) {
+        flex: 1;
+    }
+    .content-box:nth-child(2) {
+        flex: 2;
+    }
+}
+
+/* Portrait */
+@media only screen and (max-width: 500px) {
+    body {
+        height: 86vh;
+        /* 86vh is to account for bottom nav of mobile browser app */
+    }
     #content {
         position: relative;
         display: flex;
@@ -677,9 +692,11 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     }
     .content-box:nth-child(1) {
         margin: 1rem !important;
+        flex: 0;
     }
     .content-box:nth-child(2) {
         margin: 0 !important;
+        flex: 1;
     }
     #task-wrapper {
         margin-left: auto !important;
@@ -702,9 +719,9 @@ input[type="date"]::-webkit-datetime-edit-year-field {
     #tasks, #completed-tasks {
         padding-left: 0 !important;
         padding-right: 0 !important;
-        overscroll-behavior-y: auto !important;
     }
     #task-wrapper .scroll-shadow {
         left: 0 !important;
     }
 }
+

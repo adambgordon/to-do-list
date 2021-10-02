@@ -226,8 +226,16 @@ export function createTrashModal () {
 
 // initializes window event listeners
 export function initWindowListeners () {
+    window.onload = setViewPortScaling;
     window.onclick = windowClickActions;
     window.onkeydown = windowKeyActions;
+    window.onresize = setTaskDialogPlacement;
+}
+
+// prevents page from automatically rescaling when input elements are focused on mobile
+function setViewPortScaling (event) {
+    const viewportmeta = document.querySelector('meta[name=viewport]');
+    viewportmeta.setAttribute('content', "initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0");
 }
 
 // window click event handler that calls subsiary window click event handlers
@@ -237,7 +245,7 @@ function windowClickActions (event) {
     clickAwayFromFolderAdd(event);
     clickAwayFromActiveTask(event);
     clickAwayFromModalDialog(event);
-    createTaskDialogForMobile();
+    setTaskDialogPlacement(event);
 }
 
 // window keyboard event handler that calls subsiary window keyboard event handlers
@@ -324,14 +332,15 @@ function keyInputOnModalDialog (event) {
     }
 }
 
-// reformats task dialog's content box to convert task dialog to modal dialog
-function createTaskDialogForMobile () {
+// event handler to set task dialog as off to the right or modal
+function setTaskDialogPlacement (event) {
+    
     const taskDialog = document.getElementById("task-dialog");
     const contentBox = taskDialog.parentElement;
     
-    // if mobile screen width and task dialog is present,
+    // if mobile or small window width and task dialog is present,
     // set task dialog's content box to cover entire window,
-    if (screen.width <= 1000 && taskDialog.hasChildNodes()) {
+    if (window.innerWidth <= 950 && taskDialog.hasChildNodes()) {
         contentBox.style.height = "100vh";
     } else {
         contentBox.style.height = "0";
