@@ -6,7 +6,7 @@ the DOM and in the list module
 
 const list = require("./list.js");
 import * as helper from "./helper-functions.js";
-export {createTasks, updateTasks};
+export {createTasks, buildTasks, updateTasks};
 
 
 /* MAIN TASK LIST FUNCTIONS */
@@ -20,6 +20,11 @@ function createTasks () {
     taskWrapper.appendChild(createInputWrapper());
     initScrollShadows(taskWrapper);
     return taskWrapper;
+}
+
+function buildTasks () {
+    if (helper.tasksInStorage()) helper.importTasksFromStorage();
+    helper.updateTasks();
 }
 
 // updates tasks in the DOM by removing the curent task elements
@@ -134,6 +139,7 @@ function sort (event) {
     let sortMethod = this.dataset.sortMethod;
     sortMethod = sortMethod[0].toUpperCase() + sortMethod.slice(1); // build dynamic fn name
     list["sortTasksBy"+sortMethod](); // sort tasks in the list module accordingly
+    helper.updateTasksInStorage();
     updateTasks();
 }
 
@@ -190,6 +196,7 @@ function receiveInput (event) {
         if (folder.getName() === "Starred") task.toggleStar();
         this.value = "";
         list.addTask(task);
+        helper.updateTasksInStorage();
         updateTasks();
         // if escape, clear the input and remove focus
     } else if (event.key === "Escape") {
@@ -215,6 +222,7 @@ function createCheckBox (task) {
 function checkTask (event) {
     const task = list.getTask(this.parentElement.parentElement.id);
     task.toggleCompleted();
+    helper.updateTasksInStorage();
     const activeTaskID = helper.getActiveTaskId()
     if (activeTaskID === task.getID() && task.isCompleted()){
         helper.deactivateActiveTaskElement();
@@ -251,6 +259,7 @@ function receiveEdit (event) {
     if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getTask(this.parentElement.id).setName(this.value.trim());
+        helper.updateTasksInStorage();
         helper.updateTaskDialog(); // update dialog first to protect if user blurs directly to dialog name 
         setTimeout(() => {updateTasks();}, 0); // timeout allows elements to be updated in correct order
     } else if (event.key === "Escape") {

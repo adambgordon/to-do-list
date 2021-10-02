@@ -88,6 +88,7 @@ function receiveNameInput (event) {
         if (!this.value || this.value.trim() === "") return;
         const task = list.getTask(helper.getActiveTaskId());
         task.setName(this.value.trim());
+        helper.updateTasksInStorage();
         helper.updateTasks();
     }
 }
@@ -139,6 +140,7 @@ function updateDueDateInputText(text,unformattedDate) {
 function receiveDateInput (event) {
     const task = list.getTask(helper.getActiveTaskId());
     task.setDueDate(this.value);
+    helper.updateTasksInStorage();
     helper.updateTasks();
 }
 
@@ -172,6 +174,7 @@ function createX () {
 // click event handler to clear the due date and update the tasks (and thereby task dialog)
 function clearDueDate (event) {
     list.getTask(helper.getActiveTaskId()).setDueDate(false);
+    helper.updateTasksInStorage();
     helper.updateTasks();
 }
 
@@ -206,6 +209,7 @@ function resize (event) {
 // blur event handler to save the notes to the task in the list module
 function saveNotes (event) {
     list.getTask(helper.getActiveTaskId()).setNotes(this.value);
+    helper.updateTasksInStorage();
 }
 
 // calculates and sets proper height for the notes textarea
@@ -240,5 +244,6 @@ function prompt (event) {
 function trashTask() {
     list.deleteTask(list.getTask(helper.getActiveTaskId()));
     helper.deactivateActiveTaskElement();
+    helper.updateTasksInStorage();
     helper.updateTasks();
 }

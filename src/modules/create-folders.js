@@ -21,11 +21,16 @@ function createFolders () {
 
 // creates the default starting folders: "All Tasks" & "Starred"
 function buildFolders() {
-    const now = Date.now();
-    const allTasks = helper.folderFactory("All Tasks",now.toString());
-    const starredTasks = helper.folderFactory("Starred",(now+1).toString());
-    list.addFolder(allTasks);
-    list.addFolder(starredTasks);
+    if (helper.foldersInStorage()) {
+        helper.importFoldersFromStorage();
+    } else {
+        const now = Date.now();
+        const allTasks = helper.folderFactory("All Tasks",now.toString());
+        const starredTasks = helper.folderFactory("Starred",(now+1).toString());
+        list.addFolder(allTasks);
+        list.addFolder(starredTasks);
+        helper.updateFoldersInStorage();
+    }
     updateFolders();
 }
 
@@ -94,6 +99,7 @@ function receiveEdit (event) {
     if (event.key === "Enter" || event.type === "blur") {
         if (!this.value || this.value.trim() === "") return;
         list.getFolder(this.parentElement.id).setName(this.value.trim());
+        helper.updateFoldersInStorage();
         setTimeout(() => {updateFolders();}, 0); // timeout allows elements to be updated in correct order
     // if escape, discard folder name
     } else if (event.key === "Escape") {
@@ -122,6 +128,7 @@ function prompt (event) {
 // event handler to actually delete the folder, remvoing it from the list module and the DOM
 function trashFolder (event) {
     list.deleteFolder(list.getFolder(helper.getActiveFolderId()));
+    helper.updateFoldersInStorage();
     helper.deactivateActiveTaskElement();
     helper.deactivateActiveFolderElement();
     updateFolders();
@@ -157,6 +164,7 @@ function receiveInput (event) {
         const folder = helper.folderFactory(this.value.trim(), Date.now().toString());
         this.value = "";
         list.addFolder(folder);
+        helper.updateFoldersInStorage();
         updateFolders();
         helper.deactivateActiveFolderElement();
         helper.activateElementByID(folder.getID());

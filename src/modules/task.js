@@ -4,7 +4,6 @@ task.js creates and exports the factory function for creating task objects
 
 const taskFactory = function (_name, _ID, _homeFolderID) {
     
-    const _itemType = "task";
     let _completed = false;
     let _starred = false;
     let _dueDate = false;
@@ -19,20 +18,23 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
     const getID = function () {
         return _ID;
     }
-    const getItemType = function () {
-        return _itemType;
-    }
     const getHomeFolderID = function () {
         return _homeFolderID;
     }
     const isCompleted = function () {
         return _completed;
     }
+    const setCompleted = function (completed) {
+        _completed = completed;
+    }
     const toggleCompleted = function () {
         _completed = _completed === false ? true : false;
     }
     const isStarred = function () {
         return _starred;
+    }
+    const setStarred = function (starred) {
+        _starred = starred;
     }
     const toggleStar = function () {
         _starred = _starred === false ? true : false;
@@ -49,6 +51,7 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
     const setNotes = function (notes) {
         _notes = notes;
     }
+    
     // print fn is for dev & debugging purposes
     const print = function () {
         console.log([
@@ -66,11 +69,12 @@ const taskFactory = function (_name, _ID, _homeFolderID) {
         getName,
         setName,
         getID,
-        getItemType,
         getHomeFolderID,
         isCompleted,
+        setCompleted,
         toggleCompleted,
         isStarred,
+        setStarred,
         toggleStar,
         getDueDate,
         setDueDate,

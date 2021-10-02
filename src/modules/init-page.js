@@ -31,6 +31,7 @@ function initPage () {
     document.body.appendChild(content);
     document.body.appendChild(footer);
 
-    helper.buildFolders(list);
+    helper.buildFolders();
+    helper.buildTasks();
     helper.initWindowListeners();
 }

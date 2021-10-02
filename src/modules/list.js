@@ -8,7 +8,7 @@ const list = function () {
     let _folders = [];
     let _tasks = [];
 
-    /* folder based fn's below */
+    /* Folder based fn's below */
 
     const getFolder = function (folderID) {
         for (let i = 0; i < _folders.length; i++) {
@@ -26,7 +26,7 @@ const list = function () {
         }
     }
 
-    /* task based fn's below */
+    /* Task based fn's below */
 
     const getTask = function (taskID) {
         for (let i = 0; i < _tasks.length; i++) {
@@ -104,6 +104,7 @@ const list = function () {
             return 0;
         });
     }
+
     // print fn is for dev & debugging purposes
     const printFolders = function () {
         console.log(_folders.map( (folder) => { return folder.getName(); }));
@@ -125,7 +126,7 @@ const list = function () {
         sortTasksByName,
         sortTasksByStar,
         sortTasksByDueDate,
-        sortTasksByDateAdded
+        sortTasksByDateAdded,
     };
 }();
 

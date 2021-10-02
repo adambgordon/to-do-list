@@ -14,11 +14,11 @@ import compareAsc from "date-fns/compareAsc";
 import startOfToday from "date-fns/startOfToday";
 import taskFactory from "./task.js";
 import folderFactory from "./folder.js";
-import {createTasks, updateTasks} from "./create-tasks.js";
+import {createTasks, buildTasks, updateTasks} from "./create-tasks.js";
 import {createFolders, buildFolders, collapseInputField} from "./create-folders.js"
 import {createTaskDialog, updateTaskDialog} from "./create-task-dialog.js";
 
-// functinss below are the imported functions being re-exported
+// functions below are the imported functions being re-exported
 export {
     format,
     compareAsc,
@@ -26,6 +26,7 @@ export {
     taskFactory,
     folderFactory,
     createTasks,
+    buildTasks,
     updateTasks,
     createFolders,
     buildFolders,
@@ -171,6 +172,7 @@ function toggleStar () {
     {
         deactivateActiveTaskElement();
     }
+    updateTasksInStorage();
     updateTasks();
 }
 
@@ -329,5 +331,117 @@ function createTaskDialogForMobile () {
         contentBox.style.height = "100vh";
     } else {
         contentBox.style.height = "0";
+    }
+}
+
+/* STORAGE MANIPULATION FUNCTIONS */
+
+
+
+// checks if local storage is available
+export function localStorageAvailable () {
+    return storageAvailable("localStorage");
+}
+
+// checks if storage is available based on type
+function storageAvailable(type) {
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
+// returns boolean for if folders in storage
+export function foldersInStorage () {
+    if (localStorageAvailable() && localStorage.getItem("folders")) return true;
+    return false;
+}
+
+// returns boolean for if tasks in storage
+export function tasksInStorage () {
+    if (localStorageAvailable() && localStorage.getItem("tasks")) return true;
+    return false;
+}
+
+// loads folders from storage into list
+export function importFoldersFromStorage () {
+    if (localStorageAvailable()) addFoldersFromStorage(localStorage.getItem("folders"));
+}
+
+// loads tasks from storage into list
+export function importTasksFromStorage () {
+    if (localStorageAvailable()) addTasksFromStorage(localStorage.getItem("tasks"));
+}
+
+// updates the folders in storage from the list
+export function updateFoldersInStorage () {
+    if (localStorageAvailable()) localStorage.setItem("folders",getFoldersForStorage());
+}
+
+// updates the tasks in storage from the list
+export function updateTasksInStorage () {
+    if (localStorageAvailable()) localStorage.setItem("tasks",getTasksForStorage());
+}
+
+// returns 2D array of folders containing variables only (excludes all class methods)
+function getFoldersForStorage () {
+    const folders = list.getFolders();
+    return JSON.stringify(folders.map((folder) => {
+        return [folder.getName(), folder.getID()];
+    }));
+}
+
+// returns 2D array of tasks containing variables only (excludes all class methods)
+function getTasksForStorage () {
+    const tasks = list.getTasksByFolder(list.getFolder(document.getElementById("folders").firstChild.id));
+    return JSON.stringify(tasks.map ((task) => {
+        return [
+        task.getName(),
+        task.getID(),
+        task.getHomeFolderID(),
+        task.isCompleted(),
+        task.isStarred(),
+        task.getDueDate(),
+        task.getNotes()];
+    }));
+}
+
+// adds folders from JSON stringified string into list
+export function addFoldersFromStorage (storageFolders) {
+    JSON.parse(storageFolders).forEach(storageFolder => {
+        const folder = folderFactory(storageFolder[0],storageFolder[1]);
+        list.addFolder(folder);
+    });
+}
+
+// adds folders from JSON stringified string into list
+export function addTasksFromStorage (storageTasks) {
+    const parsedTasks = JSON.parse(storageTasks);
+    for (let i = parsedTasks.length-1; i >= 0; i--) {
+        const storageTask = parsedTasks[i];
+        const task = taskFactory(storageTask[0],storageTask[1],storageTask[2]);
+        task.setCompleted(storageTask[3]);
+        task.setStarred(storageTask[4]);
+        task.setDueDate(storageTask[5]);
+        task.setNotes(storageTask[6]);
+        list.addTask(task);
     }
 }
