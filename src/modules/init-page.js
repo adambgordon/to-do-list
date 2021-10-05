@@ -9,6 +9,13 @@ export default initPage;
 
 function initPage () {
     const content = helper.newDiv("id","content");
+
+    // Click event will not properly bubble on safari on iOS
+    // if cursor is not declared as pointer. onclick=void for
+    // the container allows for proper bubbling regardless of
+    // cursor styling.
+    content.onclick = void(0);
+
     const title = helper.createTitle();
     const folderSection = helper.newDiv("class","content-box");
     const taskSection = helper.newDiv("class","content-box");
