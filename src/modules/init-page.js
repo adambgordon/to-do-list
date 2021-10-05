@@ -34,4 +34,5 @@ function initPage () {
     helper.buildFolders();
     helper.buildTasks();
     helper.initWindowListeners();
+    content.onclick = void(0); // allows for proper click event bubbling on Safari on iOS
 }
