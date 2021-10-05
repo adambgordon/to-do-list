@@ -228,9 +228,17 @@ export function createTrashModal () {
 export function initWindowListeners () {
     window.onload = setViewPortScaling;
     window.onclick = windowClickActions;
-    window.ontouchstart = windowClickActions;
     window.onkeydown = windowKeyActions;
     window.onresize = setTaskDialogPlacement;
+
+    // Below listener is for mobile usage:
+    // Safari on iOS requires touch events for non anchored elements (e.g. div, window, etc.)
+    // and Chrome on mobile requires passive to be false to allow event.preventDefault()
+    // to executte, which prevents click events from also firing every time touchstart is fired.
+    window.addEventListener("touchstart",function(event) {
+        event.preventDefault();
+        windowClickActions(event);
+    }, {passive: false});
 }
 
 // prevents page from automatically rescaling when input elements are focused on mobile
@@ -241,7 +249,6 @@ function setViewPortScaling (event) {
 
 // window click event handler that calls subsiary window click event handlers
 function windowClickActions (event) {
-    event.preventDefault();
     clickOnTask(event);
     clickOnFolder(event);
     clickAwayFromFolderAdd(event);
