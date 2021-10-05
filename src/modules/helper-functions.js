@@ -228,6 +228,7 @@ export function createTrashModal () {
 export function initWindowListeners () {
     window.onload = setViewPortScaling;
     window.onclick = windowClickActions;
+    window.ontouchstart = windowClickActions;
     window.onkeydown = windowKeyActions;
     window.onresize = setTaskDialogPlacement;
 }
@@ -240,6 +241,7 @@ function setViewPortScaling (event) {
 
 // window click event handler that calls subsiary window click event handlers
 function windowClickActions (event) {
+    event.preventDefault();
     clickOnTask(event);
     clickOnFolder(event);
     clickAwayFromFolderAdd(event);
