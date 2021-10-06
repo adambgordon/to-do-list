@@ -32,6 +32,9 @@ function addDialogFromTask () {
 
     const activeID = helper.getActiveTaskId();
     const taskDialog = document.getElementById("task-dialog");
+
+    // remove touch listener if present, will be added if task dialog continue on to be constructed
+    taskDialog.parentElement.removeEventListener("touchstart",touchAwayFromTaskDialog);
     if (!activeID) {
         taskDialog.classList.remove("fade-in");
         return;
@@ -57,8 +60,30 @@ function addDialogFromTask () {
 
     // updated dialog classlist for proper styling based on if task is already completed
     task.isCompleted() ? taskDialog.classList.add("completed") : taskDialog.classList.remove("completed");
+
+    // clears task dialog on mobile
+    taskDialog.parentElement.addEventListener("touchstart",touchAwayFromTaskDialog);
 }
 
+// event handler for touch on background behind the task dialog
+function touchAwayFromTaskDialog (event) {
+
+    // if touch is on the background behind the task dialog (on mobile)
+    if (event.target === this) {
+        event.stopPropagation();
+        const taskDialog = this.firstChild;
+        const input = taskDialog.querySelector("input[type=text]");
+        const notes = taskDialog.querySelector("textarea");
+
+        // remove blur events to prevent them from triggering
+        input.removeEventListener("blur",receiveNameInput);
+        notes.removeEventListener("blur",saveNotes);
+
+        // save updated task name and task notes
+        saveNotes.call(notes);
+        input.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+    }
+}
 
 /* TASK NAME FUNCTIONS */
 
@@ -194,7 +219,7 @@ function createNotes (task) {
     notesEditField.oninput = resize;
 
     // save notes any time focus is lost
-    notesEditField.onblur = saveNotes; 
+    notesEditField.addEventListener("blur",saveNotes);
 
     // timeout allows for accurate height calculation
     setTimeout(function() {setProperHeight(notesEditField);},0); 

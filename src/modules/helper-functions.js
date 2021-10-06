@@ -227,18 +227,19 @@ export function createTrashModal () {
 // initializes window event listeners
 export function initWindowListeners () {
     window.onload = setViewPortScaling;
-    window.onclick = windowClickActions;
+    // window.onclick = windowClickActions;
+    window.addEventListener("click",windowClickActions);
     window.onkeydown = windowKeyActions;
     window.onresize = setTaskDialogPlacement;
 
     // Below listener is for mobile usage:
     // Safari on iOS requires touch events for non anchored elements (e.g. div, window, etc.)
-    // and Chrome on mobile requires passive to be false to allow event.preventDefault()
-    // to executte, which prevents click events from also firing every time touchstart is fired.
+    // but Chrome reads both click and touch events, so clicks have to be removed to prevent
+    // events from firing twice
     window.addEventListener("touchstart",function(event) {
-        event.preventDefault();
+        document.removeEventListener("click",windowClickActions);
         windowClickActions(event);
-    }, {passive: false});
+    });
 }
 
 // prevents page from automatically rescaling when input elements are focused on mobile
@@ -349,16 +350,19 @@ function setTaskDialogPlacement (event) {
     
     // if mobile or small window width and task dialog is present,
     // set task dialog's content box to cover entire window,
-    if (window.innerWidth <= 950 && taskDialog.hasChildNodes()) {
-        contentBox.style.height = "100vh";
-    } else {
-        contentBox.style.height = "0";
-    }
+    setTimeout(() => {
+        
+        if (window.innerWidth <= 950 && taskDialog.hasChildNodes()) {
+            contentBox.style.height = "100vh";
+        } else {
+            contentBox.style.height = "0";
+        }
+
+    }, 0);
+    
 }
 
 /* STORAGE MANIPULATION FUNCTIONS */
-
-
 
 // checks if local storage is available
 export function localStorageAvailable () {
