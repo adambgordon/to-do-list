@@ -70,9 +70,10 @@ function addDialogFromTask () {
 // event handler for touch on background behind the task dialog
 function touchAwayFromTaskDialog (event) {
 
-    // if touch is on the background behind the task dialog (on mobile)
+    event.stopImmediatePropagation();
+
     if (event.target === this) {
-        event.stopImmediatePropagation();
+        
         const taskDialog = this.firstChild;
         const input = taskDialog.querySelector("input[type=text]");
         const notes = taskDialog.querySelector("textarea");
@@ -88,6 +89,7 @@ function touchAwayFromTaskDialog (event) {
         // deactivate task and update (i.e. clear) task dialog
         helper.deactivateActiveTaskElement();
         helper.updateTaskDialog();
+        helper.setTaskDialogPlacement();
     }
 }
 

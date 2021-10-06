@@ -237,7 +237,7 @@ export function initWindowListeners () {
     // but Chrome reads both click and touch events, so clicks have to be removed to prevent
     // events from firing twice
     window.addEventListener("touchstart",function(event) {
-        document.removeEventListener("click",windowClickActions);
+        window.removeEventListener("click",windowClickActions);
         windowClickActions(event);
     });
 }
@@ -319,7 +319,7 @@ function shouldDeactivateTask (event) {
     if (event.target.id === "task-wrapper") return true;
     if (event.target.id === "tasks") return true;
     if (event.target.id === "footer") return true;
-    if (event.target.classList.contains("content-box")) return true;
+    if (event.type === "click" && event.target.classList.contains("content-box")) return true;
     return false;
 }
 
@@ -343,7 +343,7 @@ function keyInputOnModalDialog (event) {
 }
 
 // event handler to set task dialog as off to the right or modal
-function setTaskDialogPlacement (event) {
+export function setTaskDialogPlacement (event) {
     
     const taskDialog = document.getElementById("task-dialog");
     const contentBox = taskDialog.parentElement;
