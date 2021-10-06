@@ -62,7 +62,9 @@ function addDialogFromTask () {
     task.isCompleted() ? taskDialog.classList.add("completed") : taskDialog.classList.remove("completed");
 
     // clears task dialog on mobile
-    taskDialog.parentElement.addEventListener("touchstart",touchAwayFromTaskDialog);
+    setTimeout(() => {
+        taskDialog.parentElement.addEventListener("touchstart",touchAwayFromTaskDialog);
+    }, 0);
 }
 
 // event handler for touch on background behind the task dialog
@@ -70,7 +72,7 @@ function touchAwayFromTaskDialog (event) {
 
     // if touch is on the background behind the task dialog (on mobile)
     if (event.target === this) {
-        event.stopPropagation();
+        event.stopImmediatePropagation();
         const taskDialog = this.firstChild;
         const input = taskDialog.querySelector("input[type=text]");
         const notes = taskDialog.querySelector("textarea");
@@ -82,6 +84,10 @@ function touchAwayFromTaskDialog (event) {
         // save updated task name and task notes
         saveNotes.call(notes);
         input.dispatchEvent(new KeyboardEvent("keydown",{key:"Enter"}));
+
+        // deactivate task and update (i.e. clear) task dialog
+        helper.deactivateActiveTaskElement();
+        helper.updateTaskDialog();
     }
 }
 
