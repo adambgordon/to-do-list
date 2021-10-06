@@ -231,15 +231,40 @@ export function initWindowListeners () {
     window.addEventListener("click",windowClickActions);
     window.onkeydown = windowKeyActions;
     window.onresize = setTaskDialogPlacement;
+    window.addEventListener("touchstart",initTouches);
 
     // Below listener is for mobile usage:
     // Safari on iOS requires touch events for non anchored elements (e.g. div, window, etc.)
     // but Chrome reads both click and touch events, so clicks have to be removed to prevent
     // events from firing twice
-    window.addEventListener("touchstart",function(event) {
-        window.removeEventListener("click",windowClickActions);
-        windowClickActions(event);
+    
+    // window.addEventListener("touchstart", function (event) {
+    //     window.removeEventListener("click",windowClickActions);
+    //     windowClickActions(event);
+    // });
+}
+
+function initTouches (event) {
+    window.removeEventListener("click",windowClickActions);
+    window.removeEventListener("touchstart",initTouches);
+    addTouchEnd();
+    addTouchMove();
+}
+function addTouchEnd () {
+    window.addEventListener("touchend",windowClickActions);
+}
+function removeTouchEnd () {
+    window.removeEventListener("touchend",windowClickActions);
+}
+function addTouchMove () {
+    window.addEventListener("touchmove", function (event) {
+        removeTouchEnd();
+        window.addEventListener("touchend", resetTouch);
     });
+}
+function resetTouch (event) {
+    window.removeEventListener("touchend",resetTouch);
+    addTouchEnd();
 }
 
 // prevents page from automatically rescaling when input elements are focused on mobile

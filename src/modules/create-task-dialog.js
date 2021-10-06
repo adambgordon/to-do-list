@@ -34,7 +34,7 @@ function addDialogFromTask () {
     const taskDialog = document.getElementById("task-dialog");
 
     // remove touch listener if present, will be added if task dialog continue on to be constructed
-    taskDialog.parentElement.removeEventListener("touchstart",touchAwayFromTaskDialog);
+    taskDialog.parentElement.removeEventListener("touchend",touchAwayFromTaskDialog);
     if (!activeID) {
         taskDialog.classList.remove("fade-in");
         return;
@@ -63,7 +63,7 @@ function addDialogFromTask () {
 
     // clears task dialog on mobile
     setTimeout(() => {
-        taskDialog.parentElement.addEventListener("touchstart",touchAwayFromTaskDialog);
+        taskDialog.parentElement.addEventListener("touchend",touchAwayFromTaskDialog);
     }, 0);
 }
 
