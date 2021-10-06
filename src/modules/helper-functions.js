@@ -222,7 +222,7 @@ export function createTrashModal () {
     return modal;
 }
 
-/* WINDOW EVENT FUNCTIONS */
+/* WINDOW CLICK & TOUCH EVENT FUNCTIONS */
 
 // initializes window event listeners
 export function initWindowListeners () {
@@ -232,45 +232,45 @@ export function initWindowListeners () {
     window.onkeydown = windowKeyActions;
     window.onresize = setTaskDialogPlacement;
     window.addEventListener("touchstart",initTouches);
-
-    // Below listener is for mobile usage:
-    // Safari on iOS requires touch events for non anchored elements (e.g. div, window, etc.)
-    // but Chrome reads both click and touch events, so clicks have to be removed to prevent
-    // events from firing twice
-    
-    // window.addEventListener("touchstart", function (event) {
-    //     window.removeEventListener("click",windowClickActions);
-    //     windowClickActions(event);
-    // });
-}
-
-function initTouches (event) {
-    window.removeEventListener("click",windowClickActions);
-    window.removeEventListener("touchstart",initTouches);
-    addTouchEnd();
-    addTouchMove();
-}
-function addTouchEnd () {
-    window.addEventListener("touchend",windowClickActions);
-}
-function removeTouchEnd () {
-    window.removeEventListener("touchend",windowClickActions);
-}
-function addTouchMove () {
-    window.addEventListener("touchmove", function (event) {
-        removeTouchEnd();
-        window.addEventListener("touchend", resetTouch);
-    });
-}
-function resetTouch (event) {
-    window.removeEventListener("touchend",resetTouch);
-    addTouchEnd();
 }
 
 // prevents page from automatically rescaling when input elements are focused on mobile
 function setViewPortScaling (event) {
     const viewportmeta = document.querySelector('meta[name=viewport]');
     viewportmeta.setAttribute('content', "initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0");
+}
+
+// for mobile usage, remove click actions and replace with touch actions
+function initTouches (event) {
+    window.removeEventListener("click",windowClickActions);
+    window.removeEventListener("touchstart",initTouches);
+    addTouchEnd();
+    addTouchMove();
+}
+
+// add event listener that carries out actions on touchend
+function addTouchEnd () {
+    window.addEventListener("touchend",windowClickActions);
+}
+
+// remove event listener that carries out actions on touchend
+function removeTouchEnd () {
+    window.removeEventListener("touchend",windowClickActions);
+}
+
+// add event listener on touchmove, that removes touchend (allows for things like
+// draggin & scrolling) and then *after* finished moving, add it back
+function addTouchMove () {
+    window.addEventListener("touchmove", function (event) {
+        removeTouchEnd();
+        window.addEventListener("touchend", resetTouch);
+    });
+}
+
+// end the reset and add back normal touchend events
+function resetTouch (event) {
+    window.removeEventListener("touchend",resetTouch);
+    addTouchEnd();
 }
 
 // window click event handler that calls subsiary window click event handlers

@@ -61,7 +61,7 @@ function addDialogFromTask () {
     // updated dialog classlist for proper styling based on if task is already completed
     task.isCompleted() ? taskDialog.classList.add("completed") : taskDialog.classList.remove("completed");
 
-    // clears task dialog on mobile
+    // clears task dialog on mobile (timeout set to allow proper order of events)
     setTimeout(() => {
         taskDialog.parentElement.addEventListener("touchend",touchAwayFromTaskDialog);
     }, 0);
